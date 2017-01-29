@@ -33,7 +33,7 @@ body {
 .glyphicon-music, .glyphicon-th-list, .glyphicon-search {
   font-size: 5vmin; }
 
-div.list-group-item {
+.songs-item {
   position: relative;
   height: 16vmin;
   background: #E8E0F4;
@@ -43,7 +43,7 @@ div.list-group-item {
   color: #936AC7;
   border-bottom: thin solid #aaaaaa; }
 
-a.list-group-item {
+.playlists-item {
   position: relative;
   height: 16vmin;
   text-align: center;
@@ -53,11 +53,11 @@ a.list-group-item {
   border: 0vmin;
   color: #936AC7;
   border-bottom: thin solid #aaaaaa; }
-  a.list-group-item:hover {
+  .playlists-item:hover {
     background-color: #ccbae7; }
-  a.list-group-item:focus {
+  .playlists-item:focus {
     background-color: #ccbae7; }
-  a.list-group-item:active {
+  .playlists-item:active {
     background-color: #a281d3; }
 
 .btn-addlist {

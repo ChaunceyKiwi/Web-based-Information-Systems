@@ -70,7 +70,7 @@ body {
 //////////////////////////////////////
 //Style for all tab contents
 
-div.list-group-item {
+.songs-item {
   position: relative;
   height: 16vmin;
   background: $background-color;
@@ -81,7 +81,7 @@ div.list-group-item {
   border-bottom: thin solid $border-color;
 }
 
-a.list-group-item {
+.playlists-item {
   position: relative;
   height: 16vmin;
   text-align: center;
