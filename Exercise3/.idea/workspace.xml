@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4d3e5d61-8d73-42c6-9582-71f37202b469" name="Default" comment="" />
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1050">
+              <caret line="70" column="29" lean-forward="true" selection-start-line="70" selection-start-column="29" selection-end-line="70" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="music-app.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/music-app.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="393">
+              <caret line="170" column="0" lean-forward="false" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
+              <folding>
+                <element signature="e#163#1101#0" expanded="false" />
+                <element signature="e#192#497#0" expanded="false" />
+                <element signature="e#539#831#0" expanded="false" />
+                <element signature="e#1033#1099#0" expanded="false" />
+                <element signature="e#1173#2115#0" expanded="false" />
+                <element signature="e#1202#1511#0" expanded="false" />
+                <element signature="e#1553#1845#0" expanded="false" />
+                <element signature="e#2047#2113#0" expanded="false" />
+                <element signature="e#2177#3399#0" expanded="false" />
+                <element signature="e#2403#3397#0" expanded="false" />
+                <element signature="e#2488#2557#0" expanded="false" />
+                <element signature="e#2563#3391#0" expanded="false" />
+                <element signature="e#2615#2885#0" expanded="false" />
+                <element signature="e#2694#2780#0" expanded="false" />
+                <element signature="e#2786#2871#0" expanded="false" />
+                <element signature="e#2929#3381#0" expanded="false" />
+                <element signature="e#3190#3276#0" expanded="false" />
+                <element signature="e#3282#3367#0" expanded="false" />
+                <element signature="e#3493#3529#0" expanded="false" />
+                <element signature="e#3625#3663#0" expanded="false" />
+                <element signature="e#3756#3791#0" expanded="false" />
+                <element signature="e#3793#3868#0" expanded="false" />
+                <element signature="n#!!block;n#switchView#0" expanded="false" />
+                <element signature="e#4036#4090#0" expanded="false" />
+                <element signature="e#4267#4371#0" expanded="false" />
+                <element signature="e#4571#4894#0" expanded="false" />
+                <element signature="e#4820#4888#0" expanded="false" />
+                <element signature="n#!!block;n#isElementAlreadyInTheArray#0" expanded="false" />
+                <element signature="e#4992#5067#0" expanded="false" />
+                <element signature="e#5025#5061#0" expanded="false" />
+                <element signature="n#!!block;n#addContentsOfPlayList#0" expanded="false" />
+                <element signature="e#5189#5229#0" expanded="false" />
+                <element signature="e#7589#7729#0" expanded="false" />
+                <element signature="e#7765#7818#0" expanded="false" />
+                <element signature="e#7856#7968#0" expanded="false" />
+                <element signature="e#7897#7958#0" expanded="false" />
+                <element signature="e#9467#11500#0" expanded="false" />
+                <element signature="e#10724#10864#0" expanded="false" />
+                <element signature="e#10900#10953#0" expanded="false" />
+                <element signature="e#10991#11103#0" expanded="false" />
+                <element signature="e#11032#11093#0" expanded="false" />
+                <element signature="e#11567#14392#0" expanded="false" />
+                <element signature="e#11856#12476#0" expanded="false" />
+                <element signature="e#12336#12412#0" expanded="false" />
+                <element signature="e#13377#14250#0" expanded="false" />
+                <element signature="e#13509#14169#0" expanded="false" />
+                <element signature="e#13586#14155#0" expanded="false" />
+                <element signature="e#13701#14137#0" expanded="false" />
+                <element signature="e#14459#15582#0" expanded="false" />
+                <element signature="e#14778#15010#0" expanded="false" />
+                <element signature="e#15645#17705#0" expanded="false" />
+                <element signature="e#16931#17071#0" expanded="false" />
+                <element signature="e#17107#17160#0" expanded="false" />
+                <element signature="e#17198#17310#0" expanded="false" />
+                <element signature="e#17239#17300#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="playlists.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/playlists.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="songs.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/songs.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="44" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="44" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="playlist.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/playlist.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="18" column="6" lean-forward="false" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MusicApp.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MusicApp.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="16" column="33" lean-forward="true" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>music-da</find>
+    </findStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/playlist.scss" />
+        <option value="$PROJECT_DIR$/music-app.js" />
+        <option value="$PROJECT_DIR$/app.js" />
+        <option value="$PROJECT_DIR$/MusicApp.html" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
+    <package-json value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="width" value="1280" />
+    <option name="height" value="800" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Bitwise operation issuesJavaScript</id>
+          </State>
+          <State>
+            <id>CSS</id>
+          </State>
+          <State>
+            <id>Code style issuesJavaScript</id>
+          </State>
+          <State>
+            <id>Control flow issuesJavaScript</id>
+          </State>
+          <State>
+            <id>Data flow issuesJavaScript</id>
+          </State>
+          <State>
+            <id>GeneralJavaScript</id>
+          </State>
+          <State>
+            <id>HAML</id>
+          </State>
+          <State>
+            <id>Internationalization issues</id>
+          </State>
+          <State>
+            <id>JavaScript</id>
+          </State>
+          <State>
+            <id>Potentially confusing code constructsJavaScript</id>
+          </State>
+          <State>
+            <id>RELAX NG</id>
+          </State>
+          <State>
+            <id>Sass/SCSS</id>
+          </State>
+          <State>
+            <id>XML</id>
+          </State>
+          <State>
+            <id>XPath</id>
+          </State>
+          <State>
+            <id>XSLT</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Sass/SCSS</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Exercise3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Exercise3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="nodejs_interpreter_path" value="/usr/local/bin/node" />
+    <property name="settings.editor.selected.configurable" value="watcher.settings" />
+    <property name="javascript.nodejs.core.library.configured.version" value="6.9.4" />
+    <property name="FullScreen" value="true" />
+    <property name="js.eslint.eslintPackage" value="" />
+    <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
+    <property name="restartRequiresConfirmation" value="false" />
+  </component>
+  <component name="RunManager" selected="Node.js.app.js">
+    <configuration default="false" name="app.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-node="project" path-to-js-file="app.js" working-dir="$PROJECT_DIR$">
+      <method />
+    </configuration>
+    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
+      <method />
+    </configuration>
+    <configuration default="true" type="DartTestRunConfigurationType" factoryName="Dart Test">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="cucumber.js" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" value="" />
+      <option name="executablePath" />
+      <option name="filePath" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory />
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui />
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method />
+    </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="Node.js.app.js" />
+    </list>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue="Node.js.app.js" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4d3e5d61-8d73-42c6-9582-71f37202b469" name="Default" comment="" />
+      <created>1485564837431</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1485564837431</updated>
+      <workItem from="1485564838880" duration="295000" />
+      <workItem from="1485630536528" duration="9417000" />
+      <workItem from="1485651851209" duration="141000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="9853000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1890625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14741036" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="processedProjectFiles" value="true" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1200">
+          <caret line="80" column="40" lean-forward="true" selection-start-line="80" selection-start-column="40" selection-end-line="80" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/music-app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="170" column="0" lean-forward="true" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
+          <folding>
+            <element signature="e#163#1101#0" expanded="false" />
+            <element signature="e#192#497#0" expanded="false" />
+            <element signature="e#539#831#0" expanded="false" />
+            <element signature="e#1033#1099#0" expanded="false" />
+            <element signature="e#1173#2115#0" expanded="false" />
+            <element signature="e#1202#1511#0" expanded="false" />
+            <element signature="e#1553#1845#0" expanded="false" />
+            <element signature="e#2047#2113#0" expanded="false" />
+            <element signature="e#2177#3399#0" expanded="false" />
+            <element signature="e#2403#3397#0" expanded="false" />
+            <element signature="e#2488#2557#0" expanded="false" />
+            <element signature="e#2563#3391#0" expanded="false" />
+            <element signature="e#2615#2885#0" expanded="false" />
+            <element signature="e#2694#2780#0" expanded="false" />
+            <element signature="e#2786#2871#0" expanded="false" />
+            <element signature="e#2929#3381#0" expanded="false" />
+            <element signature="e#3190#3276#0" expanded="false" />
+            <element signature="e#3282#3367#0" expanded="false" />
+            <element signature="e#3493#3529#0" expanded="false" />
+            <element signature="e#3625#3663#0" expanded="false" />
+            <element signature="e#3756#3791#0" expanded="false" />
+            <element signature="e#3793#3868#0" expanded="false" />
+            <element signature="n#!!block;n#switchView#0" expanded="false" />
+            <element signature="e#4036#4090#0" expanded="false" />
+            <element signature="e#4267#4371#0" expanded="false" />
+            <element signature="e#4571#4894#0" expanded="false" />
+            <element signature="e#4820#4888#0" expanded="false" />
+            <element signature="n#!!block;n#isElementAlreadyInTheArray#0" expanded="false" />
+            <element signature="e#4992#5067#0" expanded="false" />
+            <element signature="e#5025#5061#0" expanded="false" />
+            <element signature="n#!!block;n#addContentsOfPlayList#0" expanded="false" />
+            <element signature="e#5189#5229#0" expanded="false" />
+            <element signature="e#7589#7729#0" expanded="false" />
+            <element signature="e#7765#7818#0" expanded="false" />
+            <element signature="e#7856#7968#0" expanded="false" />
+            <element signature="e#7897#7958#0" expanded="false" />
+            <element signature="e#9467#11500#0" expanded="false" />
+            <element signature="e#10724#10864#0" expanded="false" />
+            <element signature="e#10900#10953#0" expanded="false" />
+            <element signature="e#10991#11103#0" expanded="false" />
+            <element signature="e#11032#11093#0" expanded="false" />
+            <element signature="e#11567#14392#0" expanded="false" />
+            <element signature="e#11856#12476#0" expanded="false" />
+            <element signature="e#12336#12412#0" expanded="false" />
+            <element signature="e#13377#14250#0" expanded="false" />
+            <element signature="e#13509#14169#0" expanded="false" />
+            <element signature="e#13586#14155#0" expanded="false" />
+            <element signature="e#13701#14137#0" expanded="false" />
+            <element signature="e#14459#15582#0" expanded="false" />
+            <element signature="e#14778#15010#0" expanded="false" />
+            <element signature="e#15645#17705#0" expanded="false" />
+            <element signature="e#16931#17071#0" expanded="false" />
+            <element signature="e#17107#17160#0" expanded="false" />
+            <element signature="e#17198#17310#0" expanded="false" />
+            <element signature="e#17239#17300#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/playlists.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/songs.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="44" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/playlist.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="6" lean-forward="true" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MusicApp.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/playlist.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="6" lean-forward="false" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/music-data.js" />
+    <entry file="file://$PROJECT_DIR$/MusicApp.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="33" lean-forward="true" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/songs.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="44" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/playlists.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/music-app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="393">
+          <caret line="170" column="0" lean-forward="false" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
+          <folding>
+            <element signature="e#163#1101#0" expanded="false" />
+            <element signature="e#192#497#0" expanded="false" />
+            <element signature="e#539#831#0" expanded="false" />
+            <element signature="e#1033#1099#0" expanded="false" />
+            <element signature="e#1173#2115#0" expanded="false" />
+            <element signature="e#1202#1511#0" expanded="false" />
+            <element signature="e#1553#1845#0" expanded="false" />
+            <element signature="e#2047#2113#0" expanded="false" />
+            <element signature="e#2177#3399#0" expanded="false" />
+            <element signature="e#2403#3397#0" expanded="false" />
+            <element signature="e#2488#2557#0" expanded="false" />
+            <element signature="e#2563#3391#0" expanded="false" />
+            <element signature="e#2615#2885#0" expanded="false" />
+            <element signature="e#2694#2780#0" expanded="false" />
+            <element signature="e#2786#2871#0" expanded="false" />
+            <element signature="e#2929#3381#0" expanded="false" />
+            <element signature="e#3190#3276#0" expanded="false" />
+            <element signature="e#3282#3367#0" expanded="false" />
+            <element signature="e#3493#3529#0" expanded="false" />
+            <element signature="e#3625#3663#0" expanded="false" />
+            <element signature="e#3756#3791#0" expanded="false" />
+            <element signature="e#3793#3868#0" expanded="false" />
+            <element signature="n#!!block;n#switchView#0" expanded="false" />
+            <element signature="e#4036#4090#0" expanded="false" />
+            <element signature="e#4267#4371#0" expanded="false" />
+            <element signature="e#4571#4894#0" expanded="false" />
+            <element signature="e#4820#4888#0" expanded="false" />
+            <element signature="n#!!block;n#isElementAlreadyInTheArray#0" expanded="false" />
+            <element signature="e#4992#5067#0" expanded="false" />
+            <element signature="e#5025#5061#0" expanded="false" />
+            <element signature="n#!!block;n#addContentsOfPlayList#0" expanded="false" />
+            <element signature="e#5189#5229#0" expanded="false" />
+            <element signature="e#7589#7729#0" expanded="false" />
+            <element signature="e#7765#7818#0" expanded="false" />
+            <element signature="e#7856#7968#0" expanded="false" />
+            <element signature="e#7897#7958#0" expanded="false" />
+            <element signature="e#9467#11500#0" expanded="false" />
+            <element signature="e#10724#10864#0" expanded="false" />
+            <element signature="e#10900#10953#0" expanded="false" />
+            <element signature="e#10991#11103#0" expanded="false" />
+            <element signature="e#11032#11093#0" expanded="false" />
+            <element signature="e#11567#14392#0" expanded="false" />
+            <element signature="e#11856#12476#0" expanded="false" />
+            <element signature="e#12336#12412#0" expanded="false" />
+            <element signature="e#13377#14250#0" expanded="false" />
+            <element signature="e#13509#14169#0" expanded="false" />
+            <element signature="e#13586#14155#0" expanded="false" />
+            <element signature="e#13701#14137#0" expanded="false" />
+            <element signature="e#14459#15582#0" expanded="false" />
+            <element signature="e#14778#15010#0" expanded="false" />
+            <element signature="e#15645#17705#0" expanded="false" />
+            <element signature="e#16931#17071#0" expanded="false" />
+            <element signature="e#17107#17160#0" expanded="false" />
+            <element signature="e#17198#17310#0" expanded="false" />
+            <element signature="e#17239#17300#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1050">
+          <caret line="70" column="29" lean-forward="true" selection-start-line="70" selection-start-column="29" selection-end-line="70" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
