@@ -10,8 +10,8 @@ var playlistsLoaded = false;
 $.get('/api/playlists', function(data) {
     var playlistArray = JSON.parse(data);
     window.MUSIC_DATA.playlists = playlistArray.playlists;
-    songsLoaded = true;
-    if (playlistsLoaded == true) {
+    playlistsLoaded = true;
+    if (songsLoaded == true) {
         runApplication();
     }});
 
@@ -19,8 +19,8 @@ $.get('/api/playlists', function(data) {
 $.get('/api/songs', function(data) {
     var songsArray = JSON.parse(data);
     window.MUSIC_DATA.songs = songsArray.songs;
-    playlistsLoaded = true;
-    if (songsLoaded == true) {
+    songsLoaded = true;
+    if (playlistsLoaded == true) {
         runApplication();
     }
 });
@@ -258,8 +258,11 @@ function addModalOption(index) {
                     window.MUSIC_DATA.playlists[i].songs.push(parseInt(clicked_id));
                     window.MUSIC_DATA.playlists[i].songs.sort(function(a, b){return a-b});
                     var playlist_content = document.getElementById("playlist-content" + i);
+
+                    // update by clean and re-add
                     playlist_content.parentNode.removeChild(playlist_content);
                     addContentOfPlayList(i);
+
                     syncPlaylistsToServer();
                 }
             }
@@ -413,6 +416,7 @@ document.getElementById("btn-addListConfirm").onclick = function() {
     document.getElementById("myModal2").style.display = "none";
     addPlaylist(newPlaylist.id, document.getElementById("playlist-item"), 'block');
     addContentOfPlayList(newPlaylist.id);
+    addModalOption(newPlaylist.id);
     document.getElementsByClassName("menu__item--playlists")[0].children[0].click();
 };
 
