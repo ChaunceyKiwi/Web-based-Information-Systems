@@ -75,6 +75,21 @@ a.list-group-item {
     color: white;
     outline: 0vmin; }
 
+.input-newListName {
+  width: 50%; }
+
+.btn-addListConfirm {
+  color: white;
+  background-color: #936AC7;
+  font-size: 3vmin;
+  width: 30%;
+  font-weight: normal;
+  margin-top: 2vmin; }
+  .btn-addListConfirm:hover, .btn-addListConfirm:focus {
+    background-color: #664a8b;
+    color: white;
+    outline: 0vmin; }
+
 .glyphicon-play {
   position: relative;
   top: 5vmin;

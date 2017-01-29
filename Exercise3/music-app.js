@@ -76,23 +76,54 @@ document.getElementById("search-bar").onkeyup = function() {
             }
         }
     }
-}
+};
 
 document.getElementsByClassName("menu__item--library")[0].children[0].onclick  = function() {
     switchView(event, 'library')
-}
+};
 
 document.getElementsByClassName("menu__item--playlists")[0].children[0].onclick  = function() {
     switchView(event, 'playlists')
-}
+};
 
 document.getElementsByClassName("menu__item--search")[0].children[0].onclick  = function() {
     switchView(event, 'search')
+};
+
+document.getElementById("btn-addlist").onclick = function() {
+    document.getElementById("myModal2").style.display = "block";
+};
+
+document.getElementById("btn-addListConfirm").onclick = function() {
+    var newPlaylist = {};
+    newPlaylist.id = window.MUSIC_DATA.playlists.length;
+    newPlaylist.name = document.getElementById("input-newListName").value;
+    newPlaylist.songs = [];
+    window.MUSIC_DATA.playlists.push(newPlaylist);
+    syncPlaylistsToServer();
+    document.getElementById("myModal2").style.display = "none";
+    addPlaylist(newPlaylist.id);
+    addContentOfPlayList(newPlaylist.id);
+    document.getElementsByClassName("menu__item--playlists")[0].children[0].click();
 }
+
+document.getElementById("close-modal2").onclick = function() {
+    document.getElementById("myModal2").style.display = "none";
+};
 
 ///////////////////////////////////////////////////////////////////////////
 // Function
+function syncPlaylistsToServer() {
+    var obj = {};
+    obj.playlists = window.MUSIC_DATA.playlists;
+    var data = JSON.stringify(obj);
+    $.post('/api/playlists', data, function(result) {
+        console.log(result);
+    });
+}
+
 function switchView(evt, tabName) {
+
     var tabContents = document.getElementsByClassName("tab-content");
     for (var i = 0; i < tabContents.length; i++) {
         tabContents[i].style.display = "none";
@@ -117,6 +148,8 @@ function switchView(evt, tabName) {
             playlist_contents[j].style.display = "none";
         }
     }
+
+    history.replaceState(null, tabName, tabName);
 }
 
 function isElementAlreadyInTheArray(elem, array) {
@@ -210,161 +243,136 @@ function addContentOfPlayList(i) {
     }
 }
 
-///////////////////////////////////////////////////////////////////////////
-// Initialization
+function addSong(i) {
+    var library_item = document.getElementById("library-item");
+    var item = document.createElement("div");
+    item.className = "list-group-item";
 
-var clicked_id = -1;
-var sort_method = 1; // 0 means sorted by artist, 1 means sorted by title
+    var square = document.createElement("div");
+    square.className = "square";
 
-window.MUSIC_DATA = {};
-var songsLoaded = false;
-var playlistsLoaded = false;
+    var song_info = document.createElement("div");
 
-var attemptRunApplication = function() {
-    if (songsLoaded == true && playlistsLoaded == true) {
-        runApplication();
+    var title = document.createElement("div");
+    var title_content = document.createTextNode(window.MUSIC_DATA.songs[i].title);
+    title.className = "song-title";
+
+    var artist = document.createElement("div")
+    var artist_content = document.createTextNode(window.MUSIC_DATA.songs[i].artist);
+    artist.className = "song-artist";
+
+    song_info.className = "song-info";
+
+    var play = document.createElement("span");
+    play.className = "glyphicon glyphicon-play";
+
+    var plus_sign = document.createElement("a");
+    var plus_sign_icon = document.createElement("span");
+    plus_sign.href = "#";
+    plus_sign_icon.id = "song" + window.MUSIC_DATA.songs[i].id;
+    plus_sign_icon.className = "glyphicon glyphicon-plus-sign";
+
+    var modal = document.getElementById("myModal");
+    var span = document.getElementById("close-modal");
+    plus_sign.onclick = function() {
+        modal.style.display = "block";
+        var id = event.target.id.replace("song","");
+        clicked_id = id;
     }
-};
 
-$.post('/api/playlists', function(data) {
-    // Transform the response string into a JavaScript object
-    var playlistArray = JSON.parse(data);
-    window.MUSIC_DATA.playlists = playlistArray.playlists;
-    songsLoaded = true;
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
 
-    attemptRunApplication();
-});
+    window.onclick = function() {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
 
-$.post('/api/songs', function(data) {
-    // Transform the response string into a JavaScript object
-    var songsArray = JSON.parse(data);
-    window.MUSIC_DATA.songs = songsArray.songs;
-    playlistsLoaded = true;
+    plus_sign.appendChild(plus_sign_icon);
+    title.appendChild(title_content);
+    artist.appendChild(artist_content);
+    song_info.appendChild(title);
+    song_info.appendChild(artist);
+    item.appendChild(square);
+    item.appendChild(song_info);
+    item.appendChild(plus_sign);
+    item.appendChild(play);
+    library_item.appendChild(item);
+}
 
-    attemptRunApplication();
-});
+function addPlaylist(i) {
+    var playlist_item = document.getElementById("playlist-item");
+    var item = document.createElement("a");
+    item.className = "list-group-item";
+    item.id = "playlist" + window.MUSIC_DATA.playlists[i].id;
+    item.href = "#";
+    item.onclick = function() {
+        var playlist = document.getElementById("playlist");
+        playlist.style.display = "none";
+
+        var id = event.target.id.replace("playlist","");
+        var playlist_content_id = "playlist-content" + id.toString();
+        var playlist_content = document.getElementById(playlist_content_id);
+        var playlist_contents = document.getElementsByClassName("playlist-content");
+        for (var j = 0; j < playlist_contents.length; j++) {
+            playlist_contents[j].style.display = "none";
+        }
+        playlist_content.style.display = "block";
+    }
+
+    var square = document.createElement("div");
+    square.className = "square";
+
+    var list_name = document.createElement("div");
+    var txt = document.createTextNode(window.MUSIC_DATA.playlists[i].name);
+    list_name.className = "list-name";
+
+    var chevron = document.createElement("span");
+    chevron.className = "glyphicon glyphicon-chevron-right";
+
+    list_name.appendChild(txt);
+    item.appendChild(square);
+    item.appendChild(list_name);
+    item.appendChild(chevron);
+    playlist_item.appendChild(item);
+
+    // Add playlist to modal options
+    var items = document.getElementById("playlist-items-for-modal");
+    var itemForModal = document.createElement("a");
+    var text = document.createTextNode(window.MUSIC_DATA.playlists[i].name);
+    itemForModal.href = "#";
+    itemForModal.onclick = function() {
+        var play_list_name = event.target.innerText;
+        for (var i = 0; i < window.MUSIC_DATA.playlists.length; i++) {
+            if(window.MUSIC_DATA.playlists[i].name === play_list_name) {
+                if (!isElementAlreadyInTheArray(parseInt(clicked_id), window.MUSIC_DATA.playlists[i].songs)) {
+                    window.MUSIC_DATA.playlists[i].songs.push(parseInt(clicked_id));
+                    window.MUSIC_DATA.playlists[i].songs.sort(function(a, b){return a-b});
+
+                    var playlist_content = document.getElementById("playlist-content" + i);
+                    playlist_content.parentNode.removeChild(playlist_content);
+                    addContentOfPlayList(i);
+                    syncPlaylistsToServer();
+                }
+            }
+        }
+        document.getElementById("myModal").style.display = "none";
+    }
+
+    itemForModal.className = "playlist-in-model";
+    itemForModal.appendChild(text);
+    items.appendChild(itemForModal);
+}
 
 function runApplication() {
     for (var i = 0; i < window.MUSIC_DATA.songs.length; i++) {
-        var library_item = document.getElementById("library-item");
-        var item = document.createElement("div");
-        item.className = "list-group-item";
-
-        var square = document.createElement("div");
-        square.className = "square";
-
-        var song_info = document.createElement("div");
-
-        var title = document.createElement("div");
-        var title_content = document.createTextNode(window.MUSIC_DATA.songs[i].title);
-        title.className = "song-title";
-
-        var artist = document.createElement("div")
-        var artist_content = document.createTextNode(window.MUSIC_DATA.songs[i].artist);
-        artist.className = "song-artist";
-
-        song_info.className = "song-info";
-
-        var play = document.createElement("span");
-        play.className = "glyphicon glyphicon-play";
-
-        var plus_sign = document.createElement("a");
-        var plus_sign_icon = document.createElement("span");
-        plus_sign.href = "#";
-        plus_sign_icon.id = "song" + window.MUSIC_DATA.songs[i].id;
-        plus_sign_icon.className = "glyphicon glyphicon-plus-sign";
-
-        var modal = document.getElementById("myModal");
-        var span = document.getElementById("close-modal");
-        plus_sign.onclick = function() {
-            modal.style.display = "block";
-            var id = event.target.id.replace("song","");
-            clicked_id = id;
-        }
-
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        window.onclick = function() {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        plus_sign.appendChild(plus_sign_icon);
-        title.appendChild(title_content);
-        artist.appendChild(artist_content);
-        song_info.appendChild(title);
-        song_info.appendChild(artist);
-        item.appendChild(square);
-        item.appendChild(song_info);
-        item.appendChild(plus_sign);
-        item.appendChild(play);
-        library_item.appendChild(item);
+        addSong(i);
     }
 
     for (var i = 0; i < window.MUSIC_DATA.playlists.length; i++) {
-        var playlist_item = document.getElementById("playlist-item");
-        var item = document.createElement("a");
-        item.className = "list-group-item";
-        item.id = "playlist" + window.MUSIC_DATA.playlists[i].id;
-        item.href = "#";
-        item.onclick = function() {
-            var playlist = document.getElementById("playlist");
-            playlist.style.display = "none";
-
-            var id = event.target.id.replace("playlist","");
-            var playlist_content_id = "playlist-content" + id.toString();
-            var playlist_content = document.getElementById(playlist_content_id);
-            var playlist_contents = document.getElementsByClassName("playlist-content");
-            for (var j = 0; j < playlist_contents.length; j++) {
-                playlist_contents[j].style.display = "none";
-            }
-            playlist_content.style.display = "block";
-        }
-
-        var square = document.createElement("div");
-        square.className = "square";
-
-        var list_name = document.createElement("div");
-        var txt = document.createTextNode(window.MUSIC_DATA.playlists[i].name);
-        list_name.className = "list-name";
-
-        var chevron = document.createElement("span");
-        chevron.className = "glyphicon glyphicon-chevron-right";
-
-        list_name.appendChild(txt);
-        item.appendChild(square);
-        item.appendChild(list_name);
-        item.appendChild(chevron);
-        playlist_item.appendChild(item);
-
-        // Add playlist to modal options
-        var items = document.getElementById("playlist-items-for-modal");
-        var itemForModal = document.createElement("a");
-        var text = document.createTextNode(window.MUSIC_DATA.playlists[i].name);
-        itemForModal.href = "#";
-        itemForModal.onclick = function() {
-            var play_list_name = event.target.innerText;
-            for (var i = 0; i < window.MUSIC_DATA.playlists.length; i++) {
-                if(window.MUSIC_DATA.playlists[i].name === play_list_name) {
-                    if (!isElementAlreadyInTheArray(parseInt(clicked_id), window.MUSIC_DATA.playlists[i].songs)) {
-                        window.MUSIC_DATA.playlists[i].songs.push(parseInt(clicked_id));
-                        window.MUSIC_DATA.playlists[i].songs.sort(function(a, b){return a-b});
-
-                        var playlist_content = document.getElementById("playlist-content" + i);
-                        playlist_content.parentNode.removeChild(playlist_content);
-                        addContentOfPlayList(i);
-                    }
-                }
-            }
-            document.getElementById("myModal").style.display = "none";
-        }
-
-        itemForModal.className = "playlist-in-model";
-        itemForModal.appendChild(text);
-        items.appendChild(itemForModal);
+        addPlaylist(i);
     }
 
     for (var i = 0; i < window.MUSIC_DATA.playlists.length; i++) {
@@ -458,8 +466,45 @@ function runApplication() {
     }
 
     addContentsOfPlayList();
-    document.getElementsByClassName("menu__item--playlists")[0].children[0].click();
     document.getElementById("button-sort-by-artist").click();
+    if (window.location.href.indexOf('/playlist') > -1 ) {
+        document.getElementsByClassName("menu__item--playlists")[0].children[0].click();
+    } else if (window.location.href.indexOf('/library') > -1) {
+        document.getElementsByClassName("menu__item--library")[0].children[0].click();
+    } else if (window.location.href.indexOf('/search') > -1) {
+        document.getElementsByClassName("menu__item--search")[0].children[0].click();
+    }
 }
 
+function attemptRunApplication() {
+    if (songsLoaded == true && playlistsLoaded == true) {
+        runApplication();
+    }
+}
+///////////////////////////////////////////////////////////////////////////
+// Initialization
 
+var clicked_id = -1;
+var sort_method = 1; // 0 means sorted by artist, 1 means sorted by title
+
+window.MUSIC_DATA = {};
+var songsLoaded = false;
+var playlistsLoaded = false;
+
+$.get('/api/playlists', function(data) {
+    // Transform the response string into a JavaScript object
+    var playlistArray = JSON.parse(data);
+    window.MUSIC_DATA.playlists = playlistArray.playlists;
+    songsLoaded = true;
+
+    attemptRunApplication();
+});
+
+$.get('/api/songs', function(data) {
+    // Transform the response string into a JavaScript object
+    var songsArray = JSON.parse(data);
+    window.MUSIC_DATA.songs = songsArray.songs;
+    playlistsLoaded = true;
+
+    attemptRunApplication();
+});

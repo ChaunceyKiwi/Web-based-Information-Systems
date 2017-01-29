@@ -125,6 +125,24 @@ a.list-group-item {
   }
 }
 
+.input-newListName {
+  width: 50%;
+}
+
+.btn-addListConfirm {
+  color: $button-font-color;
+  background-color: $theme-color;
+  font-size: 3vmin;
+  width: 30%;
+  font-weight: normal;
+  margin-top: 2vmin;
+  &:hover, &:focus {
+    background-color: $theme-color-darker;
+    color: $button-font-color;
+    outline: 0vmin;
+  }
+}
+
 .glyphicon-play {
   position: relative;
   top: 5vmin;
