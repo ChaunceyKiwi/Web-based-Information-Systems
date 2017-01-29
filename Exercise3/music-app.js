@@ -30,8 +30,9 @@ $.get('/api/songs', function(data) {
 function syncPlaylistsToServer() {
     var obj = {};
     obj.playlists = window.MUSIC_DATA.playlists;
-    var data = JSON.stringify(obj);
-    $.post('/api/playlists', data, function(result) {
+
+    // contain the playlist data in the POST body
+    $.post('/api/playlists', JSON.stringify(obj), function(result) {
         console.log(result);
     });
 }
@@ -410,7 +411,7 @@ document.getElementById("btn-addListConfirm").onclick = function() {
     window.MUSIC_DATA.playlists.push(newPlaylist);
     syncPlaylistsToServer();
     document.getElementById("myModal2").style.display = "none";
-    addPlaylist(newPlaylist.id);
+    addPlaylist(newPlaylist.id, document.getElementById("playlist-item"), 'block');
     addContentOfPlayList(newPlaylist.id);
     document.getElementsByClassName("menu__item--playlists")[0].children[0].click();
 };

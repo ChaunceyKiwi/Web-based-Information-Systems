@@ -1,7 +1,7 @@
 var http = require('http');
 var fs = require('fs');
 
-var getHttp = function(request, response) {
+var getHtml = function(request, response) {
     response.statusCode = 200;
     response.setHeader('Content-Type', 'text/html');
     response.setHeader('Cache-Control', 'public, max-age=1800');
@@ -28,10 +28,34 @@ var getScript = function(request, response) {
     });
 };
 
+var getRedirect = function(request, response) {
+    response.statusCode = 301;
+    response.setHeader('Location', '/playlists');
+    response.setHeader('Cache-Control', 'public, max-age=1800');
+    response.end('redirecting to google');
+};
+
+var getJQuery = function(request, response) {
+    response.statusCode = 200;
+    response.setHeader('Content-Type', 'application/javascript');
+    response.setHeader('Cache-Control', 'public, max-age=1800');
+    fs.readFile(__dirname + '/jquery-3.1.1.js', function(err, data) {
+        response.end(data);
+    });
+};
+
 var getPlaylists = function(request, response) {
     response.statusCode = 200;
     response.setHeader('Content_type', 'application/json');
     fs.readFile(__dirname + '/playlists.json', function(err, data) {
+        response.end(data);
+    });
+};
+
+var getSongs = function(request, response) {
+    response.statusCode = 200;
+    response.setHeader('Content_type', 'application/json');
+    fs.readFile(__dirname + '/songs.json', function(err, data) {
         response.end(data);
     });
 };
@@ -58,37 +82,12 @@ var updatePlaylists = function(request, response) {
             response.end("Invalid JSON data received");
         }
     });
-}
-
-var getSongs = function(request, response) {
-    response.statusCode = 200;
-    response.setHeader('Content_type', 'application/json');
-    fs.readFile(__dirname + '/songs.json', function(err, data) {
-        response.end(data);
-    });
 };
-
-var getRedirect = function(request, response) {
-    response.statusCode = 301;
-    response.setHeader('Location', '/playlists');
-    response.end('redirecting to google');
-};
-
-var getJQuery = function(request, response) {
-    response.statusCode = 200;
-    response.setHeader('Content-Type', 'application/javascript');
-    fs.readFile(__dirname + '/jquery-3.1.1.js', function(err, data) {
-        response.end(data);
-    });
-}
 
 var server = http.createServer(function(request, response){
-    console.log(request.url);
     if ((request.url === '/playlists' || request.url === '/library' || request.url === '/search')
         && request.method === 'GET') {
-        getHttp(request, response);
-    } else if (request.url === '/playlists' && request.method === 'POST') {
-        postHttp(request, response);
+        getHtml(request, response);
     } else if (request.url === '/playlist.css') {
         getStylesheet(request, response);
     } else if (request.url === '/music-app.js') {
