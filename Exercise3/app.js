@@ -61,6 +61,7 @@ var getSongs = function(request, response) {
 };
 
 var updatePlaylists = function(request, response) {
+    console.log("Received a AJAX POST request.");
     var dataReceived = '';
     request.on('data', function(chunk) {
         dataReceived += chunk;

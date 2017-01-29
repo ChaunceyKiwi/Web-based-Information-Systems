@@ -212,7 +212,7 @@ function addPlaylist(i, target, displayOption) {
 }
 
 function addPlaylistToSearchBar(i) {
-    var search = document.getElementById("search");
+    var search = document.getElementById("search-playlists");
     var item = document.createElement("div");
     item.className = "list-group-item playlists-item";
     item.id = "playlist-search" + window.MUSIC_DATA.playlists[i].id;
@@ -291,7 +291,7 @@ function runApplication() {
         addSong(i, document.getElementById("library-item"), 'block');
 
         // add songs to the content of search tab
-        addSong(i, document.getElementById("search"), 'none');
+        addSong(i, document.getElementById("search-songs"), 'none');
     }
 
     document.getElementById("button-sort-by-artist").click();
@@ -417,6 +417,7 @@ document.getElementById("btn-addListConfirm").onclick = function() {
     addPlaylist(newPlaylist.id, document.getElementById("playlist-item"), 'block');
     addContentOfPlayList(newPlaylist.id);
     addModalOption(newPlaylist.id);
+    addPlaylistToSearchBar(newPlaylist.id);
     document.getElementsByClassName("menu__item--playlists")[0].children[0].click();
 };
 
