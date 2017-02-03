@@ -48,9 +48,9 @@ db.serialize(function () {
                 }
             }
 
-            db.each('SELECT * FROM songs_playlists', function (err, row) {
-                console.log(row);
-            });
+            // db.each('SELECT * FROM songs_playlists', function (err, row) {
+            //     console.log(row);
+            // });
 
             console.log("Data of playlist is loaded");
 

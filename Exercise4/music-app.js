@@ -18,7 +18,7 @@ $.get('/api/playlists', function(data) {
 // Fetch data of songs from server
 $.get('/api/songs', function(data) {
     var songsArray = JSON.parse(data);
-    window.MUSIC_DATA.songs = songsArray.songs;
+    window.MUSIC_DATA.songs = songsArray;
     songsLoaded = true;
     if (playlistsLoaded == true) {
         runApplication();

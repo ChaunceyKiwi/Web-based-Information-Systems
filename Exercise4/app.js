@@ -1,5 +1,7 @@
 var http = require('http');
 var fs = require('fs');
+var sqlite3 = require('sqlite3').verbose();
+var db = new sqlite3.Database('music.db');
 
 var getHtml = function(request, response) {
     response.statusCode = 200;
@@ -55,8 +57,10 @@ var getPlaylists = function(request, response) {
 var getSongs = function(request, response) {
     response.statusCode = 200;
     response.setHeader('Content_type', 'application/json');
-    fs.readFile(__dirname + '/songs.json', function(err, data) {
-        response.end(data);
+    db.all('SELECT * FROM songs', function (err, rows) {
+        console.log(JSON.stringify(rows));
+        // response.send(JSON.stringify(rows));
+        response.end(JSON.stringify(rows));
     });
 };
 
