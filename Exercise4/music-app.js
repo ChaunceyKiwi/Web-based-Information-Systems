@@ -9,7 +9,7 @@ var playlistsLoaded = false;
 // Fetch data of playlists from server
 $.get('/api/playlists', function(data) {
     var playlistArray = JSON.parse(data);
-    window.MUSIC_DATA.playlists = playlistArray.playlists;
+    window.MUSIC_DATA.playlists = playlistArray;
     playlistsLoaded = true;
     if (songsLoaded == true) {
         runApplication();

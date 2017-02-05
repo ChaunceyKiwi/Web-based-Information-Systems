@@ -49,17 +49,36 @@ var getJQuery = function(request, response) {
 var getPlaylists = function(request, response) {
     response.statusCode = 200;
     response.setHeader('Content_type', 'application/json');
-    fs.readFile(__dirname + '/playlists.json', function(err, data) {
-        response.end(data);
+
+    db.all('SELECT * FROM playlists', function(err, playlists) {
+        db.all('SELECT * FROM songs_playlists', function(err, songs_playlists) {
+            for (var i = 0; i < songs_playlists.length; i++) {
+                if (playlists[songs_playlists[i].playlist_id].songs == undefined) {
+                    playlists[songs_playlists[i].playlist_id].songs = [songs_playlists[i].song_id];
+                } else {
+                    playlists[songs_playlists[i].playlist_id].songs.push(songs_playlists[i].song_id);
+                }
+            }
+            response.end(JSON.stringify(playlists));
+        });
     });
+
+
+
+
+    // console.log(playlists);
+    // response.end(playlists);
+    // console.log(playlists);
+    // response.end(JSON.stringify(playlists));
+    // db.all('SELECT * FROM songs_playlists', function(err, rows) {
+    //     response.end(JSON.stringify(rows));
+    // });
 };
 
 var getSongs = function(request, response) {
     response.statusCode = 200;
     response.setHeader('Content_type', 'application/json');
     db.all('SELECT * FROM songs', function (err, rows) {
-        console.log(JSON.stringify(rows));
-        // response.send(JSON.stringify(rows));
         response.end(JSON.stringify(rows));
     });
 };
