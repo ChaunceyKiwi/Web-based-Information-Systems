@@ -28,7 +28,11 @@ body {
 .menu-name {
   margin-top: 1.5vmin;
   font-size: 3.5vmin;
-  color: darkgray; }
+  color: darkgray;
+  width: 33.33vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
 
 .glyphicon-music, .glyphicon-th-list, .glyphicon-search {
   font-size: 5vmin; }

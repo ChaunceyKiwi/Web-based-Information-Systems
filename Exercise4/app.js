@@ -62,17 +62,6 @@ var getPlaylists = function(request, response) {
             response.end(JSON.stringify(playlists));
         });
     });
-
-
-
-
-    // console.log(playlists);
-    // response.end(playlists);
-    // console.log(playlists);
-    // response.end(JSON.stringify(playlists));
-    // db.all('SELECT * FROM songs_playlists', function(err, rows) {
-    //     response.end(JSON.stringify(rows));
-    // });
 };
 
 var getSongs = function(request, response) {
