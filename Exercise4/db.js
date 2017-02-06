@@ -17,15 +17,12 @@ db.serialize(function () {
         fs.readFile(__dirname + '/songs.json', function(err, data) {
             var music_data = JSON.parse(data);
             var songs = music_data['songs'];
+            var stmt = db.prepare("INSERT INTO songs (id, album, title, artist, duration) VALUES(?, ?, ?, ?, ?)");
             for (var i = 0; i < songs.length; i++) {
                 var song = songs[i];
-                db.run(`INSERT INTO songs (id, album, title, artist, duration)
-                VALUES (${song.id}, "${song.album}", "${song.title}", "${song.artist}", "${song.duration}")`);
+                stmt.run(song.id, song.album, song.title, song.artist, song.duration);
             }
-
-            // db.each('SELECT * FROM songs', function (err, row) {
-            //     console.log(row);
-            // });
+            stmt.finalize();
 
             console.log("Data of songs is loaded");
 
@@ -47,10 +44,6 @@ db.serialize(function () {
                         VALUES (null, ${playlist.id}, ${playlist.songs[j]})`);
                 }
             }
-
-            // db.each('SELECT * FROM songs_playlists', function (err, row) {
-            //     console.log(row);
-            // });
 
             console.log("Data of playlist is loaded");
 
