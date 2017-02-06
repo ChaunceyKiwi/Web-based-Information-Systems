@@ -7,10 +7,10 @@ var songsLoaded = false, playlistsLoaded = false;
 
 db.serialize(function () {
     if(!exists) {
-        db.run('CREATE TABLE songs ("id" INTEGER PRIMARY KEY, "album" VARCHAR(255), ' +
+        db.run('CREATE TABLE songs ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "album" VARCHAR(255), ' +
             '"title" VARCHAR(255), "artist" VARCHAR(255), "duration" INTEGER)');
-        db.run('CREATE TABLE playlists ("id" INTEGER PRIMARY KEY, "name" VARCHAR(255))');
-        db.run('CREATE TABLE songs_playlists ("id" INTEGER PRIMARY KEY, "playlist_id" INTEGER, "song_id" INTEGER, ' +
+        db.run('CREATE TABLE playlists ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "name" VARCHAR(255))');
+        db.run('CREATE TABLE songs_playlists ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "playlist_id" INTEGER, "song_id" INTEGER, ' +
             'FOREIGN KEY(playlist_id) REFERENCES playlists(id), FOREIGN KEY(song_id) REFERENCES songs(id))');
 
         // insertion of data of songs
