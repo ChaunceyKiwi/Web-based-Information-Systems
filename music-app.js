@@ -13,7 +13,8 @@ $.get('/api/playlists', function(data) {
     playlistsLoaded = true;
     if (songsLoaded == true) {
         runApplication();
-    }});
+    }
+});
 
 // Fetch data of songs from server
 $.get('/api/songs', function(data) {
@@ -327,7 +328,7 @@ document.getElementById("button-sort-by-artist").onclick = function() {
         artistA = artistA.replace("The ","").toLowerCase();
         artistB = artistB.replace("The ","").toLowerCase();
         return artistA.localeCompare(artistB);
-    }
+    };
 
     var list = document.getElementById("library-item").children;
     var listArray = Array.prototype.slice.call(list, 0);
@@ -352,7 +353,7 @@ document.getElementById("button-sort-by-title").onclick = function() {
         artistA = artistA.replace("The ","").toLowerCase();
         artistB = artistB.replace("The ","").toLowerCase();
         return artistA.localeCompare(artistB);
-    }
+    };
 
     var list = document.getElementById("library-item").children;
     var listArray = Array.prototype.slice.call(list, 0);
