@@ -3,3 +3,4 @@ node_modules
 .idea
 music.db
 playlist.css.map
+.sass-cache
