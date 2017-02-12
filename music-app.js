@@ -362,7 +362,7 @@ document.getElementById("search-bar").onkeyup = function() {
         textParent = playlists_item[i].children[1];
         if (filter == "") {
             textParent.parentNode.style.display = "none";
-        } else if (regex.test(textParent) == true) {
+        } else if (regex.test(textParent.innerText) == true) {
             textParent.parentNode.style.display = "block";
         } else {
             textParent.parentNode.style.display = "none";
