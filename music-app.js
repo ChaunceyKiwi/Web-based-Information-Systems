@@ -66,6 +66,7 @@ function addContentOfPlayList(i) {
 
     var playlist_content_heading = document.createElement("div");
     playlist_content_heading.className = "playlist-content-heading";
+
     var heading_name = document.createTextNode(window.MUSIC_DATA.playlists[i].name);
 
     playlists.appendChild(playlist_content);
@@ -202,7 +203,7 @@ function addPlaylistToSearchBar(i) {
         var id = event.target.id.replace("playlist-search","");
         document.getElementsByClassName("menu__item--playlists")[0].children[0].click();
         document.getElementById("playlist"+id).click();
-    }
+    };
 
     var square = document.createElement("div");
     square.className = "square";
@@ -244,13 +245,12 @@ function addModalOption(index) {
                     // update by clean and re-add
                     playlist_content.parentNode.removeChild(playlist_content);
                     addContentOfPlayList(i);
-
                     syncPlaylistsToServer();
                 }
             }
         }
         document.getElementById("myModal").style.display = "none";
-    }
+    };
 }
 
 function isElementAlreadyInTheArray(elem, array) {
@@ -355,7 +355,7 @@ document.getElementById("search-bar").onkeyup = function() {
     var search = document.getElementById("search");
     var playlists_item = search.getElementsByClassName("playlists-item");
     var songs_item = search.getElementsByClassName("songs-item");
-    var regex = new RegExp(filter, "i");
+    var regex = new RegExp(this.value.toUpperCase(), "i");
     var i, textParent;
 
     for (i = 0; i < playlists_item.length; i++) {
