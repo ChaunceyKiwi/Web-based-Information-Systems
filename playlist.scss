@@ -24,21 +24,20 @@ body {
 
 .menu {
   border-bottom: thin solid $border-color;
-  margin-bottom: 0vmin;
+  margin-bottom: 0;
   height: 17vmin;
-  min-height: 0vmin;
+  min-height: 0;
 
   li {
     display: table-cell;
     width: 1%;
 
-    a {
+    div {
       height: 12vmin;
       color: black;
-      margin-left: auto;
-      margin-right: auto;
+      text-align: center;
       margin-top: 2vmin;
-      padding: 0vmin;
+      padding: 0;
       display :block;
       &:hover {
         background-color: $menu-color;
@@ -48,8 +47,8 @@ body {
       }
     }
 
-    &.active > a, &.active > a:focus, &.active > a:hover,
-    &.active > a:active,  &.active > a > span.menu-name{
+    &.active > div > span.glyphicon,
+    &.active > div > span.menu-name{
       color: $icon-active-color;
       background-color: transparent;
     }
@@ -77,9 +76,9 @@ body {
   position: relative;
   height: 16vmin;
   background: $background-color;
-  padding: 0vmin;
-  margin: 0vmin;
-  border: 0vmin;
+  padding: 0;
+  margin: 0;
+  border: 0;
   color: $theme-color;
   border-bottom: thin solid $border-color;
 }
@@ -89,9 +88,9 @@ body {
   height: 16vmin;
   text-align: center;
   background: $background-color;
-  padding: 0vmin;
-  margin: 0vmin;
-  border: 0vmin;
+  padding: 0;
+  margin: 0;
+  border: 0;
   color: $theme-color;
   border-bottom: thin solid $border-color;
 
@@ -120,11 +119,11 @@ body {
   font-weight: normal;
   padding: 1vmin;
   margin-bottom: 1vmin;
-  outline: 0vmin;
+  outline: 0;
   &:hover, &:focus {
     background-color: $theme-color-darker;
     color: $button-font-color;
-    outline: 0vmin;
+    outline: 0;
   }
 }
 
@@ -142,7 +141,7 @@ body {
   &:hover, &:focus {
     background-color: $theme-color-darker;
     color: $button-font-color;
-    outline: 0vmin;
+    outline: 0;
   }
 }
 
@@ -227,7 +226,9 @@ div.song-artist {
   height: 8vmin;
 }
 
-// Style for content of tab "Library" only
+//////////////////////////////////////
+// Style for content of tab "Library"
+
 .tab-content {
   margin-top: 20vmin;
   display: none;
@@ -248,39 +249,43 @@ div.song-artist {
   margin-bottom: 1vmin;
   &:hover, &:active {
     @extend .button-sort;
-    outline: 0vmin;
+    outline: 0;
   }
   &:focus{
     @extend .button-sort;
     box-shadow:inset 0.4vmin 0.4vmin 0.4vmin 0.1vmin $button-shadow;
-    outline: 0vmin;
+    outline: 0;
   }
 }
 
 .button-sort-selected {
   @extend .button-sort;
   box-shadow:inset 0.4vmin 0.4vmin 0.4vmin 0.1vmin $button-shadow;
-  outline: 0vmin;
+  outline: 0;
 }
 
-/* Style for the Search Tab */
+//////////////////////////////////////
+// Style for the Search Tab
+
 .search-bar {
   height: 8vmin;
   font-size: 4vmin;
   background-color: $search-bar-background-color;
-  outline: 0vmin;
+  outline: 0;
   color: dimgray;
   padding-left: 4vmin;
 }
 
-/* Style for the modal */
+//////////////////////////////////////
+// Style for the modal
+
 .modal {
-  display : none;
-  position : fixed;
+  display: none;
+  position: fixed;
   z-index : 1;
   padding-top:  40vmin;
-  left: 0vmin;
-  top: 0vmin;
+  left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
   background-color: $modal-background;
@@ -297,7 +302,7 @@ div.song-artist {
 }
 
 .modal-header{
-  padding: 0vmin;
+  padding: 0;
 }
 
 .tipText {

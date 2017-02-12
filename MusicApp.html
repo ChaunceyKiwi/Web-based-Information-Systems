@@ -13,24 +13,24 @@
       <nav class="navbar navbar-default navbar-fixed-top menu">
         <ul class="nav nav-pills nav-justified menu__item">
           <li class="menu__item--library">
-            <a>
+            <div>
               <span class="glyphicon glyphicon-music"></span>
               <span class="menu-name">Library</span>
-            </a>
+            </div>
           </li>
 
           <li class="menu__item--playlists">
-            <a>
+            <div>
               <span class="glyphicon glyphicon-th-list"></span>
               <span class="menu-name">Playlists</span>
-            </a>
+            </div>
           </li>
 
           <li class="menu__item--search">
-            <a>
+            <div>
               <span class="glyphicon glyphicon-search"></span>
               <span class="menu-name">Search</span>
-            </a>
+            </div>
           </li>
         </ul>
       </nav>
@@ -52,13 +52,11 @@
 
       <!-- Content of the second tab "Playlists"-->
       <div class="Playlists tab-content" id="playlists">
-        <div class="row playlist" id="playlist">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="row playlist col-xs-12 col-sm-12 col-md-12 col-lg-12" id="playlist">
             <button class="btn btn-addlist" id="btn-addlist" type="button">
               <span class="glyphicon glyphicon-plus"></span> Playlist
             </button>
             <div class="list-group playlist-item" id="playlist-item"></div>
-          </div>
         </div>
       </div>
 

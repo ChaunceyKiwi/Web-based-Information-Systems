@@ -1,25 +1,24 @@
 ///////////////////////////////////////////////////////////////////////////
 // Initialization
+
 window.MUSIC_DATA = {};
 var clicked_id = -1;
 var sort_method = 1; // 0 means sorted by artist, 1 means sorted by title
 var songsLoaded = false;
 var playlistsLoaded = false;
 
-// Fetch data of playlists from server
+/* Fetch data of playlists from server */
 $.get('/api/playlists', function(data) {
-    var playlistArray = JSON.parse(data);
-    window.MUSIC_DATA.playlists = playlistArray;
+    window.MUSIC_DATA.playlists = JSON.parse(data);
     playlistsLoaded = true;
     if (songsLoaded == true) {
         runApplication();
     }
 });
 
-// Fetch data of songs from server
+/* Fetch data of songs from server */
 $.get('/api/songs', function(data) {
-    var songsArray = JSON.parse(data);
-    window.MUSIC_DATA.songs = songsArray;
+    window.MUSIC_DATA.songs = JSON.parse(data);
     songsLoaded = true;
     if (playlistsLoaded == true) {
         runApplication();
@@ -28,53 +27,32 @@ $.get('/api/songs', function(data) {
 
 ///////////////////////////////////////////////////////////////////////////
 // Function
+
+// sync current playlists to server
 function syncPlaylistsToServer() {
     var obj = {};
     obj.playlists = window.MUSIC_DATA.playlists;
-
-    // contain the playlist data in the POST body
     $.post('/api/playlists', JSON.stringify(obj), function(result) {
         console.log(result);
     });
 }
 
+// Hide all content, then show the content of tab clicked
 function switchView(evt, tabName) {
-    // Hide all content, then show the content of tab clicked
-    var tabContents = document.getElementsByClassName("tab-content");
-    for (var i = 0; i < tabContents.length; i++) {
-        tabContents[i].style.display = "none";
-    }
-
-    var menu_item = document.getElementsByClassName("menu__item");
-    var menu_item_modifier = menu_item[0].children;
-    for (var i = 0; i < menu_item_modifier.length; i++) {
-        menu_item_modifier[i].className = menu_item_modifier[i].className.replace("active", "");
-    }
-
-    document.getElementById(tabName).style.display = "block";
+    $(".tab-content").hide();
+    $(".menu__item").children().removeClass("active");
     evt.currentTarget.parentNode.className += " active";
+    $("#"+tabName).show();
 
-    // If click tab 'playlists', go to intial page
+    // If click tab 'playlists', go to intial page of playlist
     if(tabName === "playlists") {
-        document.getElementById("playlist").style.display = "block";
-        var playlist_contents = document.getElementsByClassName("playlist-content");
-        for (var j = 0; j < playlist_contents.length; j++) {
-            playlist_contents[j].style.display = "none";
-        }
+        $("#playlist").show();
+        $(".playlist-content").hide();
     }
-
     history.replaceState(null, tabName, tabName);
 }
 
-function isElementAlreadyInTheArray(elem, array) {
-    for (var i = 0; i < array.length; i++) {
-        if (array[i] === elem) {
-            return true;
-        }
-    }
-    return false;
-}
-
+// add content of playlist to playlists tab
 function addContentOfPlayList(i) {
     // Add the title of playlists
     var playlists = document.getElementById("playlists");
@@ -99,7 +77,7 @@ function addContentOfPlayList(i) {
     for (var j = 0; j < window.MUSIC_DATA.playlists[i].songs.length; j++) {
         var song_id = window.MUSIC_DATA.playlists[i].songs[j];
         var list_group_item = document.createElement("div");
-        list_group_item.className = "list-group-item songs-item";
+        list_group_item.className = "songs-item";
         var square = document.createElement("div");
         square.className = "square";
         var song_info = document.createElement("div");
@@ -136,7 +114,7 @@ function addContentOfPlayList(i) {
 
 function addSong(i, target, displayOption) {
     var item = document.createElement("div");
-    item.className = "list-group-item songs-item";
+    item.className = "songs-item";
     item.style.display = displayOption;
 
     var square = document.createElement("div");
@@ -177,9 +155,10 @@ function addSong(i, target, displayOption) {
     target.appendChild(item);
 }
 
+// add playlists to the content of playlists tab
 function addPlaylist(i, target, displayOption) {
     var item = document.createElement("div");
-    item.className = "list-group-item playlists-item";
+    item.className = "playlists-item";
     item.id = "playlist" + window.MUSIC_DATA.playlists[i].id;
     item.style.display = displayOption;
     item.onclick = function() {
@@ -212,10 +191,11 @@ function addPlaylist(i, target, displayOption) {
     target.appendChild(item);
 }
 
+// add playlists to the content of search tab
 function addPlaylistToSearchBar(i) {
     var search = document.getElementById("search-playlists");
     var item = document.createElement("div");
-    item.className = "list-group-item playlists-item";
+    item.className = "playlists-item";
     item.id = "playlist-search" + window.MUSIC_DATA.playlists[i].id;
     item.style.display = "none";
     item.onclick = function() {
@@ -241,6 +221,7 @@ function addPlaylistToSearchBar(i) {
     search.appendChild(item);
 }
 
+// modal initialization
 function addModalOption(index) {
     // Add modal options
     var items = document.getElementById("playlist-items-for-modal");
@@ -272,22 +253,26 @@ function addModalOption(index) {
     }
 }
 
+function isElementAlreadyInTheArray(elem, array) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i] === elem) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function runApplication() {
-    for (var i = 0; i < window.MUSIC_DATA.playlists.length; i++) {
-        // add playlists to the content of playlists tab
+    var i;
+
+    for (i = 0; i < window.MUSIC_DATA.playlists.length; i++) {
         addPlaylist(i, document.getElementById("playlist-item"), 'block');
-
-        // modal initialization
         addModalOption(i);
-
-        // add playlists to the content of search tab
         addPlaylistToSearchBar(i);
-
-        // add content of playlist to playlists tab
         addContentOfPlayList(i);
     }
 
-    for (var i = 0; i < window.MUSIC_DATA.songs.length; i++) {
+    for (i = 0; i < window.MUSIC_DATA.songs.length; i++) {
         // add songs to the content of library tab
         addSong(i, document.getElementById("library-item"), 'block');
 
@@ -322,17 +307,18 @@ document.getElementById("button-sort-by-artist").onclick = function() {
             button_sort_by_title.className.replace(" button-sort-selected", "");
     }
 
-    var sort_by_artist = function(a, b) {
+    var list = document.getElementById("library-item").children;
+    var listArray = Array.prototype.slice.call(list, 0);
+
+    // sort by artist
+    listArray.sort(function(a, b) {
         var artistA = a.children[1].children[1].innerText;
         var artistB = b.children[1].children[1].innerText;
         artistA = artistA.replace("The ","").toLowerCase();
         artistB = artistB.replace("The ","").toLowerCase();
         return artistA.localeCompare(artistB);
-    };
+    });
 
-    var list = document.getElementById("library-item").children;
-    var listArray = Array.prototype.slice.call(list, 0);
-    listArray.sort(sort_by_artist);
     for (var i = 0; i < list.length; i++) {
         listArray[i].parentNode.appendChild(listArray[i]);
     }
@@ -347,17 +333,18 @@ document.getElementById("button-sort-by-title").onclick = function() {
             button_sort_by_artist.className.replace(" button-sort-selected", "");
     }
 
-    var sort_by_artist = function(a, b) {
+    var list = document.getElementById("library-item").children;
+    var listArray = Array.prototype.slice.call(list, 0);
+
+    // sort by title
+    listArray.sort(function(a, b) {
         var artistA = a.children[1].children[0].innerText;
         var artistB = b.children[1].children[0].innerText;
         artistA = artistA.replace("The ","").toLowerCase();
         artistB = artistB.replace("The ","").toLowerCase();
         return artistA.localeCompare(artistB);
-    };
+    });
 
-    var list = document.getElementById("library-item").children;
-    var listArray = Array.prototype.slice.call(list, 0);
-    listArray.sort(sort_by_artist);
     for (var i = 0; i < list.length; i++) {
         listArray[i].parentNode.appendChild(listArray[i]);
     }
@@ -366,27 +353,31 @@ document.getElementById("button-sort-by-title").onclick = function() {
 document.getElementById("search-bar").onkeyup = function() {
     var filter = this.value.toUpperCase();
     var search = document.getElementById("search");
-    var list_group_item = search.getElementsByClassName("list-group-item");
-    for (var i = 0; i < list_group_item.length; i++) {
-        var textParent = list_group_item[i].children[1];
+    var playlists_item = search.getElementsByClassName("playlists-item");
+    var songs_item = search.getElementsByClassName("songs-item");
+    var regex = new RegExp(filter, "i");
+    var i, textParent;
+
+    for (i = 0; i < playlists_item.length; i++) {
+        textParent = playlists_item[i].children[1];
         if (filter == "") {
             textParent.parentNode.style.display = "none";
+        } else if (regex.test(textParent) == true) {
+            textParent.parentNode.style.display = "block";
         } else {
-            if (textParent.children.length === 0) {
-                if (textParent.innerText.toUpperCase().indexOf(filter) > -1) {
-                    textParent.parentNode.style.display = "block";
-                } else {
-                    textParent.parentNode.style.display = "none";
-                }
-            } else if (textParent.children.length === 2) {
-                var search_title = textParent.children[0].innerText.toUpperCase().indexOf(filter);
-                var search_artist = textParent.children[1].innerText.toUpperCase().indexOf(filter);
-                if (search_title > -1 | search_artist > -1) {
-                    textParent.parentNode.style.display = "block";
-                } else {
-                    textParent.parentNode.style.display = "none";
-                }
-            }
+            textParent.parentNode.style.display = "none";
+        }
+    }
+
+    for (i = 0; i < songs_item.length; i++) {
+        textParent = songs_item[i].children[1];
+        if (filter == "") {
+            textParent.parentNode.style.display = "none";
+        }else if (regex.test(textParent.children[0].innerText) == true
+            || regex.test(textParent.children[1].innerText) == true) {
+            textParent.parentNode.style.display = "block";
+        } else {
+            textParent.parentNode.style.display = "none";
         }
     }
 };

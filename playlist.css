@@ -3,25 +3,24 @@ body {
 
 .menu {
   border-bottom: thin solid #aaaaaa;
-  margin-bottom: 0vmin;
+  margin-bottom: 0;
   height: 17vmin;
-  min-height: 0vmin; }
+  min-height: 0; }
   .menu li {
     display: table-cell;
     width: 1%; }
-    .menu li a {
+    .menu li div {
       height: 12vmin;
       color: black;
-      margin-left: auto;
-      margin-right: auto;
+      text-align: center;
       margin-top: 2vmin;
-      padding: 0vmin;
+      padding: 0;
       display: block; }
-      .menu li a:hover {
+      .menu li div:hover {
         background-color: #f8f8f8; }
-      .menu li a span {
+      .menu li div span {
         display: block; }
-    .menu li.active > a, .menu li.active > a:focus, .menu li.active > a:hover, .menu li.active > a:active, .menu li.active > a > span.menu-name {
+    .menu li.active > div > span.glyphicon, .menu li.active > div > span.menu-name {
       color: #820082;
       background-color: transparent; }
 
@@ -41,9 +40,9 @@ body {
   position: relative;
   height: 16vmin;
   background: #E8E0F4;
-  padding: 0vmin;
-  margin: 0vmin;
-  border: 0vmin;
+  padding: 0;
+  margin: 0;
+  border: 0;
   color: #936AC7;
   border-bottom: thin solid #aaaaaa; }
 
@@ -52,9 +51,9 @@ body {
   height: 16vmin;
   text-align: center;
   background: #E8E0F4;
-  padding: 0vmin;
-  margin: 0vmin;
-  border: 0vmin;
+  padding: 0;
+  margin: 0;
+  border: 0;
   color: #936AC7;
   border-bottom: thin solid #aaaaaa; }
   .playlists-item:hover {
@@ -73,11 +72,11 @@ body {
   font-weight: normal;
   padding: 1vmin;
   margin-bottom: 1vmin;
-  outline: 0vmin; }
+  outline: 0; }
   .btn-addlist:hover, .btn-addlist:focus {
     background-color: #664a8b;
     color: white;
-    outline: 0vmin; }
+    outline: 0; }
 
 .input-newListName {
   width: 50%; }
@@ -92,7 +91,7 @@ body {
   .btn-addListConfirm:hover, .btn-addListConfirm:focus {
     background-color: #664a8b;
     color: white;
-    outline: 0vmin; }
+    outline: 0; }
 
 .glyphicon-play {
   position: relative;
@@ -184,32 +183,30 @@ div.song-artist {
   padding: 1vmin;
   margin-bottom: 1vmin; }
   .button-sort:hover, .button-sort-selected:hover, .button-sort:active, .button-sort-selected:active {
-    outline: 0vmin; }
+    outline: 0; }
   .button-sort:focus, .button-sort-selected:focus {
     box-shadow: inset 0.4vmin 0.4vmin 0.4vmin 0.1vmin rgba(0, 0, 0, 0.4);
-    outline: 0vmin; }
+    outline: 0; }
 
 .button-sort-selected {
   box-shadow: inset 0.4vmin 0.4vmin 0.4vmin 0.1vmin rgba(0, 0, 0, 0.4);
-  outline: 0vmin; }
+  outline: 0; }
 
-/* Style for the Search Tab */
 .search-bar {
   height: 8vmin;
   font-size: 4vmin;
   background-color: #D8D8D8;
-  outline: 0vmin;
+  outline: 0;
   color: dimgray;
   padding-left: 4vmin; }
 
-/* Style for the modal */
 .modal {
   display: none;
   position: fixed;
   z-index: 1;
   padding-top: 40vmin;
-  left: 0vmin;
-  top: 0vmin;
+  left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
@@ -224,7 +221,7 @@ div.song-artist {
   height: 40vmin; }
 
 .modal-header {
-  padding: 0vmin; }
+  padding: 0; }
 
 .tipText {
   position: relative;
