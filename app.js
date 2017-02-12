@@ -1,8 +1,15 @@
 var express = require('express');
-var app = express();
 var fs = require('fs');
 var sqlite3 = require('sqlite3').verbose();
+var bodyParser = require('body-parser');
 var db = new sqlite3.Database('music.db');
+var models = require('./models');
+
+var app = express();
+app.use(bodyParser.json());       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({   // to support URL-encoded bodies
+    extended: true
+}));
 
 var getHtml = function(request, response) {
     response.statusCode = 200;
@@ -52,29 +59,42 @@ app.get('/jquery-3.1.1.js', function(request, response) {
 });
 
 app.get('/api/playlists', function(request, response) {
-    response.statusCode = 200;
-    response.setHeader('Content_type', 'application/json');
-
-    db.all('SELECT * FROM playlists', function(err, playlists) {
-        db.all('SELECT * FROM songs_playlists', function(err, songs_playlists) {
-            for (var i = 0; i < songs_playlists.length; i++) {
-                if (playlists[songs_playlists[i].playlist_id].songs == undefined) {
-                    playlists[songs_playlists[i].playlist_id].songs = [songs_playlists[i].song_id];
-                } else {
-                    playlists[songs_playlists[i].playlist_id].songs.push(songs_playlists[i].song_id);
-                }
+    models.Playlist.findAll({
+        attributes: ['id', 'name'],
+        include: [{
+            model: models.Song,
+            attributes: ['id'],
+            through: {
+                attributes: []
             }
-            response.end(JSON.stringify(playlists));
-        });
+        }]
+    }).then(function(playlists) {
+        response.statusCode = 200;
+        response.setHeader('Content_type', 'application/json');
+
+        response.end(JSON.stringify(playlists.map(function(playlist) {
+            var i;
+            var jsonObj =  playlist.get({plain: true});
+            for (i = 0; i < jsonObj.Songs.length; i++) {
+                jsonObj.Songs[i] = jsonObj.Songs[i].id;
+            }
+            jsonObj["songs"] =  jsonObj["Songs"];
+            delete jsonObj["Songs"];
+            return jsonObj;
+        })));
     });
 });
 
 app.get('/api/songs', function(request, response) {
-    response.statusCode = 200;
-    response.setHeader('Content_type', 'application/json');
-    db.all('SELECT * FROM songs', function (err, rows) {
-        response.end(JSON.stringify(rows));
-    });
+    models.Song.findAll({
+            attributes: ['album', 'duration', 'title', 'id', 'artist']
+        }).then(function(songs) {
+            response.statusCode = 200;
+            response.setHeader('Content_type', 'application/json');
+            response.end(JSON.stringify(songs.map(function(song){
+                return song.get({plain: true});
+            })));
+        });
 });
 
 app.listen(3000, function () {
