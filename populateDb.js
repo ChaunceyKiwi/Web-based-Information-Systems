@@ -9,7 +9,6 @@ models.sequelize.sync({force: true}).then(function() {
         songsObj = songs;
 
         songs.forEach(function(song) {
-            // console.log(song);
             models.Song.create({
                 id: song.id.toString(),
                 title: song.title,
