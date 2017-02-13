@@ -9,7 +9,7 @@ var playlistsLoaded = false;
 
 /* Fetch data of playlists from server */
 $.get('/api/playlists', function(data) {
-    window.MUSIC_DATA.playlists = JSON.parse(data);
+    window.MUSIC_DATA.playlists = JSON.parse(data).playlists;
     playlistsLoaded = true;
     if (songsLoaded == true) {
         runApplication();
@@ -18,7 +18,7 @@ $.get('/api/playlists', function(data) {
 
 /* Fetch data of songs from server */
 $.get('/api/songs', function(data) {
-    window.MUSIC_DATA.songs = JSON.parse(data);
+    window.MUSIC_DATA.songs = JSON.parse(data).songs;
     songsLoaded = true;
     if (playlistsLoaded == true) {
         runApplication();

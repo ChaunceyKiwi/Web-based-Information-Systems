@@ -59,6 +59,8 @@ app.get('/jquery-3.1.1.js', function(request, response) {
 });
 
 app.get('/api/playlists', function(request, response) {
+    var data = {};
+
     models.Playlist.findAll({
         attributes: ['id', 'name'],
         include: [{
@@ -72,8 +74,7 @@ app.get('/api/playlists', function(request, response) {
         response.statusCode = 200;
         response.setHeader('Content_type', 'application/json');
 
-        response.end(JSON.stringify(playlists.map(function(playlist) {
-            var i;
+        data["playlists"] = playlists.map(function(playlist) {
             var jsonObj =  playlist.get({plain: true});
             for (i = 0; i < jsonObj.Songs.length; i++) {
                 jsonObj.Songs[i] = jsonObj.Songs[i].id;
@@ -81,19 +82,25 @@ app.get('/api/playlists', function(request, response) {
             jsonObj["songs"] =  jsonObj["Songs"];
             delete jsonObj["Songs"];
             return jsonObj;
-        })));
+        });
+
+        response.end(JSON.stringify(data));
     });
 });
 
 app.get('/api/songs', function(request, response) {
+    var data = {}
     models.Song.findAll({
             attributes: ['album', 'duration', 'title', 'id', 'artist']
         }).then(function(songs) {
             response.statusCode = 200;
             response.setHeader('Content_type', 'application/json');
-            response.end(JSON.stringify(songs.map(function(song){
+            data["songs"] = songs.map(function(song){
                 return song.get({plain: true});
-            })));
+            });
+
+            // console.log(data.songs.length);
+            response.end(JSON.stringify(data));
         });
 });
 
