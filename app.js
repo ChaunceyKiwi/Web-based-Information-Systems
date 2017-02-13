@@ -1,8 +1,6 @@
 var express = require('express');
 var fs = require('fs');
-var sqlite3 = require('sqlite3').verbose();
 var bodyParser = require('body-parser');
-var db = new sqlite3.Database('music.db');
 var models = require('./models');
 
 var app = express();
