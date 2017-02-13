@@ -49,15 +49,6 @@ app.get('/', function(request, response) {
     response.end('Redirecting');
 });
 
-app.get('/jquery-3.1.1.js', function(request, response) {
-    response.statusCode = 200;
-    response.setHeader('Content-Type', 'application/javascript');
-    response.setHeader('Cache-Control', 'public, max-age=1800');
-    fs.readFile(__dirname + '/jquery-3.1.1.js', function(err, data) {
-        response.end(data);
-    });
-});
-
 app.get('/api/playlists', function(request, response) {
     var data = {};
 
@@ -89,7 +80,7 @@ app.get('/api/playlists', function(request, response) {
 });
 
 app.get('/api/songs', function(request, response) {
-    var data = {}
+    var data = {};
     models.Song.findAll({
             attributes: ['album', 'duration', 'title', 'id', 'artist']
         }).then(function(songs) {
