@@ -10,6 +10,7 @@ var playlistsLoaded = false;
 /* Fetch data of playlists from server */
 $.get('/api/playlists', function(data) {
     window.MUSIC_DATA.playlists = JSON.parse(data).playlists;
+    //console.log("Length of playlists:" + window.MUSIC_DATA.playlists.length);
     playlistsLoaded = true;
     if (songsLoaded == true) {
         runApplication();
@@ -19,6 +20,7 @@ $.get('/api/playlists', function(data) {
 /* Fetch data of songs from server */
 $.get('/api/songs', function(data) {
     window.MUSIC_DATA.songs = JSON.parse(data).songs;
+    //console.log("Length of songs:" + window.MUSIC_DATA.songs.length);
     songsLoaded = true;
     if (playlistsLoaded == true) {
         runApplication();

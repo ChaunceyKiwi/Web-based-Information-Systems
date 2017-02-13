@@ -73,6 +73,7 @@ app.get('/api/playlists', function(request, response) {
             return jsonObj;
         });
 
+        //console.log("Length of songs:" + data.playlists.length);
         response.end(JSON.stringify(data));
     });
 });
@@ -88,8 +89,8 @@ app.get('/api/songs', function(request, response) {
                 return song.get({plain: true});
             });
 
-            // console.log(data.songs.length);
-            response.end(JSON.stringify(data));
+        //console.log("Length of songs:" + data.songs.length);
+        response.end(JSON.stringify(data));
         });
 });
 

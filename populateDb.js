@@ -26,7 +26,6 @@ models.sequelize.sync({force: true}).then(function() {
         var playlists = music_data['playlists'];
 
         playlists.forEach(function(playlist) {
-            // console.log(playlist);
             models.Playlist.create({
                 id: playlist.id.toString(),
                 name: playlist.name
