@@ -32,7 +32,7 @@ $.get('/api/songs', function(data) {
 
 function addSongToPlaylistInDb(songId, playlistId) {
     var obj = {};
-    obj.song = songId;
+    obj.song = parseInt(songId);
     $.post('/api/playlists/' + playlistId, JSON.stringify(obj), function(result) {
         console.log(result);
     });
@@ -40,9 +40,7 @@ function addSongToPlaylistInDb(songId, playlistId) {
 
 function deleteSongFromPlaylist(songId, playlistId) {
     var obj = {};
-    obj.song = songId;
-
-    console.log('/playlists/' + playlistId);
+    obj.song = parseInt(songId);
 
     $.ajax({
         url: '/playlists/' + playlistId,
@@ -60,7 +58,6 @@ function deleteSongFromPlaylist(songId, playlistId) {
             var anchor = document.getElementById("delete_song" + songId);
             var target = anchor.parentNode.parentNode;
             target.parentNode.removeChild(target);
-
             console.log(result);
         },
         error: function(result){
@@ -79,11 +76,13 @@ function createNewPlaylist(name) {
         var res = JSON.parse(result);
         var newPlaylist = {};
 
+        // add the new playlist to memory
         newPlaylist.id = res.id;
         newPlaylist.name = res.name;
         newPlaylist.songs = [];
-
         window.MUSIC_DATA.playlists.push(newPlaylist);
+
+        // update UI with new playlist
         addPlaylist(newPlaylist.id, document.getElementById("playlist-item"), 'block');
         addContentOfPlayList(newPlaylist.id);
         addModalOption(newPlaylist.id);
@@ -161,7 +160,6 @@ function addContentOfPlayList(i) {
         delete_sign_icon.className = "glyphicon glyphicon-remove";
         delete_sign.onclick = function() {
             clicked_id = event.target.id.replace("delete_song","");
-            console.log("You are deleting the song " + clicked_id + " from playlist " + i);
             deleteSongFromPlaylist(clicked_id, i);
         };
 

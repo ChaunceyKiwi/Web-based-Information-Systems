@@ -95,6 +95,7 @@ app.get('/api/songs', function(request, response) {
         });
 });
 
+// add a song to a playlist
 app.post('/api/playlists/:playlistId([0-9]+)', function(request, response) {
     var songId = JSON.parse(Object.keys(request.body)[0]).song;
     var playlistId = request.params['playlistId'];
@@ -102,11 +103,13 @@ app.post('/api/playlists/:playlistId([0-9]+)', function(request, response) {
     models.Playlist.findById(playlistId).then(function(PlaylistInstance) {
         models.Song.findById(songId).then(function(song) {
             PlaylistInstance.addSong(song);
+            response.statusCode = 200;
             response.end("success!");
         });
     });
 });
 
+// create a new playlist
 app.post('/api/playlists', function(request, response) {
     var playlist = JSON.parse(Object.keys(request.body)[0]);
     var obj = {};
@@ -116,11 +119,12 @@ app.post('/api/playlists', function(request, response) {
     }).then(function(PlaylistInstance) {
         obj.id = PlaylistInstance.id;
         obj.name = PlaylistInstance.name;
-        console.log(PlaylistInstance.id);
+        response.statusCode = 200;
         response.end(JSON.stringify(obj));
     });
 });
 
+// removing a song from a playlist
 app.delete('/playlists/:playlistId', function(request, response) {
     var playlistId = request.params['playlistId'];
     var songId = request.body.song;
@@ -128,11 +132,11 @@ app.delete('/playlists/:playlistId', function(request, response) {
     models.Playlist.findById(playlistId).then(function(PlaylistInstance) {
         models.Song.findById(songId).then(function(song) {
             PlaylistInstance.removeSong(song);
+            response.statusCode = 200;
             response.end("success!");
         });
     });
 });
-
 
 app.listen(3000, function () {
     console.log('Amazing music app server listening on port 3000!')
