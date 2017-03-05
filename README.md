@@ -2,7 +2,10 @@
 * v6.9.4
 
 # Requirements Checklist
-* Finished - node populateDb.js creates a SQLite database called music.db, populated by the data from songs.json and playlists.json from exercise 3, using only ORM methods to create the entries in the databases (no raw SQL queries allowed). (3 marks)
-* Finished - Your GET /api/playlists pulls data from the database via ORM method calls (no raw SQL queries allowed), and returns the same data as it did in exercise 3 (matching the content in playlists.json). (3 marks)
-* Finished - Your GET /api/songs pulls data from the database via ORM method calls (no raw SQL queries allowed), and returns the same data as it did in exercise 3 (matching the content in songs.json). (3 marks)
-* Finished - Your Music App works with these updated GET APIs (meaning songs, playlists, and songs in playlists are successfully loaded into your UI matching the mocks from the previous exercises). (1 mark)
+* Finished - One of PUT /api/playlists/:id or POST /api/playlists/:id, which updates the Playlist at id with the contents of the request body. (2 mark)
+* Finished - "Add songs to playlist" in your UI uses one of the above API calls. (1 mark)
+* Finished - POST /api/playlists creates playlists and returns the playlist id. (2 marks)
+* Finished - "Create Playlist" in your UI uses your updated POST /api/playlists. (1 mark)
+* Finished - DELETE /playlists/:id deletes the song from playlist id specified in the body. (2 marks)
+* Finished - Add "Delete song from playlist" functionality in UI. (1 mark)
+* Finished - "Delete song from playlist" in your UI uses your DELETE API to persist changes. (1 mark)
