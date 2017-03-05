@@ -38,14 +38,27 @@ function addSongToPlaylistInDb(songId, playlistId) {
     });
 }
 
-// // sync current playlists to server
-// function syncPlaylistsToServer() {
-//     var obj = {};
-//     obj.playlists = window.MUSIC_DATA.playlists;
-//     $.post('/api/playlists', JSON.stringify(obj), function(result) {
-//         console.log(result);
-//     });
-// }
+function createNewPlaylist(name) {
+    var obj = {};
+    obj.name = name;
+
+    $.post('/api/playlists', JSON.stringify(obj), function(result) {
+        console.log(result);
+
+        var res = JSON.parse(result);
+        var newPlaylist = {};
+
+        newPlaylist.id = res.id;
+        newPlaylist.name = res.name;
+        newPlaylist.songs = [];
+
+        window.MUSIC_DATA.playlists.push(newPlaylist);
+        addPlaylist(newPlaylist.id, document.getElementById("playlist-item"), 'block');
+        addContentOfPlayList(newPlaylist.id);
+        addModalOption(newPlaylist.id);
+        addPlaylistToSearchBar(newPlaylist.id);
+    });
+}
 
 // Hide all content, then show the content of tab clicked
 function switchView(evt, tabName) {
@@ -413,14 +426,10 @@ document.getElementById("btn-addListConfirm").onclick = function() {
     newPlaylist.id = window.MUSIC_DATA.playlists.length;
     newPlaylist.name = document.getElementById("input-newListName").value;
     newPlaylist.songs = [];
-    window.MUSIC_DATA.playlists.push(newPlaylist);
-    // syncPlaylistsToServer();
-    document.getElementById("myModal2").style.display = "none";
-    addPlaylist(newPlaylist.id, document.getElementById("playlist-item"), 'block');
-    addContentOfPlayList(newPlaylist.id);
-    addModalOption(newPlaylist.id);
-    addPlaylistToSearchBar(newPlaylist.id);
+
+    createNewPlaylist(newPlaylist.name);
     document.getElementsByClassName("menu__item--playlists")[0].children[0].click();
+    document.getElementById("myModal2").style.display = "none";
 };
 
 document.getElementById("close-modal2").onclick = function() {

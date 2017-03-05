@@ -96,8 +96,6 @@ app.get('/api/songs', function(request, response) {
 });
 
 app.post('/api/playlists/:playlistId([0-9]+)', function(request, response) {
-    console.log(request.params['playlistId']);
-
     var songId = JSON.parse(Object.keys(request.body)[0]).song;
     var playlistId = request.params['playlistId'];
 
@@ -107,6 +105,31 @@ app.post('/api/playlists/:playlistId([0-9]+)', function(request, response) {
             response.end("success!");
         });
     });
+});
+
+app.post('/api/playlists', function(request, response) {
+    var playlist = JSON.parse(Object.keys(request.body)[0]);
+    var obj = {};
+
+    models.Playlist.create({
+        name: playlist.name
+    }).then(function(PlaylistInstance) {
+        obj.id = PlaylistInstance.id;
+        obj.name = PlaylistInstance.name;
+        console.log(PlaylistInstance.id);
+        response.end(JSON.stringify(obj));
+    });
+
+
+    // var songId = JSON.parse(Object.keys(request.body)[0]).song;
+    // var playlistId = request.params['playlistId'];
+    //
+    // models.Playlist.findById(playlistId).then(function(PlaylistInstance) {
+    //     models.Song.findById(songId).then(function(song) {
+    //         PlaylistInstance.addSong(song);
+    //         response.end("success!");
+    //     });
+    // });
 });
 
 app.listen(3000, function () {
