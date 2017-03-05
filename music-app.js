@@ -48,13 +48,17 @@ function deleteSongFromPlaylist(songId, playlistId) {
         data: JSON.stringify(obj),
         contentType:'application/json',
         dataType: 'text',
+
+        // If has been removed from the DB
         success: function(result) {
+            // removed from memory
             var songs = window.MUSIC_DATA.playlists[playlistId].songs;
             var index = songs.indexOf(parseInt(songId));
             if (index > -1) {
                 songs.splice(index, 1);
             }
 
+            // removed from in the UI
             var anchor = document.getElementById("delete_song" + songId);
             var target = anchor.parentNode.parentNode;
             target.parentNode.removeChild(target);
