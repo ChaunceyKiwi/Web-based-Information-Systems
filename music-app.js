@@ -30,14 +30,22 @@ $.get('/api/songs', function(data) {
 ///////////////////////////////////////////////////////////////////////////
 // Function
 
-// sync current playlists to server
-function syncPlaylistsToServer() {
+function addSongToPlaylistInDb(songId, playlistId) {
     var obj = {};
-    obj.playlists = window.MUSIC_DATA.playlists;
-    $.post('/api/playlists', JSON.stringify(obj), function(result) {
+    obj.song = songId;
+    $.post('/api/playlists/' + playlistId, JSON.stringify(obj), function(result) {
         console.log(result);
     });
 }
+
+// // sync current playlists to server
+// function syncPlaylistsToServer() {
+//     var obj = {};
+//     obj.playlists = window.MUSIC_DATA.playlists;
+//     $.post('/api/playlists', JSON.stringify(obj), function(result) {
+//         console.log(result);
+//     });
+// }
 
 // Hide all content, then show the content of tab clicked
 function switchView(evt, tabName) {
@@ -247,7 +255,7 @@ function addModalOption(index) {
                     // update by clean and re-add
                     playlist_content.parentNode.removeChild(playlist_content);
                     addContentOfPlayList(i);
-                    syncPlaylistsToServer();
+                    addSongToPlaylistInDb(clicked_id, i);
                 }
             }
         }
@@ -406,7 +414,7 @@ document.getElementById("btn-addListConfirm").onclick = function() {
     newPlaylist.name = document.getElementById("input-newListName").value;
     newPlaylist.songs = [];
     window.MUSIC_DATA.playlists.push(newPlaylist);
-    syncPlaylistsToServer();
+    // syncPlaylistsToServer();
     document.getElementById("myModal2").style.display = "none";
     addPlaylist(newPlaylist.id, document.getElementById("playlist-item"), 'block');
     addContentOfPlayList(newPlaylist.id);

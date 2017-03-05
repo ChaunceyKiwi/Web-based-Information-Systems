@@ -49,6 +49,7 @@ app.get('/', function(request, response) {
 
 app.get('/api/playlists', function(request, response) {
     var data = {};
+    var i;
 
     models.Playlist.findAll({
         attributes: ['id', 'name'],
@@ -92,6 +93,20 @@ app.get('/api/songs', function(request, response) {
         //console.log("Length of songs:" + data.songs.length);
         response.end(JSON.stringify(data));
         });
+});
+
+app.post('/api/playlists/:playlistId([0-9]+)', function(request, response) {
+    console.log(request.params['playlistId']);
+
+    var songId = JSON.parse(Object.keys(request.body)[0]).song;
+    var playlistId = request.params['playlistId'];
+
+    models.Playlist.findById(playlistId).then(function(PlaylistInstance) {
+        models.Song.findById(songId).then(function(song) {
+            PlaylistInstance.addSong(song);
+            response.end("success!");
+        });
+    });
 });
 
 app.listen(3000, function () {
