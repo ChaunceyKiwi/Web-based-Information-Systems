@@ -38,6 +38,37 @@ function addSongToPlaylistInDb(songId, playlistId) {
     });
 }
 
+function deleteSongFromPlaylist(songId, playlistId) {
+    var obj = {};
+    obj.song = songId;
+
+    console.log('/playlists/' + playlistId);
+
+    $.ajax({
+        url: '/playlists/' + playlistId,
+        type: 'DELETE',
+        data: JSON.stringify(obj),
+        contentType:'application/json',
+        dataType: 'text',
+        success: function(result) {
+            var songs = window.MUSIC_DATA.playlists[playlistId].songs;
+            var index = songs.indexOf(parseInt(songId));
+            if (index > -1) {
+                songs.splice(index, 1);
+            }
+
+            var anchor = document.getElementById("delete_song" + songId);
+            var target = anchor.parentNode.parentNode;
+            target.parentNode.removeChild(target);
+
+            console.log(result);
+        },
+        error: function(result){
+            console.log(result);
+        }
+    });
+}
+
 function createNewPlaylist(name) {
     var obj = {};
     obj.name = name;
@@ -114,23 +145,36 @@ function addContentOfPlayList(i) {
         var artist_content = document.createTextNode(window.MUSIC_DATA.songs[song_id].artist);
         var play = document.createElement("span");
         play.className = "glyphicon glyphicon-play";
-        var plus_sign = document.createElement("a");
+
+        var plus_sign = document.createElement("div");
         var plus_sign_icon = document.createElement("span");
         plus_sign_icon.id = "song" + window.MUSIC_DATA.songs[song_id].id;
-        plus_sign_icon.className = "glyphicon glyphicon-plus-sign";
+        plus_sign_icon.className = "glyphicon glyphicon-plus-sign glyphicon-plus-sign-playlist";
         plus_sign.onclick = function() {
             document.getElementById("myModal").style.display = "block";
             clicked_id = event.target.id.replace("song","");
+        };
+
+        var delete_sign = document.createElement("div");
+        var delete_sign_icon = document.createElement("span");
+        delete_sign_icon.id = "delete_song" + window.MUSIC_DATA.songs[song_id].id;
+        delete_sign_icon.className = "glyphicon glyphicon-remove";
+        delete_sign.onclick = function() {
+            clicked_id = event.target.id.replace("delete_song","");
+            console.log("You are deleting the song " + clicked_id + " from playlist " + i);
+            deleteSongFromPlaylist(clicked_id, i);
         };
 
         playlist_content_container.appendChild(list_group_item);
         list_group_item.appendChild(square);
         list_group_item.appendChild(song_info);
         list_group_item.appendChild(plus_sign);
+        list_group_item.appendChild(delete_sign);
         list_group_item.appendChild(play);
         song_info.appendChild(song_title);
         song_info.appendChild(song_artist);
         plus_sign.appendChild(plus_sign_icon);
+        delete_sign.appendChild(delete_sign_icon);
         song_title.appendChild(title_content);
         song_artist.appendChild(artist_content);
     }
@@ -158,7 +202,7 @@ function addSong(i, target, displayOption) {
     var play = document.createElement("span");
     play.className = "glyphicon glyphicon-play";
 
-    var plus_sign = document.createElement("a");
+    var plus_sign = document.createElement("div");
     var plus_sign_icon = document.createElement("span");
     plus_sign_icon.id = "song" + window.MUSIC_DATA.songs[i].id;
     plus_sign_icon.className = "glyphicon glyphicon-plus-sign";

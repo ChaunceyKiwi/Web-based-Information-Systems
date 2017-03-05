@@ -119,18 +119,20 @@ app.post('/api/playlists', function(request, response) {
         console.log(PlaylistInstance.id);
         response.end(JSON.stringify(obj));
     });
-
-
-    // var songId = JSON.parse(Object.keys(request.body)[0]).song;
-    // var playlistId = request.params['playlistId'];
-    //
-    // models.Playlist.findById(playlistId).then(function(PlaylistInstance) {
-    //     models.Song.findById(songId).then(function(song) {
-    //         PlaylistInstance.addSong(song);
-    //         response.end("success!");
-    //     });
-    // });
 });
+
+app.delete('/playlists/:playlistId', function(request, response) {
+    var playlistId = request.params['playlistId'];
+    var songId = request.body.song;
+
+    models.Playlist.findById(playlistId).then(function(PlaylistInstance) {
+        models.Song.findById(songId).then(function(song) {
+            PlaylistInstance.removeSong(song);
+            response.end("success!");
+        });
+    });
+});
+
 
 app.listen(3000, function () {
     console.log('Amazing music app server listening on port 3000!')

@@ -96,7 +96,7 @@ body {
 .glyphicon-play {
   position: relative;
   top: 5vmin;
-  right: 6vmin;
+  right: 12vmin;
   float: right;
   color: #808080;
   font-size: 6vmin; }
@@ -104,7 +104,23 @@ body {
 .glyphicon-plus-sign {
   position: relative;
   top: 5vmin;
-  right: 3vmin;
+  right: 8vmin;
+  float: right;
+  color: #808080;
+  font-size: 6vmin; }
+
+.glyphicon-plus-sign-playlist {
+  position: relative;
+  top: 5vmin;
+  right: 15vmin;
+  float: right;
+  color: #808080;
+  font-size: 6vmin; }
+
+.glyphicon-remove {
+  position: relative;
+  top: 5vmin;
+  right: 0vmin;
   float: right;
   color: #808080;
   font-size: 6vmin; }
