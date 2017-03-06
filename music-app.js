@@ -61,7 +61,7 @@ function deleteSongFromPlaylist(songId, playlistId) {
             // removed from in the UI
             var anchor = document.getElementById("delete_song" + songId);
             var target = anchor.parentNode.parentNode;
-            target.parentNode.removeChild(target);
+            target.remove();
             console.log(result);
         },
         error: function(result){
