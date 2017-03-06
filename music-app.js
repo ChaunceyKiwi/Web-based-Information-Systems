@@ -59,7 +59,7 @@ function deleteSongFromPlaylist(songId, playlistId) {
             }
 
             // removed from in the UI
-            var anchor = document.getElementById("delete_song" + songId);
+            var anchor = document.getElementById("delete_song" + songId + "_" + playlistId);
             var target = anchor.parentNode.parentNode;
             target.remove();
             console.log(result);
@@ -160,11 +160,16 @@ function addContentOfPlayList(i) {
 
         var delete_sign = document.createElement("div");
         var delete_sign_icon = document.createElement("span");
-        delete_sign_icon.id = "delete_song" + window.MUSIC_DATA.songs[song_id].id;
+        delete_sign_icon.id = "delete_song" + window.MUSIC_DATA.songs[song_id].id + "_" + i;
         delete_sign_icon.className = "glyphicon glyphicon-remove";
         delete_sign.onclick = function() {
             clicked_id = event.target.id.replace("delete_song","");
-            deleteSongFromPlaylist(clicked_id, i);
+
+            var pos = clicked_id.indexOf('_');
+            var song_id = clicked_id.substring(0, pos);
+            var playlists_id = clicked_id.substring(pos+1);
+
+            deleteSongFromPlaylist(song_id, playlists_id);
         };
 
         playlist_content_container.appendChild(list_group_item);
