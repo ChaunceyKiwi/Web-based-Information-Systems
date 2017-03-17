@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="playlist.css">
   </head>
   <body>
-    <div class="container-fluid">
+    <div class="container-fluid container-app">
 
       <!--The menu-->
       <nav class="navbar navbar-default navbar-fixed-top menu">
@@ -30,6 +30,13 @@
             <div>
               <span class="glyphicon glyphicon-search"></span>
               <span class="menu-name">Search</span>
+            </div>
+          </li>
+
+          <li class="menu__item--users">
+            <div>
+              <span class="glyphicon glyphicon glyphicon-user"></span>
+              <span class="menu-name">Users</span>
             </div>
           </li>
         </ul>
@@ -65,6 +72,15 @@
         <input type="text" class="form-control search-bar" id="search-bar" placeholder="Search">
         <div id="search-playlists"></div>
         <div id="search-songs"></div>
+      </div>
+
+      <!-- Content of the third tab "Search"-->
+      <div class="User tab-content" id="users">
+        <div class="input-group">
+          <input type="text" class="form-control input-username" id="username" placeholder="Username">
+          <input type="text" class="form-control input-password" id="password" placeholder="Password">
+          <button class="btn btn-login"> Login </button>
+        </div>
       </div>
 
       <!-- The Modal for add song to playlist -->

@@ -361,6 +361,8 @@ function runApplication() {
         document.getElementsByClassName("menu__item--library")[0].children[0].click();
     } else if (window.location.href.indexOf('/search') > -1) {
         document.getElementsByClassName("menu__item--search")[0].children[0].click();
+    } else if (window.location.href.indexOf('/users') > -1) {
+        document.getElementsByClassName("menu__item--users")[0].children[0].click();
     }
 }
 
@@ -457,15 +459,19 @@ document.getElementById("search-bar").onkeyup = function() {
 };
 
 document.getElementsByClassName("menu__item--library")[0].children[0].onclick  = function() {
-    switchView(event, 'library')
+    switchView(event, 'library');
 };
 
 document.getElementsByClassName("menu__item--playlists")[0].children[0].onclick  = function() {
-    switchView(event, 'playlists')
+    switchView(event, 'playlists');
 };
 
 document.getElementsByClassName("menu__item--search")[0].children[0].onclick  = function() {
-    switchView(event, 'search')
+    switchView(event, 'search');
+};
+
+document.getElementsByClassName("menu__item--users")[0].children[0].onclick  = function() {
+    switchView(event, 'users');
 };
 
 document.getElementById("btn-addlist").onclick = function() {

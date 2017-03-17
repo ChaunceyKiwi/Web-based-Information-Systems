@@ -1,6 +1,9 @@
 body {
   background-color: #E8E0F4; }
 
+.container-app {
+  text-align: center; }
+
 .menu {
   border-bottom: thin solid #aaaaaa;
   margin-bottom: 0;
@@ -11,6 +14,7 @@ body {
     width: 1%; }
     .menu li div {
       height: 12vmin;
+      width: 22vmin;
       color: black;
       text-align: center;
       margin-top: 2vmin;
@@ -28,12 +32,11 @@ body {
   margin-top: 1.5vmin;
   font-size: 3.5vmin;
   color: darkgray;
-  width: 33.33vw;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap; }
 
-.glyphicon-music, .glyphicon-th-list, .glyphicon-search {
+.glyphicon-music, .glyphicon-th-list, .glyphicon-search, .glyphicon-user {
   font-size: 5vmin; }
 
 .songs-item {
@@ -184,7 +187,8 @@ div.song-artist {
 
 .tab-content {
   margin-top: 20vmin;
-  display: none; }
+  display: none;
+  margin-left: 3vw; }
 
 .button-sort-row {
   text-align: center; }
@@ -215,6 +219,24 @@ div.song-artist {
   outline: 0;
   color: dimgray;
   padding-left: 4vmin; }
+
+.btn-login {
+  color: white;
+  background-color: #936AC7;
+  width: 100%;
+  height: 8vmin;
+  font-size: 4vmin;
+  font-weight: normal;
+  padding: 1vmin;
+  margin: 1vmin;
+  outline: 0; }
+  .btn-login:hover, .btn-login:focus {
+    background-color: #664a8b;
+    color: white;
+    outline: 0; }
+
+.input-username, .input-password {
+  margin: 1vmin; }
 
 .modal {
   display: none;

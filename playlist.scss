@@ -19,6 +19,10 @@ body {
   background-color: $background-color;
 }
 
+.container-app {
+  text-align: center;
+}
+
 //////////////////////////////////////
 //Style for Menu
 
@@ -34,16 +38,17 @@ body {
 
     div {
       height: 12vmin;
+      width: 22vmin;
       color: black;
       text-align: center;
       margin-top: 2vmin;
       padding: 0;
-      display :block;
+      display: block;
       &:hover {
         background-color: $menu-color;
       }
       span {
-        display :block;
+        display: block;
       }
     }
 
@@ -59,13 +64,12 @@ body {
   margin-top:1.5vmin;
   font-size: 3.5vmin;
   color: darkgray;
-  width: 33.33vw;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.glyphicon-music, .glyphicon-th-list, .glyphicon-search{
+.glyphicon-music, .glyphicon-th-list, .glyphicon-search, .glyphicon-user {
   font-size: 5vmin;
 }
 
@@ -250,6 +254,7 @@ div.song-artist {
 .tab-content {
   margin-top: 20vmin;
   display: none;
+  margin-left: 3vw;
 }
 
 .button-sort-row {
@@ -292,6 +297,30 @@ div.song-artist {
   outline: 0;
   color: dimgray;
   padding-left: 4vmin;
+}
+
+//////////////////////////////////////
+// Style for the User Tab
+
+.btn-login {
+  color: $button-font-color;
+  background-color: $theme-color;
+  width: 100%;
+  height: 8vmin;
+  font-size: 4vmin;
+  font-weight: normal;
+  padding: 1vmin;
+  margin: 1vmin;
+  outline: 0;
+  &:hover, &:focus {
+    background-color: $theme-color-darker;
+    color: $button-font-color;
+    outline: 0;
+  }
+}
+
+.input-username, .input-password{
+  margin: 1vmin;
 }
 
 //////////////////////////////////////

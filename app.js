@@ -21,6 +21,7 @@ var getHtml = function(request, response) {
 app.get('/library', getHtml);
 app.get('/playlists', getHtml);
 app.get('/search', getHtml);
+app.get('/users', getHtml);
 
 app.get('/playlist.css', function(request, response) {
     response.statusCode = 200;
