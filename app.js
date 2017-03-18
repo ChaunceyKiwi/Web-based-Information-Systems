@@ -3,12 +3,16 @@ var fs = require('fs');
 var bodyParser = require('body-parser');
 var models = require('./models');
 var crypto = require('crypto');
+var cookieParser = require('cookie-parser');
+
 
 var app = express();
 app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({   // to support URL-encoded bodies
     extended: true
 }));
+app.use(cookieParser());
+
 
 var getHtml = function(request, response) {
     response.statusCode = 200;
@@ -59,7 +63,7 @@ app.get('/api/playlists', function(request, response) {
     var data = {};
     var i;
 
-    // console.log(request.Cookies);
+    console.log(request.cookies);
 
     models.Playlist.findAll({
         attributes: ['id', 'name'],
