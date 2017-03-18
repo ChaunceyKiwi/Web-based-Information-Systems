@@ -2,6 +2,7 @@ var express = require('express');
 var fs = require('fs');
 var bodyParser = require('body-parser');
 var models = require('./models');
+var crypto = require('crypto');
 
 var app = express();
 app.use(bodyParser.json());       // to support JSON-encoded bodies
@@ -16,6 +17,12 @@ var getHtml = function(request, response) {
     fs.readFile(__dirname + '/MusicApp.html', function(err, data) {
         response.end(data);
     });
+};
+
+var generateKey = function() {
+    var sha = crypto.createHash('sha256');
+    sha.update(Math.random().toString());
+    return sha.digest('hex');
 };
 
 app.get('/library', getHtml);
@@ -51,6 +58,8 @@ app.get('/', function(request, response) {
 app.get('/api/playlists', function(request, response) {
     var data = {};
     var i;
+
+    // console.log(request.Cookies);
 
     models.Playlist.findAll({
         attributes: ['id', 'name'],
@@ -122,6 +131,34 @@ app.post('/api/playlists', function(request, response) {
         obj.name = PlaylistInstance.name;
         response.statusCode = 200;
         response.end(JSON.stringify(obj));
+    });
+});
+
+app.post('/login', function(request, response) {
+    var userInfo = JSON.parse(Object.keys(request.body)[0]);
+    models.User.findAll({
+        where: {
+            username: userInfo.username,
+            password: userInfo.password
+        }
+    }).then(function(searchResult) {
+        var key_generated = generateKey();
+        if (searchResult.length === 1) {
+            models.Session.create({
+                sessionKey: key_generated
+            }).then(function(SessionInstance) {
+                models.User.findById(searchResult[0].id).then(function(user) {
+                    SessionInstance.setUser(user);
+                    response.statusCode = 200;
+                    response.setHeader('Set-Cookie', "sessionKey=" + key_generated);
+                    response.redirect('/playlists');
+                    response.end();
+                })
+            });
+        } else {
+            response.statusCode = 401;
+            response.end("Incorrect username or password!");
+        }
     });
 });
 

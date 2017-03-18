@@ -27,6 +27,10 @@ $.get('/api/songs', function(data) {
     }
 });
 
+// $.get('/api/users', function(data)) {
+//     window.MUSIC_DATA
+// }
+
 ///////////////////////////////////////////////////////////////////////////
 // Function
 
@@ -487,6 +491,20 @@ document.getElementById("btn-addListConfirm").onclick = function() {
     createNewPlaylist(newPlaylist.name);
     document.getElementsByClassName("menu__item--playlists")[0].children[0].click();
     document.getElementById("myModal2").style.display = "none";
+};
+
+document.getElementById("loginConfirm").onclick = function() {
+    var userInfo = {};
+    userInfo.username = document.getElementById("username").value;
+    userInfo.password = document.getElementById("password").value;
+
+    $.post('./login', JSON.stringify(userInfo), function(data, status) {
+        if (status === 'success') {
+            document.getElementsByClassName("menu__item--playlists")[0].children[0].click();
+        } else {
+            console.log(data);
+        }
+    });
 };
 
 document.getElementById("close-modal2").onclick = function() {

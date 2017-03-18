@@ -38,4 +38,25 @@ models.sequelize.sync({force: true}).then(function() {
             });
         });
     });
+
+    fs.readFile('./users.json', function(err, data) {
+        var playlistId, i;
+        var music_data = JSON.parse(data);
+        var users = music_data['users'];
+
+        users.forEach(function(user) {
+            models.User.create({
+                username: user.username,
+                password: user.password
+            }).then(function(UserInstance) {
+                for (i = 0; i < user.playlists.length; i++) {
+                    playlistId = user.playlists[i];
+                    models.Playlist.findById(playlistId).then(function(playlist) {
+                        UserInstance.addPlaylist(playlist);
+                    })
+                }
+            });
+        });
+    });
+
 });

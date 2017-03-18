@@ -1,19 +1,20 @@
 "use strict";
 
 module.exports = function(sequelize, DataType) {
-    var Playlist = sequelize.define('Playlist',
+    var User = sequelize.define('User',
         {
-            name: {
+            username: {
                 type: DataType.STRING,
-                field: 'name'
+                field: 'username'
+            },
+            password: {
+                type: DataType.STRING,
+                field: 'password'
             }
         }, {
             classMethods: {
                 associate: function(models) {
-                    Playlist.belongsToMany(models.Song, {
-                        through: 'Songs_Playlists'
-                    });
-                    Playlist.belongsToMany(models.User, {
+                    User.belongsToMany(models.Playlist, {
                         through: 'Users_Playlists'
                     });
                 }
@@ -21,5 +22,5 @@ module.exports = function(sequelize, DataType) {
         }
     );
 
-    return Playlist;
+    return User;
 };
