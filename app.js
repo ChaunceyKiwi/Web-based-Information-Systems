@@ -62,35 +62,71 @@ app.get('/', function(request, response) {
 app.get('/api/playlists', function(request, response) {
     var data = {};
     var i;
+    var key = request.cookies.sessionKey;
 
-    console.log(request.cookies);
+    if (key == undefined) {
+        console.log("No session key found!");
+    } else {
+        models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
+            if (searchResult == undefined) {
+                console.log("Fake or outdated session key!");
+            } else {
+                searchResult.getUser().then(function(user) {
+                    user.getPlaylists({
+                        attributes: ['id', 'name'],
+                        include: [{
+                            model: models.Song,
+                            attributes: ['id'],
+                            through: {
+                                attributes: []
+                            }
+                        }]
+                    }).then(function(playlists) {
+                        data["playlists"] = playlists.map(function(playlist) {
+                            var jsonObj =  playlist.get({plain: true});
+                            for (i = 0; i < jsonObj.Songs.length; i++) {
+                                jsonObj.Songs[i] = jsonObj.Songs[i].id;
+                            }
+                            jsonObj["songs"] =  jsonObj["Songs"];
+                            delete jsonObj["Songs"];
+                            return jsonObj;
+                        });
 
-    models.Playlist.findAll({
-        attributes: ['id', 'name'],
-        include: [{
-            model: models.Song,
-            attributes: ['id'],
-            through: {
-                attributes: []
-            }
-        }]
-    }).then(function(playlists) {
-        response.statusCode = 200;
-        response.setHeader('Content_type', 'application/json');
-
-        data["playlists"] = playlists.map(function(playlist) {
-            var jsonObj =  playlist.get({plain: true});
-            for (i = 0; i < jsonObj.Songs.length; i++) {
-                jsonObj.Songs[i] = jsonObj.Songs[i].id;
-            }
-            jsonObj["songs"] =  jsonObj["Songs"];
-            delete jsonObj["Songs"];
-            return jsonObj;
+                        response.statusCode = 200;
+                        response.setHeader('Content_type', 'application/json');
+                        response.end(JSON.stringify(data));
+                    });
+                });
+            };
         });
+    }
 
-        //console.log("Length of songs:" + data.playlists.length);
-        response.end(JSON.stringify(data));
-    });
+    // models.Playlist.findAll({
+    //     attributes: ['id', 'name'],
+    //     include: [{
+    //         model: models.Song,
+    //         attributes: ['id'],
+    //         through: {
+    //             attributes: []
+    //         }
+    //     }]
+    // }).then(function(playlists) {
+    //     response.statusCode = 200;
+    //     response.setHeader('Content_type', 'application/json');
+    //
+    //     data["playlists"] = playlists.map(function(playlist) {
+    //         var jsonObj =  playlist.get({plain: true});
+    //         for (i = 0; i < jsonObj.Songs.length; i++) {
+    //             jsonObj.Songs[i] = jsonObj.Songs[i].id;
+    //         }
+    //         jsonObj["songs"] =  jsonObj["Songs"];
+    //         delete jsonObj["Songs"];
+    //         return jsonObj;
+    //     });
+    //
+    //     //console.log("Length of songs:" + data.playlists.length);
+    //     response.end(JSON.stringify(data));
+    // });
 });
 
 app.get('/api/songs', function(request, response) {
