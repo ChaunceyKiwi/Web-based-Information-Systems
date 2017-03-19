@@ -1,5 +1,7 @@
 var fs = require('fs');
 var models = require('./models');
+const bcrypt = require('bcrypt');
+
 
 models.sequelize.sync({force: true}).then(function() {
     var songsObj;
@@ -45,16 +47,18 @@ models.sequelize.sync({force: true}).then(function() {
         var users = music_data['users'];
 
         users.forEach(function(user) {
-            models.User.create({
-                username: user.username,
-                password: user.password
-            }).then(function(UserInstance) {
-                for (i = 0; i < user.playlists.length; i++) {
-                    playlistId = user.playlists[i];
-                    models.Playlist.findById(playlistId).then(function(playlist) {
-                        UserInstance.addPlaylist(playlist);
-                    })
-                }
+            bcrypt.hash(user.password.toString(), 10, function(err, hash) {
+                models.User.create({
+                    username: user.username,
+                    password: hash
+                }).then(function(UserInstance) {
+                    for (i = 0; i < user.playlists.length; i++) {
+                        playlistId = user.playlists[i];
+                        models.Playlist.findById(playlistId).then(function(playlist) {
+                            UserInstance.addPlaylist(playlist);
+                        })
+                    }
+                });
             });
         });
     });
