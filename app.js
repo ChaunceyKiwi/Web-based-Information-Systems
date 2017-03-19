@@ -23,6 +23,33 @@ var getHtml = function(request, response) {
     });
 };
 
+// var getHtml = function(request, response) {
+//     var key = request.cookies.sessionKey;
+//
+//     if (key == undefined) {
+//         response.statusCode = 301;
+//         response.setHeader('Location', '/users');
+//         response.setHeader('Cache-Control', 'public, max-age=1800');
+//         response.end('Redirecting');
+//     } else {
+//         models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
+//             if (searchResult == undefined) {
+//                 response.statusCode = 301;
+//                 response.setHeader('Location', '/users');
+//                 response.setHeader('Cache-Control', 'public, max-age=1800');
+//                 response.end('Redirecting');
+//             } else {
+//                 response.statusCode = 200;
+//                 response.setHeader('Content-Type', 'text/html');
+//                 response.setHeader('Cache-Control', 'public, max-age=1800');
+//                 fs.readFile(__dirname + '/MusicApp.html', function(err, data) {
+//                     response.end(data);
+//                 });
+//             }
+//         });
+//     }
+// };
+
 var generateKey = function() {
     var sha = crypto.createHash('sha256');
     sha.update(Math.random().toString());
