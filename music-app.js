@@ -8,6 +8,20 @@ var songsLoaded = false;
 var playlistsLoaded = false;
 
 /* Fetch data of playlists from server */
+var socket = io('/');
+
+socket.on('deleteSongFromPlaylist', function(data) {
+    var songId = JSON.parse(data).songId;
+    var playlistId = JSON.parse(data).playlistId;
+    deleteSongFromPlaylistInUIAndMemory(songId, playlistId);
+});
+
+socket.on('addSongToPlaylist', function(data) {
+    var songId = JSON.parse(data).songId;
+    var playlistId = JSON.parse(data).playlistId;
+    addSongToPlaylistInUIAndMemory(songId, playlistId);
+});
+
 $.get('/api/playlists', function(data) {
     window.MUSIC_DATA.playlists = JSON.parse(data).playlists;
     //console.log("Length of playlists:" + window.MUSIC_DATA.playlists.length);
@@ -33,13 +47,46 @@ $.get('/api/songs', function(data) {
 
 ///////////////////////////////////////////////////////////////////////////
 // Function
+function addSongToPlaylistInUIAndMemory(songId, playlistId) {
+    window.MUSIC_DATA.playlists[playlistId].songs.push(parseInt(songId));
+    window.MUSIC_DATA.playlists[playlistId].songs.sort(function(a, b){return a-b});
+
+    var playlist_content_container = document.getElementById("playlist-content-container" + playlistId);
+
+    // update by clean and re-add
+
+    var elements = playlist_content_container.getElementsByClassName("songs-item");
+    while (elements[0]) {
+        elements[0].parentNode.removeChild(elements[0]);
+    }
+    addContentOfPlaylistDetail(playlistId);
+}
+
 
 function addSongToPlaylistInDb(songId, playlistId) {
     var obj = {};
     obj.song = parseInt(songId);
     $.post('/api/playlists/' + playlistId, JSON.stringify(obj), function(result) {
+        var additionInfo = {};
+        additionInfo.songId = songId;
+        additionInfo.playlistId = playlistId;
+        socket.emit('addSongToPlaylist', JSON.stringify(additionInfo));
         console.log(result);
     });
+}
+
+function deleteSongFromPlaylistInUIAndMemory(songId, playlistId) {
+    // removed from memory
+    var songs = window.MUSIC_DATA.playlists[playlistId].songs;
+    var index = songs.indexOf(parseInt(songId));
+    if (index > -1) {
+        songs.splice(index, 1);
+    }
+
+    // removed from in the UI
+    var anchor = document.getElementById("delete_song" + songId + "_" + playlistId);
+    var target = anchor.parentNode.parentNode;
+    target.remove();
 }
 
 function deleteSongFromPlaylist(songId, playlistId) {
@@ -55,23 +102,17 @@ function deleteSongFromPlaylist(songId, playlistId) {
 
         // If has been removed from the DB
         success: function(result) {
-            // removed from memory
-            var songs = window.MUSIC_DATA.playlists[playlistId].songs;
-            var index = songs.indexOf(parseInt(songId));
-            if (index > -1) {
-                songs.splice(index, 1);
-            }
-
-            // removed from in the UI
-            var anchor = document.getElementById("delete_song" + songId + "_" + playlistId);
-            var target = anchor.parentNode.parentNode;
-            target.remove();
+            var deletionInfo = {};
+            deletionInfo.songId = songId;
+            deletionInfo.playlistId = playlistId;
+            socket.emit('deleteSongFromPlaylist', JSON.stringify(deletionInfo));
             console.log(result);
         },
         error: function(result){
             console.log(result);
         }
     });
+
 }
 
 function createNewPlaylist(name) {
@@ -92,7 +133,8 @@ function createNewPlaylist(name) {
 
         // update UI with new playlist
         addPlaylist(newPlaylist.id, document.getElementById("playlist-item"), 'block');
-        addContentOfPlayList(newPlaylist.id);
+        addContentOfPlaylistOutline(newPlaylist.id);
+        addContentOfPlaylistDetail(newPlaylist.id);
         addModalOption(newPlaylist.id);
         addPlaylistToSearchBar(newPlaylist.id);
     });
@@ -113,8 +155,7 @@ function switchView(evt, tabName) {
     history.replaceState(null, tabName, tabName);
 }
 
-// add content of playlist to playlists tab
-function addContentOfPlayList(i) {
+function addContentOfPlaylistOutline(i) {
     // Add the title of playlists
     var playlists = document.getElementById("playlists");
     var playlist_content = document.createElement("div");
@@ -124,6 +165,7 @@ function addContentOfPlayList(i) {
 
     var playlist_content_container = document.createElement("div");
     playlist_content_container.className = "col-xs-12 col-sm-12 col-md-12 col-lg-12 playlist-content-container";
+    playlist_content_container.id = "playlist-content-container" + window.MUSIC_DATA.playlists[i].id;
 
     var playlist_content_heading = document.createElement("div");
     playlist_content_heading.className = "playlist-content-heading";
@@ -134,6 +176,10 @@ function addContentOfPlayList(i) {
     playlist_content.appendChild(playlist_content_container);
     playlist_content_container.appendChild(playlist_content_heading);
     playlist_content_heading.appendChild(heading_name);
+}
+
+// add content of playlist to playlists tab
+function addContentOfPlaylistDetail(i) {
 
     // Add the songs to the corresponding playlists
     for (var j = 0; j < window.MUSIC_DATA.playlists[i].songs.length; j++) {
@@ -176,6 +222,8 @@ function addContentOfPlayList(i) {
             deleteSongFromPlaylist(song_id, playlists_id);
         };
 
+        var playlist_content_container = document.getElementById("playlist-content-container"
+            + window.MUSIC_DATA.playlists[i].id);
         playlist_content_container.appendChild(list_group_item);
         list_group_item.appendChild(square);
         list_group_item.appendChild(song_info);
@@ -316,13 +364,6 @@ function addModalOption(index) {
         for (var i = 0; i < window.MUSIC_DATA.playlists.length; i++) {
             if(window.MUSIC_DATA.playlists[i].name === play_list_name) {
                 if (!isElementAlreadyInTheArray(parseInt(clicked_id), window.MUSIC_DATA.playlists[i].songs)) {
-                    window.MUSIC_DATA.playlists[i].songs.push(parseInt(clicked_id));
-                    window.MUSIC_DATA.playlists[i].songs.sort(function(a, b){return a-b});
-                    var playlist_content = document.getElementById("playlist-content" + i);
-
-                    // update by clean and re-add
-                    playlist_content.parentNode.removeChild(playlist_content);
-                    addContentOfPlayList(i);
                     addSongToPlaylistInDb(clicked_id, i);
                 }
             }
@@ -347,7 +388,8 @@ function runApplication() {
         addPlaylist(i, document.getElementById("playlist-item"), 'block');
         addModalOption(i);
         addPlaylistToSearchBar(i);
-        addContentOfPlayList(i);
+        addContentOfPlaylistOutline(i);
+        addContentOfPlaylistDetail(i);
     }
 
     for (i = 0; i < window.MUSIC_DATA.songs.length; i++) {

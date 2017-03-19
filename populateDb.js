@@ -62,5 +62,4 @@ models.sequelize.sync({force: true}).then(function() {
             });
         });
     });
-
 });

@@ -6,13 +6,15 @@ var crypto = require('crypto');
 var cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 
+
 var app = express();
 app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({   // to support URL-encoded bodies
     extended: true
 }));
 app.use(cookieParser());
-
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
 var getHtml = function(request, response) {
     response.statusCode = 200;
@@ -86,7 +88,7 @@ app.get('/', function(request, response) {
     response.end('Redirecting');
 });
 
-app.get('/api/playlists', function(request, response) {
+var getPlaylists = function(callback, request){
     var data = {};
     var i;
     var key = request.cookies.sessionKey;
@@ -119,14 +121,20 @@ app.get('/api/playlists', function(request, response) {
                             return jsonObj;
                         });
 
-                        response.statusCode = 200;
-                        response.setHeader('Content_type', 'application/json');
-                        response.end(JSON.stringify(data));
+                        callback(data);
                     });
                 });
-            };
+            }
         });
     }
+};
+
+app.get('/api/playlists', function(request, response) {
+    getPlaylists(function(playlistsData) {
+        response.statusCode = 200;
+        response.setHeader('Content_type', 'application/json');
+        response.end(JSON.stringify(playlistsData));
+    }, request);
 });
 
 app.get('/api/songs', function(request, response) {
@@ -140,7 +148,6 @@ app.get('/api/songs', function(request, response) {
                 return song.get({plain: true});
             });
 
-        //console.log("Length of songs:" + data.songs.length);
         response.end(JSON.stringify(data));
         });
 });
@@ -177,6 +184,19 @@ app.post('/api/playlists/:playlistId([0-9]+)', function(request, response) {
             }
         });
     }
+});
+
+io.on('connection', function(socket) {
+    console.log('A user connected!');
+
+    // When a user request for a playlist, send it
+    socket.on('deleteSongFromPlaylist', function(msg) {
+        io.emit('deleteSongFromPlaylist', msg);
+    });
+
+    socket.on('addSongToPlaylist', function(msg) {
+        io.emit('addSongToPlaylist', msg);
+    });
 });
 
 // create a new playlist
@@ -263,6 +283,6 @@ app.delete('/playlists/:playlistId', function(request, response) {
     }
 });
 
-app.listen(3000, function () {
+server.listen(3000, function () {
     console.log('Amazing music app server listening on port 3000!')
 });
