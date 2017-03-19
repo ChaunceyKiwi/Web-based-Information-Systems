@@ -199,14 +199,34 @@ app.post('/login', function(request, response) {
 app.delete('/playlists/:playlistId', function(request, response) {
     var playlistId = request.params['playlistId'];
     var songId = request.body.song;
+    var key = request.cookies.sessionKey;
 
-    models.Playlist.findById(playlistId).then(function(PlaylistInstance) {
-        models.Song.findById(songId).then(function(song) {
-            PlaylistInstance.removeSong(song);
-            response.statusCode = 200;
-            response.end("success!");
+    if (key == undefined) {
+        console.log("No session key found!");
+    } else {
+        models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
+            if (searchResult == undefined) {
+                console.log("Fake or outdated session key!");
+            } else {
+                searchResult.getUser().then(function(user) {
+                    user.getPlaylists({
+                        where: {'id': playlistId}
+                    }).then(function(PlaylistInstance) {
+                        if (PlaylistInstance.length == 0) {
+                            response.statusCode = 403;
+                            response.end("Authorization failed!");
+                        } else {
+                            models.Song.findById(songId).then(function(song) {
+                                PlaylistInstance[0].removeSong(song);
+                                response.statusCode = 200;
+                                response.end("success!");
+                            });
+                        }
+                    });
+                });
+            }
         });
-    });
+    }
 });
 
 app.listen(3000, function () {
