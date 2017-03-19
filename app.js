@@ -100,33 +100,6 @@ app.get('/api/playlists', function(request, response) {
             };
         });
     }
-
-    // models.Playlist.findAll({
-    //     attributes: ['id', 'name'],
-    //     include: [{
-    //         model: models.Song,
-    //         attributes: ['id'],
-    //         through: {
-    //             attributes: []
-    //         }
-    //     }]
-    // }).then(function(playlists) {
-    //     response.statusCode = 200;
-    //     response.setHeader('Content_type', 'application/json');
-    //
-    //     data["playlists"] = playlists.map(function(playlist) {
-    //         var jsonObj =  playlist.get({plain: true});
-    //         for (i = 0; i < jsonObj.Songs.length; i++) {
-    //             jsonObj.Songs[i] = jsonObj.Songs[i].id;
-    //         }
-    //         jsonObj["songs"] =  jsonObj["Songs"];
-    //         delete jsonObj["Songs"];
-    //         return jsonObj;
-    //     });
-    //
-    //     //console.log("Length of songs:" + data.playlists.length);
-    //     response.end(JSON.stringify(data));
-    // });
 });
 
 app.get('/api/songs', function(request, response) {
@@ -149,14 +122,34 @@ app.get('/api/songs', function(request, response) {
 app.post('/api/playlists/:playlistId([0-9]+)', function(request, response) {
     var songId = JSON.parse(Object.keys(request.body)[0]).song;
     var playlistId = request.params['playlistId'];
+    var key = request.cookies.sessionKey;
 
-    models.Playlist.findById(playlistId).then(function(PlaylistInstance) {
-        models.Song.findById(songId).then(function(song) {
-            PlaylistInstance.addSong(song);
-            response.statusCode = 200;
-            response.end("success!");
+    if (key == undefined) {
+        console.log("No session key found!");
+    } else {
+        models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
+            if (searchResult == undefined) {
+                console.log("Fake or outdated session key!");
+            } else {
+                searchResult.getUser().then(function(user) {
+                    user.getPlaylists({
+                        where: {'id': playlistId}
+                    }).then(function(PlaylistInstance) {
+                        if (PlaylistInstance.length == 0) {
+                            response.statusCode = 403;
+                            response.end("Authorization failed!");
+                        } else {
+                            models.Song.findById(songId).then(function(song) {
+                                PlaylistInstance[0].addSong(song);
+                                response.statusCode = 200;
+                                response.end("success!");
+                            });
+                        }
+                    });
+                });
+            }
         });
-    });
+    }
 });
 
 // create a new playlist
