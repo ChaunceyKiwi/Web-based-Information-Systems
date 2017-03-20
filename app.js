@@ -25,32 +25,27 @@ var getHtml = function(request, response) {
     });
 };
 
-// var getHtml = function(request, response) {
-//     var key = request.cookies.sessionKey;
-//
-//     if (key == undefined) {
-//         response.statusCode = 301;
-//         response.setHeader('Location', '/users');
-//         response.setHeader('Cache-Control', 'public, max-age=1800');
-//         response.end('Redirecting');
-//     } else {
-//         models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
-//             if (searchResult == undefined) {
-//                 response.statusCode = 301;
-//                 response.setHeader('Location', '/users');
-//                 response.setHeader('Cache-Control', 'public, max-age=1800');
-//                 response.end('Redirecting');
-//             } else {
-//                 response.statusCode = 200;
-//                 response.setHeader('Content-Type', 'text/html');
-//                 response.setHeader('Cache-Control', 'public, max-age=1800');
-//                 fs.readFile(__dirname + '/MusicApp.html', function(err, data) {
-//                     response.end(data);
-//                 });
-//             }
-//         });
-//     }
-// };
+var tryToGetHtml = function(request, response) {
+    var key = request.cookies.sessionKey;
+
+    if (key == undefined) {
+        response.statusCode = 301;
+        response.setHeader('Location', '/users');
+        response.setHeader('Cache-Control', 'public, max-age=1800');
+        response.end('Redirecting');
+    } else {
+        models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
+            if (searchResult == undefined) {
+                response.statusCode = 301;
+                response.setHeader('Location', '/users');
+                response.setHeader('Cache-Control', 'public, max-age=1800');
+                response.end('Redirecting');
+            } else {
+                getHtml(request, response);
+            }
+        });
+    }
+};
 
 var generateKey = function() {
     var sha = crypto.createHash('sha256');
@@ -58,9 +53,9 @@ var generateKey = function() {
     return sha.digest('hex');
 };
 
-app.get('/library', getHtml);
-app.get('/playlists', getHtml);
-app.get('/search', getHtml);
+app.get('/library', tryToGetHtml);
+app.get('/playlists', tryToGetHtml);
+app.get('/search', tryToGetHtml);
 app.get('/users', getHtml);
 
 app.get('/playlist.css', function(request, response) {

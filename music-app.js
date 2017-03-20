@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// Initialization
+// Variable
 
 window.MUSIC_DATA = {};
 var clicked_id = -1;
@@ -8,50 +8,6 @@ var sort_method = 1; // 0 means sorted by artist, 1 means sorted by title
 var songsLoaded = false;
 var usersLoaded = false;
 var playlistsLoaded = false;
-
-
-/* Fetch data of playlists from server */
-var socket = io('/');
-
-socket.on('deleteSongFromPlaylist', function(data) {
-    var songId = JSON.parse(data).songId;
-    var playlistId = JSON.parse(data).playlistId;
-    deleteSongFromPlaylistInUIAndMemory(songId, playlistId);
-});
-
-socket.on('addSongToPlaylist', function(data) {
-    var songId = JSON.parse(data).songId;
-    var playlistId = JSON.parse(data).playlistId;
-    addSongToPlaylistInUIAndMemory(songId, playlistId);
-});
-
-$.get('/api/playlists', function(data) {
-    window.MUSIC_DATA.playlists = JSON.parse(data).playlists;
-    //console.log("Length of playlists:" + window.MUSIC_DATA.playlists.length);
-    playlistsLoaded = true;
-    if (songsLoaded == true && usersLoaded == true) {
-        runApplication();
-    }
-});
-
-/* Fetch data of songs from server */
-$.get('/api/songs', function(data) {
-    window.MUSIC_DATA.songs = JSON.parse(data).songs;
-    //console.log("Length of songs:" + window.MUSIC_DATA.songs.length);
-    songsLoaded = true;
-    if (playlistsLoaded == true && usersLoaded == true) {
-        runApplication();
-    }
-});
-
-$.get('/api/users', function(data) {
-    window.MUSIC_DATA.users = JSON.parse(data).users;
-    usersLoaded = true;
-    console.log(data);
-    if (playlistsLoaded == true && songsLoaded == true) {
-        runApplication();
-    }
-});
 
 ///////////////////////////////////////////////////////////////////////////
 // Function
@@ -449,8 +405,6 @@ function addUserOption(user) {
     };
 }
 
-
-
 function isElementAlreadyInTheArray(elem, array) {
     for (var i = 0; i < array.length; i++) {
         if (array[i] === elem) {
@@ -602,6 +556,7 @@ document.getElementsByClassName("menu__item--search")[0].children[0].onclick  = 
 };
 
 document.getElementsByClassName("menu__item--users")[0].children[0].onclick  = function() {
+    console.log("aha?");
     switchView(event, 'users');
 };
 
@@ -627,7 +582,7 @@ document.getElementById("loginConfirm").onclick = function() {
 
     $.post('./login', JSON.stringify(userInfo), function(data, status) {
         if (status === 'success') {
-            document.getElementsByClassName("menu__item--playlists")[0].children[0].click();
+            location.pathname ='/playlists';
         } else {
             console.log(data);
         }
@@ -641,3 +596,52 @@ document.getElementById("close-modal2").onclick = function() {
 document.getElementById("close-modal").onclick = function() {
     document.getElementById("myModal").style.display = "none";
 };
+
+///////////////////////////////////////////////////////////////////////////
+// Initialization
+
+/* Fetch data of playlists from server */
+var socket = io('/');
+
+socket.on('deleteSongFromPlaylist', function(data) {
+    var songId = JSON.parse(data).songId;
+    var playlistId = JSON.parse(data).playlistId;
+    deleteSongFromPlaylistInUIAndMemory(songId, playlistId);
+});
+
+socket.on('addSongToPlaylist', function(data) {
+    var songId = JSON.parse(data).songId;
+    var playlistId = JSON.parse(data).playlistId;
+    addSongToPlaylistInUIAndMemory(songId, playlistId);
+});
+
+if (window.location.href.indexOf('/users') > -1) {
+    document.getElementsByClassName("menu__item--users")[0].children[0].click();
+}
+
+/* Fetch data of playlists from server */
+$.get('/api/playlists', function(data) {
+    window.MUSIC_DATA.playlists = JSON.parse(data).playlists;
+    playlistsLoaded = true;
+    if (songsLoaded == true && usersLoaded == true) {
+        runApplication();
+    }
+});
+
+/* Fetch data of songs from server */
+$.get('/api/songs', function(data) {
+    window.MUSIC_DATA.songs = JSON.parse(data).songs;
+    songsLoaded = true;
+    if (playlistsLoaded == true && usersLoaded == true) {
+        runApplication();
+    }
+});
+
+/* Fetch data of users from server */
+$.get('/api/users', function(data) {
+    window.MUSIC_DATA.users = JSON.parse(data).users;
+    usersLoaded = true;
+    if (playlistsLoaded == true && songsLoaded == true) {
+        runApplication();
+    }
+});
