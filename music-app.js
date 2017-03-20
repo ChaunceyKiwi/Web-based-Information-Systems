@@ -556,7 +556,6 @@ document.getElementsByClassName("menu__item--search")[0].children[0].onclick  = 
 };
 
 document.getElementsByClassName("menu__item--users")[0].children[0].onclick  = function() {
-    console.log("aha?");
     switchView(event, 'users');
 };
 
