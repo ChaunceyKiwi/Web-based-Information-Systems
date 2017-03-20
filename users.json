@@ -11,12 +11,6 @@
       "username": "Bar",
       "password": "456",
       "playlists": [1, 2]
-    },
-    {
-      "id": 3,
-      "username": "Chauncey",
-      "password": "lcx411370939",
-      "playlists": [2]
     }
   ]
 }
