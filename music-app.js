@@ -5,7 +5,9 @@ window.MUSIC_DATA = {};
 var clicked_id = -1;
 var sort_method = 1; // 0 means sorted by artist, 1 means sorted by title
 var songsLoaded = false;
+var usersLoaded = false;
 var playlistsLoaded = false;
+
 
 /* Fetch data of playlists from server */
 var socket = io('/');
@@ -26,7 +28,7 @@ $.get('/api/playlists', function(data) {
     window.MUSIC_DATA.playlists = JSON.parse(data).playlists;
     //console.log("Length of playlists:" + window.MUSIC_DATA.playlists.length);
     playlistsLoaded = true;
-    if (songsLoaded == true) {
+    if (songsLoaded == true && usersLoaded == true) {
         runApplication();
     }
 });
@@ -36,14 +38,19 @@ $.get('/api/songs', function(data) {
     window.MUSIC_DATA.songs = JSON.parse(data).songs;
     //console.log("Length of songs:" + window.MUSIC_DATA.songs.length);
     songsLoaded = true;
-    if (playlistsLoaded == true) {
+    if (playlistsLoaded == true && usersLoaded == true) {
         runApplication();
     }
 });
 
-// $.get('/api/users', function(data)) {
-//     window.MUSIC_DATA
-// }
+$.get('/api/users', function(data) {
+    window.MUSIC_DATA.users = JSON.parse(data).users;
+    usersLoaded = true;
+    console.log(data);
+    if (playlistsLoaded == true && songsLoaded == true) {
+        runApplication();
+    }
+});
 
 ///////////////////////////////////////////////////////////////////////////
 // Function
@@ -190,9 +197,14 @@ function addContentOfPlaylistOutline(playlist) {
 
     var heading_name = document.createTextNode(playlist.name);
 
+    var addUserToPlaylistButton = document.createElement("button");
+    addUserToPlaylistButton.className = "btn btn-default";
+    addUserToPlaylistButton.innerHTML = "<span class='glyphicon glyphicon-plus'></span> Playlist";
+
     playlists.appendChild(playlist_content);
     playlist_content.appendChild(playlist_content_container);
     playlist_content_container.appendChild(playlist_content_heading);
+    playlist_content_container.appendChild(addUserToPlaylistButton);
     playlist_content_heading.appendChild(heading_name);
 }
 

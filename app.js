@@ -147,9 +147,22 @@ app.get('/api/songs', function(request, response) {
             data["songs"] = songs.map(function(song){
                 return song.get({plain: true});
             });
-
-        response.end(JSON.stringify(data));
+            response.end(JSON.stringify(data));
         });
+});
+
+app.get('/api/users', function(request, response) {
+   var data = {};
+   models.User.findAll({
+       attributes: ['id', 'username']
+   }).then(function(users) {
+       response.statusCode = 200;
+       response.setHeader('Content_type', 'application/json');
+       data["users"] = users.map(function(user) {
+           return user.get({plain: true});
+       });
+       response.end(JSON.stringify(data));
+   })
 });
 
 // add a song to a playlist
@@ -186,19 +199,6 @@ app.post('/api/playlists/:playlistId([0-9]+)', function(request, response) {
     }
 });
 
-io.on('connection', function(socket) {
-    console.log('A user connected!');
-
-    // When a user request for a playlist, send it
-    socket.on('deleteSongFromPlaylist', function(msg) {
-        io.emit('deleteSongFromPlaylist', msg);
-    });
-
-    socket.on('addSongToPlaylist', function(msg) {
-        io.emit('addSongToPlaylist', msg);
-    });
-});
-
 // create a new playlist
 app.post('/api/playlists', function(request, response) {
     var playlist = JSON.parse(Object.keys(request.body)[0]);
@@ -231,9 +231,9 @@ app.post('/login', function(request, response) {
                     }).then(function(SessionInstance) {
                         models.User.findById(searchResult[0].id).then(function(user) {
                             SessionInstance.setUser(user);
-                            response.statusCode = 200;
-                            response.setHeader('Set-Cookie', "sessionKey=" + key_generated);
-                            response.redirect('/playlists');
+                            // response.statusCode = 200;
+                            // response.setHeader('Set-Cookie', "sessionKey=" + key_generated);
+                            response.writeHead(200, {'Cache-Control' : 'cacheTime' ,'Set-Cookie' : 'sessionKey=' + key_generated});
                             response.end();
                         })
                     });
@@ -281,6 +281,19 @@ app.delete('/playlists/:playlistId', function(request, response) {
             }
         });
     }
+});
+
+io.on('connection', function(socket) {
+    console.log('A user connected!');
+
+    // When a user request for a playlist, send it
+    socket.on('deleteSongFromPlaylist', function(msg) {
+        io.emit('deleteSongFromPlaylist', msg);
+    });
+
+    socket.on('addSongToPlaylist', function(msg) {
+        io.emit('addSongToPlaylist', msg);
+    });
 });
 
 server.listen(3000, function () {
