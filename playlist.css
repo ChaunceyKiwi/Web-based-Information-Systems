@@ -63,6 +63,20 @@ body {
   .playlists-item:active {
     background-color: #a281d3; }
 
+.btn-addUser {
+  color: white;
+  background-color: #936AC7;
+  width: 25%;
+  height: 10vmin;
+  font-size: 5vmin;
+  font-weight: normal;
+  outline: 0;
+  bottom: 2.1vmin; }
+  .btn-addUser:hover, .btn-addUser:focus {
+    background-color: #664a8b;
+    color: white;
+    outline: 0; }
+
 .btn-addlist {
   color: white;
   background-color: #936AC7;
@@ -271,11 +285,11 @@ div.song-artist {
   font-size: 7vmin;
   top: -1vmin; }
 
-.playlist-items-for-modal {
+.playlist-items-for-modal, .users-for-modal {
   position: relative;
   width: 50vmin; }
 
-.playlist-in-model {
+.playlist-in-modal, .user-in-modal {
   width: 100%;
   position: relative;
   float: left;

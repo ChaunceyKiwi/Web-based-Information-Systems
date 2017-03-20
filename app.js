@@ -199,6 +199,39 @@ app.post('/api/playlists/:playlistId([0-9]+)', function(request, response) {
     }
 });
 
+app.post('/api/playlists/:id/users', function(request, response) {
+    var userId = JSON.parse(Object.keys(request.body)[0]).user;
+    var playlistId = request.params['id'];
+    var key = request.cookies.sessionKey;
+
+    if (key == undefined) {
+        console.log("No session key found!");
+    } else {
+        models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
+            if (searchResult == undefined) {
+                console.log("Fake or outdated session key!");
+            } else {
+                searchResult.getUser().then(function(user) {
+                    user.getPlaylists({
+                        where: {'id': playlistId}
+                    }).then(function(PlaylistInstance) {
+                        if (PlaylistInstance.length == 0) {
+                            response.statusCode = 403;
+                            response.end("Authorization failed!");
+                        } else {
+                            models.User.findById(userId).then(function(user) {
+                                PlaylistInstance[0].addUser(user);
+                                response.statusCode = 200;
+                                response.end("success!");
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    }
+});
+
 // create a new playlist
 app.post('/api/playlists', function(request, response) {
     var playlist = JSON.parse(Object.keys(request.body)[0]);
@@ -216,6 +249,9 @@ app.post('/api/playlists', function(request, response) {
 
 app.post('/login', function(request, response) {
     var userInfo = JSON.parse(Object.keys(request.body)[0]);
+
+    console.log(userInfo);
+
     models.User.findAll({
         where: {
             username: userInfo.username
@@ -223,7 +259,6 @@ app.post('/login', function(request, response) {
     }).then(function(searchResult) {
         var key_generated = generateKey();
         if (searchResult.length === 1) {
-
             bcrypt.compare(userInfo.password, searchResult[0].password, function(err, res) {
                 if(res) {
                     models.Session.create({
@@ -231,9 +266,8 @@ app.post('/login', function(request, response) {
                     }).then(function(SessionInstance) {
                         models.User.findById(searchResult[0].id).then(function(user) {
                             SessionInstance.setUser(user);
-                            // response.statusCode = 200;
-                            // response.setHeader('Set-Cookie', "sessionKey=" + key_generated);
-                            response.writeHead(200, {'Cache-Control' : 'cacheTime' ,'Set-Cookie' : 'sessionKey=' + key_generated});
+                            response.statusCode = 200;
+                            response.setHeader('Set-Cookie', "sessionKey=" + key_generated);
                             response.end();
                         })
                     });

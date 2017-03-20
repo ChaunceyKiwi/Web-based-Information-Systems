@@ -49,6 +49,7 @@ models.sequelize.sync({force: true}).then(function() {
         users.forEach(function(user) {
             bcrypt.hash(user.password.toString(), 10, function(err, hash) {
                 models.User.create({
+                    id: user.id.toString(),
                     username: user.username,
                     password: hash
                 }).then(function(UserInstance) {

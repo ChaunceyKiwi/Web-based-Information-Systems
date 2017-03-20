@@ -3,6 +3,7 @@
 
 window.MUSIC_DATA = {};
 var clicked_id = -1;
+var clicked_id_for_user= -1;
 var sort_method = 1; // 0 means sorted by artist, 1 means sorted by title
 var songsLoaded = false;
 var usersLoaded = false;
@@ -61,6 +62,17 @@ function getPlaylistById(id) {
         var playlist = window.MUSIC_DATA.playlists[i];
         if (playlist.id === id) {
             return playlist;
+        }
+    }
+    return null;
+}
+
+function getUserByName(username) {
+    var i;
+    for (i = 0; i < window.MUSIC_DATA.users.length; i++) {
+        var user = window.MUSIC_DATA.users[i];
+        if (user.username === username) {
+            return user;
         }
     }
     return null;
@@ -135,7 +147,15 @@ function deleteSongFromPlaylist(songId, playlistId) {
             console.log(result);
         }
     });
+}
 
+function addUserToPlaylist(userId, playlistId) {
+    var obj = {};
+    obj.user = userId;
+
+    $.post('/api/playlists/' + playlistId + "/users", JSON.stringify(obj), function(result) {
+        console.log(result);
+    });
 }
 
 function createNewPlaylist(name) {
@@ -192,20 +212,29 @@ function addContentOfPlaylistOutline(playlist) {
     playlist_content_container.className = "col-xs-12 col-sm-12 col-md-12 col-lg-12 playlist-content-container";
     playlist_content_container.id = "playlist-content-container" + playlist.id;
 
+    var playlist_content_header = document.createElement("div");
+    playlist_content_header.className = "row";
+
     var playlist_content_heading = document.createElement("div");
-    playlist_content_heading.className = "playlist-content-heading";
+    playlist_content_heading.className = "playlist-content-heading col-xs-8 col-sm-8 col-md-8 col-lg-8";
 
     var heading_name = document.createTextNode(playlist.name);
 
     var addUserToPlaylistButton = document.createElement("button");
-    addUserToPlaylistButton.className = "btn btn-default";
-    addUserToPlaylistButton.innerHTML = "<span class='glyphicon glyphicon-plus'></span> Playlist";
+    addUserToPlaylistButton.className = "btn btn-addUser col-xs-4 col-sm-4 col-md-4 col-lg-4";
+    addUserToPlaylistButton.innerHTML = "<span class='glyphicon glyphicon-plus'></span> User";
+
+    addUserToPlaylistButton.onclick = function() {
+        document.getElementById("myModal3").style.display = "block";
+        clicked_id_for_user = event.target.parentElement.parentElement.id.replace("playlist-content-container","");
+    };
 
     playlists.appendChild(playlist_content);
     playlist_content.appendChild(playlist_content_container);
-    playlist_content_container.appendChild(playlist_content_heading);
-    playlist_content_container.appendChild(addUserToPlaylistButton);
+    playlist_content_container.appendChild(playlist_content_header);
     playlist_content_heading.appendChild(heading_name);
+    playlist_content_header.appendChild(playlist_content_heading);
+    playlist_content_header.appendChild(addUserToPlaylistButton);
 }
 
 // add content of playlist to playlists tab
@@ -383,7 +412,7 @@ function addModalOption(playlist) {
     // Add modal options
     var items = document.getElementById("playlist-items-for-modal");
     var itemForModal = document.createElement("a");
-    itemForModal.className = "playlist-in-model";
+    itemForModal.className = "playlist-in-modal";
     var text = document.createTextNode(playlist.name);
     itemForModal.appendChild(text);
     items.appendChild(itemForModal);
@@ -399,6 +428,28 @@ function addModalOption(playlist) {
         document.getElementById("myModal").style.display = "none";
     };
 }
+
+// modal initialization for adding user
+function addUserOption(user) {
+    // Add modal options
+    var items = document.getElementById("users-for-modal");
+    var itemForModal = document.createElement("a");
+    itemForModal.className = "user-in-modal";
+    var text = document.createTextNode(user.username);
+    itemForModal.appendChild(text);
+    items.appendChild(itemForModal);
+
+    // when click name of playlist, add song to that list
+    itemForModal.onclick = function() {
+        var username = event.target.innerText;
+        var user = getUserByName(username);
+        var userId = user.id;
+        addUserToPlaylist(userId, clicked_id_for_user);
+        document.getElementById("myModal3").style.display = "none";
+    };
+}
+
+
 
 function isElementAlreadyInTheArray(elem, array) {
     for (var i = 0; i < array.length; i++) {
@@ -419,6 +470,11 @@ function runApplication() {
         addModalOption(playlist);
         addContentOfPlaylistOutline(playlist);
         addContentOfPlaylistDetail(playlist);
+    }
+
+    for (i = 0; i < window.MUSIC_DATA.users.length; i++) {
+        var user = window.MUSIC_DATA.users[i];
+        addUserOption(user);
     }
 
     for (i = 0; i < window.MUSIC_DATA.songs.length; i++) {

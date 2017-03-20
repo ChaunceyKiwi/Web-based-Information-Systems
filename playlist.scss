@@ -114,6 +114,22 @@ body {
 //////////////////////////////////////
 //Style for content of playlists and songs
 
+.btn-addUser {
+  color: $button-font-color;
+  background-color: $theme-color;
+  width: 25%;
+  height: 10vmin;
+  font-size: 5vmin;
+  font-weight: normal;
+  outline: 0;
+  bottom: 2.1vmin;
+  &:hover, &:focus {
+    background-color: $theme-color-darker;
+    color: $button-font-color;
+    outline: 0;
+  }
+}
+
 .btn-addlist {
   color: $button-font-color;
   background-color: $theme-color;
@@ -367,12 +383,12 @@ div.song-artist {
   top: -1vmin;
 }
 
-.playlist-items-for-modal {
+.playlist-items-for-modal, .users-for-modal{
   position: relative;
   width: 50vmin;
 }
 
-.playlist-in-model {
+.playlist-in-modal, .user-in-modal {
   width: 100%;
   position: relative;
   float: left;
