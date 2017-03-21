@@ -24,37 +24,15 @@ var getHtml = function(request, response) {
     });
 };
 
-var tryToGetHtml = function(request, response) {
-    var key = request.cookies.sessionKey;
-
-    if (key == undefined) {
-        response.statusCode = 301;
-        response.setHeader('Location', '/login');
-        response.setHeader('Cache-Control', 'public, max-age=1800');
-        response.end('Redirecting');
-    } else {
-        models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
-            if (searchResult == undefined) {
-                response.statusCode = 301;
-                response.setHeader('Location', '/login');
-                response.setHeader('Cache-Control', 'public, max-age=1800');
-                response.end('Redirecting');
-            } else {
-                getHtml(request, response);
-            }
-        });
-    }
-};
-
 var generateKey = function() {
     var sha = crypto.createHash('sha256');
     sha.update(Math.random().toString());
     return sha.digest('hex');
 };
 
-app.get('/library', tryToGetHtml);
-app.get('/playlists', tryToGetHtml);
-app.get('/search', tryToGetHtml);
+app.get('/library', getHtml);
+app.get('/playlists', getHtml);
+app.get('/search', getHtml);
 app.get('/login', getHtml);
 
 app.get('/playlist.css', function(request, response) {
