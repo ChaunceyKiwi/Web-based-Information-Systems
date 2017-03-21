@@ -194,6 +194,30 @@ app.post('/api/playlists/:playlistId([0-9]+)', function(request, response) {
     }
 });
 
+// return the information of local machine
+app.get('/api/myInfo', function(request, response) {
+    var key = request.cookies.sessionKey;
+    var userData = {};
+
+    if (key == undefined) {
+        console.log("No session key found!");
+    } else {
+        models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
+            if (searchResult == undefined) {
+                console.log("Fake or outdated session key!");
+            } else {
+                searchResult.getUser().then(function(user) {
+                    userData.id = user.id;
+                    userData.username = user.username;
+                    response.statusCode = 200;
+                    response.end(JSON.stringify(userData));
+                });
+            }
+        });
+    }
+});
+
+
 app.post('/api/playlists/:id/users', function(request, response) {
     var userId = JSON.parse(Object.keys(request.body)[0]).user;
     var playlistId = request.params['id'];
@@ -231,14 +255,20 @@ app.post('/api/playlists/:id/users', function(request, response) {
 app.post('/api/playlists', function(request, response) {
     var playlist = JSON.parse(Object.keys(request.body)[0]);
     var obj = {};
+    var userId = playlist.userId;
 
     models.Playlist.create({
         name: playlist.name
     }).then(function(PlaylistInstance) {
-        obj.id = PlaylistInstance.id;
-        obj.name = PlaylistInstance.name;
-        response.statusCode = 200;
-        response.end(JSON.stringify(obj));
+        console.log(userId);
+        models.User.findById(userId).then(function(user) {
+            console.log("Found");
+            obj.id = PlaylistInstance.id;
+            obj.name = PlaylistInstance.name;
+            PlaylistInstance.addUser(user);
+            response.statusCode = 200;
+            response.end(JSON.stringify(obj));
+        });
     });
 });
 
