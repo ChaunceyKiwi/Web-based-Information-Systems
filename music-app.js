@@ -591,6 +591,10 @@ document.getElementById("loginConfirm").onclick = function() {
     });
 };
 
+document.getElementById("close-modal3").onclick = function() {
+    document.getElementById("myModal3").style.display = "none";
+};
+
 document.getElementById("close-modal2").onclick = function() {
     document.getElementById("myModal2").style.display = "none";
 };
