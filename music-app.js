@@ -448,8 +448,8 @@ function runApplication() {
         document.getElementsByClassName("menu__item--library")[0].children[0].click();
     } else if (window.location.href.indexOf('/search') > -1) {
         document.getElementsByClassName("menu__item--search")[0].children[0].click();
-    } else if (window.location.href.indexOf('/users') > -1) {
-        document.getElementsByClassName("menu__item--users")[0].children[0].click();
+    } else if (window.location.href.indexOf('/login') > -1) {
+        document.getElementsByClassName("menu__item--login")[0].children[0].click();
     }
 }
 
@@ -557,8 +557,8 @@ document.getElementsByClassName("menu__item--search")[0].children[0].onclick  = 
     switchView(event, 'search');
 };
 
-document.getElementsByClassName("menu__item--users")[0].children[0].onclick  = function() {
-    switchView(event, 'users');
+document.getElementsByClassName("menu__item--login")[0].children[0].onclick  = function() {
+    switchView(event, 'login');
 };
 
 document.getElementById("btn-addlist").onclick = function() {
@@ -624,8 +624,8 @@ socket.on('addSongToPlaylist', function(data) {
     }
 });
 
-if (window.location.href.indexOf('/users') > -1) {
-    document.getElementsByClassName("menu__item--users")[0].children[0].click();
+if (window.location.href.indexOf('/login') > -1) {
+    document.getElementsByClassName("menu__item--login")[0].children[0].click();
 }
 
 /* Fetch data of playlists from server */

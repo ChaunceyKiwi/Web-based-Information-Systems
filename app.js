@@ -29,14 +29,14 @@ var tryToGetHtml = function(request, response) {
 
     if (key == undefined) {
         response.statusCode = 301;
-        response.setHeader('Location', '/users');
+        response.setHeader('Location', '/login');
         response.setHeader('Cache-Control', 'public, max-age=1800');
         response.end('Redirecting');
     } else {
         models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
             if (searchResult == undefined) {
                 response.statusCode = 301;
-                response.setHeader('Location', '/users');
+                response.setHeader('Location', '/login');
                 response.setHeader('Cache-Control', 'public, max-age=1800');
                 response.end('Redirecting');
             } else {
@@ -55,7 +55,7 @@ var generateKey = function() {
 app.get('/library', tryToGetHtml);
 app.get('/playlists', tryToGetHtml);
 app.get('/search', tryToGetHtml);
-app.get('/users', getHtml);
+app.get('/login', getHtml);
 
 app.get('/playlist.css', function(request, response) {
     response.statusCode = 200;
