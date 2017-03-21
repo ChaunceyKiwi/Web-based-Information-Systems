@@ -635,10 +635,6 @@ socket.on('addSongToPlaylist', function(data) {
     }
 });
 
-if (window.location.href.indexOf('/login') > -1) {
-    document.getElementsByClassName("menu__item--login")[0].children[0].click();
-}
-
 /* Fetch data of playlists from server */
 $.get('/api/playlists', function(data) {
     window.MUSIC_DATA.playlists = JSON.parse(data).playlists;
@@ -670,7 +666,7 @@ $.get('/api/users', function(data) {
 $.get('/api/myInfo', function(data) {
     if (data === "Unauthorized") {
         infoLoaded = false;
-        location.pathname ='/login';
+        document.getElementsByClassName("menu__item--login")[0].children[0].click();
     } else {
         user_id = JSON.parse(data).id;
         infoLoaded = true;
