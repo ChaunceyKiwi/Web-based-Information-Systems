@@ -178,10 +178,13 @@ app.get('/api/myInfo', function(request, response) {
 
     if (key == undefined) {
         console.log("No session key found!");
+        response.statusCode = 200;
+        response.end("Unauthorized");
     } else {
         models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
             if (searchResult == undefined) {
-                console.log("Fake or outdated session key!");
+                response.statusCode = 200;
+                response.end("Unauthorized");
             } else {
                 searchResult.getUser().then(function(user) {
                     userData.id = user.id;

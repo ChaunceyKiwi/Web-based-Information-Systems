@@ -668,9 +668,14 @@ $.get('/api/users', function(data) {
 
 /* Fetch data of local machine from server */
 $.get('/api/myInfo', function(data) {
-    user_id = JSON.parse(data).id;
-    infoLoaded = true;
-    if (playlistsLoaded == true && songsLoaded == true && usersLoaded == true) {
-        runApplication();
+    if (data === "Unauthorized") {
+        infoLoaded = false;
+        location.pathname ='/login';
+    } else {
+        user_id = JSON.parse(data).id;
+        infoLoaded = true;
+        if (playlistsLoaded == true && songsLoaded == true && usersLoaded == true) {
+            runApplication();
+        }
     }
 });
