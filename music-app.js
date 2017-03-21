@@ -51,7 +51,6 @@ function addSongToPlaylistInUIAndMemory(songId, playlistId) {
     addContentOfPlaylistDetail(playlist);
 }
 
-
 function addSongToPlaylistInDb(songId, playlistId) {
     var obj = {};
     obj.song = parseInt(songId);
@@ -664,4 +663,3 @@ $.get('/api/myInfo', function(data) {
         runApplication();
     }
 });
-

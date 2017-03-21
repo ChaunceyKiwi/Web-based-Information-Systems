@@ -6,7 +6,6 @@ var crypto = require('crypto');
 var cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 
-
 var app = express();
 app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({   // to support URL-encoded bodies
@@ -217,7 +216,7 @@ app.get('/api/myInfo', function(request, response) {
     }
 });
 
-
+// give user authority on playlist
 app.post('/api/playlists/:id/users', function(request, response) {
     var userId = JSON.parse(Object.keys(request.body)[0]).user;
     var playlistId = request.params['id'];
@@ -272,6 +271,7 @@ app.post('/api/playlists', function(request, response) {
     });
 });
 
+// handling login request
 app.post('/login', function(request, response) {
     var userInfo = JSON.parse(Object.keys(request.body)[0]);
 
