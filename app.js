@@ -90,6 +90,7 @@ var getPlaylists = function(callback, request){
                             }
                             jsonObj["songs"] =  jsonObj["Songs"];
                             delete jsonObj["Songs"];
+                            delete jsonObj["Users_Playlists"];
                             return jsonObj;
                         });
 
