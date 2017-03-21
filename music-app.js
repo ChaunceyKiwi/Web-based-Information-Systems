@@ -1,6 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
 // Variable
-
 window.MUSIC_DATA = {};
 var user_id = -1;
 var clicked_id = -1;
@@ -546,15 +545,27 @@ document.getElementById("search-bar").onkeyup = function() {
 };
 
 document.getElementsByClassName("menu__item--library")[0].children[0].onclick  = function() {
-    switchView(event, 'library');
+    if(infoLoaded) {
+        switchView(event, 'library');
+    } else {
+        document.getElementsByClassName("menu__item--login")[0].children[0].click();
+    }
 };
 
 document.getElementsByClassName("menu__item--playlists")[0].children[0].onclick  = function() {
-    switchView(event, 'playlists');
+    if(infoLoaded) {
+        switchView(event, 'playlists');
+    } else {
+        document.getElementsByClassName("menu__item--login")[0].children[0].click();
+    }
 };
 
 document.getElementsByClassName("menu__item--search")[0].children[0].onclick  = function() {
-    switchView(event, 'search');
+    if(infoLoaded) {
+        switchView(event, 'search');
+    } else {
+        document.getElementsByClassName("menu__item--login")[0].children[0].click();
+    }
 };
 
 document.getElementsByClassName("menu__item--login")[0].children[0].onclick  = function() {
