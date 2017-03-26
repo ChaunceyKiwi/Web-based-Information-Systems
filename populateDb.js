@@ -26,6 +26,11 @@ models.sequelize.sync({force: true}).then(function() {
                 models.Room.findById(roomId).then(function(room) {
                     room.addUser(UserInstance);
                 });
+                if (user.hostOfRoom != -1) {
+                    models.Room.findById(user.hostOfRoom).then(function(room){
+                        room.setUser(UserInstance);
+                    });
+                }
             });
         });
     });

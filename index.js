@@ -17,11 +17,34 @@ $("#btn-create-game").click(function() {
     });
 });
 
+$("#btn-search-room").click(function() {
+    var roomId = $("#input-search-room");
+    $.get('/room/' + roomId.val(), function(data) {
+        console.log(data);
+    });
+});
+
 $("#btn-create-user").click(function() {
     var userObj = {};
     var username = $("#input-username");
     userObj.username = username.val();
-    $.post('/api/user', JSON.stringify(userObj), function(data) {
+    $.post('/createUser', JSON.stringify(userObj), function(data) {
         console.log(data);
+    });
+});
+
+$("#btn-exit").click(function() {
+    $.ajax({
+        url: '/room/exit',
+        type: 'DELETE',
+        contentType:'application/json',
+        dataType: 'text',
+
+        success: function(result) {
+            console.log(result);
+        },
+        error: function(result){
+            console.log(result);
+        }
     });
 });

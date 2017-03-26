@@ -9,11 +9,11 @@ module.exports = function(sequelize, DataType) {
             }
         }, {
             classMethods: {
-                // associate: function(models) {
-                //     User.hasOne(models.Room, {
-                //         through: 'Users_Rooms'
-                //     });
-                // }
+                associate: function(models) {
+                    User.belongsToMany(models.Room, {
+                        through: 'Users_Rooms'
+                    });
+                }
             }
         }
     );

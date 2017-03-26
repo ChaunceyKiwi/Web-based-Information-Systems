@@ -3,32 +3,38 @@
     {
       "id": 0,
       "username": "Amy",
-      "roomId": 0
+      "roomId": 0,
+      "hostOfRoom": 0
     },
     {
       "id": 1,
       "username": "Bob",
-      "roomId": 0
+      "roomId": 0,
+      "hostOfRoom": -1
     },
     {
       "id": 2,
       "username": "Cook",
-      "roomId": 1
+      "roomId": 1,
+      "hostOfRoom": 1
     },
     {
       "id": 3,
       "username": "Danny",
-      "roomId": 2
+      "roomId": 2,
+      "hostOfRoom": 2
     },
     {
       "id": 4,
       "username": "Eva",
-      "roomId": 1
+      "roomId": 1,
+      "hostOfRoom": -1
     },
     {
       "id": 5,
       "username": "Forest",
-      "roomId": 2
+      "roomId": 2,
+      "hostOfRoom": -1
     }
   ]
 }
