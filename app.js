@@ -251,6 +251,7 @@ app.delete('/room/exit', function(req, res) {
 });
 
 // Send a message to all members in current room
+// Return {username, roomId, message}
 app.post('/api/chat' , function(req, res) {
     var key = req.cookies.sessionKey;
     var msg = Object.keys(req.body)[0];
