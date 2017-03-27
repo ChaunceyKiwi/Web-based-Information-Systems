@@ -104,7 +104,7 @@ app.post('/api/room', function(req, res) {
 });
 
 // Create a new user and put at game center
-// Return {id, username, roomId, members}
+// Return {id, members}
 app.post('/createUser', function(req, res) {
     var userObj = JSON.parse(Object.keys(req.body)[0]);
     var userObjReturned = {};
@@ -113,8 +113,6 @@ app.post('/createUser', function(req, res) {
         if (searchResult == undefined) {
             models.User.create({username: userObj.username}).then(function(UserInstance) {
                 userObjReturned.id = UserInstance.id;
-                userObjReturned.username = UserInstance.username;
-                userObjReturned.roomId = gameCenterId;
 
                 models.Room.findById(gameCenterId).then(function(gameCenter) {
                     gameCenter.addUser(UserInstance).then(function() {
@@ -152,7 +150,7 @@ app.post('/createUser', function(req, res) {
 });
 
 // Search and enter a room
-// Return {roomId,members}
+// Return {roomId, members}
 app.get('/room/:id', function(req, res) {
     var key = req.cookies.sessionKey;
     var roomId = req.params['id'];

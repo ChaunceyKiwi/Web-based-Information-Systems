@@ -137,7 +137,7 @@ $("#btn-create-user").click(function() {
         joinInfo.roomId = gameCenterId;
         socket.emit("addUserToRoom", JSON.stringify(joinInfo));
 
-        updateRoomId(res.roomId);
+        updateRoomId(gameCenterId);
         updateUserId(res.id);
         updateRoomMembers(res.members);
         console.log(data);
