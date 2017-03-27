@@ -28,6 +28,7 @@ app.get('/index.js', function(req, res) {
 });
 
 // Get the information of current user
+// return {userId, roomId, usersInRoom}
 app.get('/api/getInfo', function(req, res) {
     var key = req.cookies.sessionKey;
     var obj = {};
@@ -59,6 +60,7 @@ app.get('/api/getInfo', function(req, res) {
                             });
                             getIdArray(obj.usersInRoom);
                             res.end(JSON.stringify(obj));
+                            console.log(obj);
                         });
                     });
                 });
@@ -68,6 +70,7 @@ app.get('/api/getInfo', function(req, res) {
 });
 
 // Create a new room
+// Return {location, roomId, members}
 app.post('/api/room', function(req, res) {
     var key = req.cookies.sessionKey;
 
@@ -92,6 +95,7 @@ app.post('/api/room', function(req, res) {
                         user.setRooms([]);
                         user.addRoom(RoomInstance);
                         res.statusCode = 200;
+                        console.log(roomInfo);
                         res.end(JSON.stringify(roomInfo));
                     });
                 });
@@ -101,6 +105,7 @@ app.post('/api/room', function(req, res) {
 });
 
 // Create a new user and put at game center
+// Return {id, username, roomId, members}
 app.post('/createUser', function(req, res) {
     var userObj = JSON.parse(Object.keys(req.body)[0]);
     var userObjReturned = {};
@@ -133,6 +138,7 @@ app.post('/createUser', function(req, res) {
                                 res.statusCode = 200;
                                 res.setHeader('Set-Cookie', "sessionKey=" + key_generated);
                                 getIdArray(userObjReturned.members);
+                                console.log(userObjReturned);
                                 res.end(JSON.stringify(userObjReturned));
                             });
                         });
@@ -147,6 +153,7 @@ app.post('/createUser', function(req, res) {
 });
 
 // Search and enter a room
+// Return {roomId,members}
 app.get('/room/:id', function(req, res) {
     var key = req.cookies.sessionKey;
     var roomId = req.params['id'];
@@ -194,6 +201,7 @@ app.get('/room/:id', function(req, res) {
 });
 
 // Exit a room
+// Return {users, usersRemain}
 app.delete('/room/exit', function(req, res) {
     var key = req.cookies.sessionKey;
     var obj = {};
@@ -237,6 +245,7 @@ app.delete('/room/exit', function(req, res) {
                                         rooms[0].setUsers(usersRemainInRoom).then(function() {
                                             getIdArray(obj.users);
                                             getIdArray(obj.usersRemain);
+                                            console.log(obj);
                                             res.end(JSON.stringify(obj));
                                         });
                                     });
@@ -297,6 +306,7 @@ http.listen(port, function() {
     console.log('Listening on port ' + port);
 });
 
+// simplify id array
 function getIdArray(IdObj) {
     var i;
     for (i = 0; i < IdObj.length; i++) {
