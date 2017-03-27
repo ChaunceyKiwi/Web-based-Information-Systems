@@ -198,7 +198,7 @@ app.get('/room/:id', function(req, res) {
 });
 
 // Exit a room
-// Return {users, usersRemain}
+// Return {users}
 app.delete('/room/exit', function(req, res) {
     var key = req.cookies.sessionKey;
     var obj = {};
@@ -234,15 +234,9 @@ app.delete('/room/exit', function(req, res) {
                                         attributes: ['id'],
                                         order:[['createdAt','ASC']]
                                     }).then(function(usersRemainInRoom) {
-                                        obj.usersRemain = usersRemainInRoom.map(function(userRemainInRoom) {
-                                            var dataReturn = userRemainInRoom.get({plain: true});
-                                            delete dataReturn["Users_Rooms"];
-                                            return dataReturn;
-                                        });
                                         rooms[0].setUsers(usersRemainInRoom).then(function() {
                                             getIdArray(obj.users);
-                                            getIdArray(obj.usersRemain);
-                                            console.log(obj);
+                                            res.statusCode = 200;
                                             res.end(JSON.stringify(obj));
                                         });
                                     });
