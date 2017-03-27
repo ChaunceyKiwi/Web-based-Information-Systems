@@ -28,7 +28,7 @@ app.get('/index.js', function(req, res) {
 });
 
 // Get the information of current user
-app.get('/api/getRoomInfo', function(req, res) {
+app.get('/api/getInfo', function(req, res) {
     var key = req.cookies.sessionKey;
     var obj = {};
 
@@ -44,12 +44,13 @@ app.get('/api/getRoomInfo', function(req, res) {
                 res.end("Fake or outdated session key!");
             } else {
                 searchResult.getUser().then(function(user) {
+                    obj.userId = user.id;
                     user.getRooms().then(function(rooms) {
                         obj.roomId = rooms[0].id;
                         // should only return rooms of length1
                         rooms[0].getUsers({
                             attributes: ['id'],
-                            order:[['updatedAt','ASC']]
+                            order:[['createdAt','ASC']]
                         }).then(function(usersInRoom) {
                             obj.usersInRoom = usersInRoom.map(function(userInRoom) {
                                 var dataReturn = userInRoom.get({plain: true});
@@ -115,7 +116,7 @@ app.post('/createUser', function(req, res) {
                     gameCenter.addUser(UserInstance).then(function() {
                         gameCenter.getUsers({
                             attributes: ['id'],
-                            order:[['updatedAt','ASC']]
+                            order:[['createdAt','ASC']]
                         }).then(function(usersInGameCenter) {
                             userObjReturned.members = usersInGameCenter.map(function(userInGameCenter) {
                                 var dataReturn = userInGameCenter.get({plain: true});
@@ -174,7 +175,7 @@ app.get('/room/:id', function(req, res) {
                                     roomInfo.roomId = RoomInstance.id;
                                     RoomInstance.getUsers({
                                         attributes: ['id'],
-                                        order:[['updatedAt','ASC']]
+                                        order:[['createdAt','ASC']]
                                     }).then(function(members) {
                                         roomInfo.members = members.map(function (member) {
                                             return member.get({plain: true}).id;
@@ -209,13 +210,11 @@ app.delete('/room/exit', function(req, res) {
                 res.end("Fake or outdated session key!");
             } else {
                 searchResult.getUser().then(function(user) {
-                    models.Room.findById(0).then(function(gameCenter) {
-
+                    models.Room.findById(gameCenterId).then(function(gameCenter) {
                         gameCenter.addUser(user).then(function() {
                             gameCenter.getUsers({
-                                where: {id: {$ne: user.id}},
                                 attributes: ['id'],
-                                order:[['updatedAt','ASC']]
+                                order:[['createdAt','ASC']]
                             }).then(function(usersInGameCenter) {
                                 obj.users = usersInGameCenter.map(function(userInGameCenter) {
                                     var dataReturn = userInGameCenter.get({plain: true});
@@ -228,7 +227,7 @@ app.delete('/room/exit', function(req, res) {
                                     rooms[0].getUsers({
                                         where: {id: {$ne: user.id}},
                                         attributes: ['id'],
-                                        order:[['updatedAt','ASC']]
+                                        order:[['createdAt','ASC']]
                                     }).then(function(usersRemainInRoom) {
                                         obj.usersRemain = usersRemainInRoom.map(function(userRemainInRoom) {
                                             var dataReturn = userRemainInRoom.get({plain: true});
@@ -285,8 +284,12 @@ app.post('/api/chat' , function(req, res) {
 });
 
 io.on('connection', function(socket){
-    socket.on('addMessageToRoom', function(msg) {
+    socket.on('addUserToRoom', function(msg) {
+        io.emit('addUserToRoom', msg);
+    });
 
+    socket.on('deleteUserFromRoom', function(msg) {
+        io.emit('deleteUserFromRoom', msg);
     });
 });
 
