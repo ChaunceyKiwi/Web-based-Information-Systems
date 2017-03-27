@@ -1,5 +1,11 @@
+////////////////////////////////////////////
+// Global variable
+
 var socket = io();
 var roomId = 0;
+
+////////////////////////////////////////////
+// Function
 
 function updateRoomId(newId) {
     roomId = newId;
@@ -10,6 +16,14 @@ function updateRoomId(newId) {
     }
 }
 
+function updateRoomMembers(roomMembers) {
+    $("#roomMembers").text("Room members: [" + roomMembers +"]");
+}
+
+////////////////////////////////////////////
+// Event binding
+
+// update chatting window when receive messages
 socket.on('addMessageToRoom', function(msg){
     msg = JSON.parse(msg);
     var roomIdOfMsg = msg.roomId;
@@ -21,24 +35,29 @@ socket.on('addMessageToRoom', function(msg){
     }
 });
 
+// Create a new room and put creator in
 $("#btn-create-game").click(function() {
     $.post('/api/room', function(data) {
         var res = JSON.parse(data);
         updateRoomId(res.roomId);
+        updateRoomMembers(res.members);
         console.log(data);
     });
 });
 
+// Search and enter a room
 $("#btn-search-room").click(function() {
     var roomSearchedId = $("#input-search-room").val();
     $("#input-search-room").val("");
     $.get('/room/' + roomSearchedId, function(data) {
         var res = JSON.parse(data);
         updateRoomId(res.roomId);
+        updateRoomMembers(res.members);
         console.log(data);
     });
 });
 
+// Create a new user and put at game center
 $("#btn-create-user").click(function() {
     var userObj = {};
     var username = $("#input-username");
@@ -47,10 +66,12 @@ $("#btn-create-user").click(function() {
     $.post('/createUser', JSON.stringify(userObj), function(data) {
         var res = JSON.parse(data);
         updateRoomId(res.roomId);
+        updateRoomMembers(res.members)
         console.log(data);
     });
 });
 
+// Exit a room
 $("#btn-exit").click(function() {
     if (roomId == 0) {
         console.log("You are already in the game center!");
@@ -63,6 +84,7 @@ $("#btn-exit").click(function() {
 
             success: function (result) {
                 updateRoomId(0);
+                updateRoomMembers(JSON.parse(result).users);
                 console.log(result);
             },
             error: function (result) {
@@ -72,7 +94,7 @@ $("#btn-exit").click(function() {
     }
 });
 
-
+// Send a message to all members in current room
 $("#btn-send-message").click(function() {
     var messageInputWindow = $('#messageInput');
     var message = messageInputWindow.val();

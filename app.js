@@ -48,6 +48,7 @@ app.post('/api/room', function(req, res) {
                         var roomInfo = {};
                         roomInfo.location = "/room/" + RoomInstance.id;
                         roomInfo.roomId = RoomInstance.id;
+                        roomInfo.members = user.id;
                         user.setRooms([]);
                         user.addRoom(RoomInstance);
                         res.statusCode = 200;
@@ -71,19 +72,31 @@ app.post('/createUser', function(req, res) {
                 userObjReturned.username = UserInstance.username;
                 userObjReturned.roomId = gameCenterId;
 
-                models.Room.findById(gameCenterId).then(function(room) {
-                    room.addUser(UserInstance);
-                });
-
-                // create session for new created user
-                var key_generated = generateKey();
-                models.Session.create({
-                    sessionKey: key_generated
-                }).then(function(SessionInstance) {
-                    SessionInstance.setUser(UserInstance);
-                    res.statusCode = 200;
-                    res.setHeader('Set-Cookie', "sessionKey=" + key_generated);
-                    res.end(JSON.stringify(userObjReturned));
+                models.Room.findById(gameCenterId).then(function(gameCenter) {
+                    gameCenter.addUser(UserInstance).then(function() {
+                        gameCenter.getUsers({
+                            attributes: ['id'],
+                            order:[['updatedAt','ASC']]
+                        }).then(function(usersInGameCenter) {
+                            userObjReturned.members = usersInGameCenter.map(function(userInGameCenter) {
+                                var dataReturn = userInGameCenter.get({plain: true});
+                                delete dataReturn["Users_Rooms"];
+                                return dataReturn;
+                            });
+                        }).then(function() {
+                            // create session for new created user
+                            var key_generated = generateKey();
+                            models.Session.create({
+                                sessionKey: key_generated
+                            }).then(function(SessionInstance) {
+                                SessionInstance.setUser(UserInstance);
+                                res.statusCode = 200;
+                                res.setHeader('Set-Cookie', "sessionKey=" + key_generated);
+                                getIdArray(userObjReturned.members);
+                                res.end(JSON.stringify(userObjReturned));
+                            });
+                        });
+                     });
                 });
             });
         } else {
@@ -93,6 +106,7 @@ app.post('/createUser', function(req, res) {
     });
 });
 
+// Search and enter a room
 app.get('/room/:id', function(req, res) {
     var key = req.cookies.sessionKey;
     var roomId = req.params['id'];
@@ -139,8 +153,10 @@ app.get('/room/:id', function(req, res) {
     }
 });
 
+// Exit a room
 app.delete('/room/exit', function(req, res) {
     var key = req.cookies.sessionKey;
+    var obj = {};
 
     if (key == undefined) {
         res.statusCode = 401;
@@ -155,22 +171,36 @@ app.delete('/room/exit', function(req, res) {
             } else {
                 searchResult.getUser().then(function(user) {
                     models.Room.findById(0).then(function(gameCenter) {
+
                         gameCenter.addUser(user).then(function() {
-                            user.getRooms().then(function(rooms) {
-                                // should only return rooms of length1
-                                rooms[0].getUsers({
+                            gameCenter.getUsers({
+                                where: {id: {$ne: user.id}},
+                                attributes: ['id'],
+                                order:[['updatedAt','ASC']]
+                            }).then(function(usersInGameCenter) {
+                                obj.users = usersInGameCenter.map(function(userInGameCenter) {
+                                    var dataReturn = userInGameCenter.get({plain: true});
+                                    delete dataReturn["Users_Rooms"];
+                                    return dataReturn;
+                                });
+                            }).then(function() {
+                                user.getRooms().then(function(rooms) {
+                                    // should only return rooms of length1
+                                    rooms[0].getUsers({
                                         where: {id: {$ne: user.id}},
                                         attributes: ['id'],
                                         order:[['updatedAt','ASC']]
                                     }).then(function(usersRemainInRoom) {
-                                    var obj = {};
-                                    obj.users = usersRemainInRoom.map(function(userRemainInRoom) {
-                                        var dataReturn = userRemainInRoom.get({plain: true});
-                                        delete dataReturn["Users_Rooms"];
-                                        return dataReturn;
-                                    });
-                                    rooms[0].setUsers(usersRemainInRoom).then(function() {
-                                        res.end(JSON.stringify(obj));
+                                        obj.usersRemain = usersRemainInRoom.map(function(userRemainInRoom) {
+                                            var dataReturn = userRemainInRoom.get({plain: true});
+                                            delete dataReturn["Users_Rooms"];
+                                            return dataReturn;
+                                        });
+                                        rooms[0].setUsers(usersRemainInRoom).then(function() {
+                                            getIdArray(obj.users);
+                                            getIdArray(obj.usersRemain);
+                                            res.end(JSON.stringify(obj));
+                                        });
                                     });
                                 });
                             });
@@ -182,6 +212,7 @@ app.delete('/room/exit', function(req, res) {
     }
 });
 
+// Send a message to all members in current room
 app.post('/api/chat' , function(req, res) {
     var key = req.cookies.sessionKey;
     var msg = Object.keys(req.body)[0];
@@ -220,8 +251,13 @@ io.on('connection', function(socket){
     });
 });
 
-
-
 http.listen(port, function() {
     console.log('Listening on port ' + port);
 });
+
+function getIdArray(IdObj) {
+    var i;
+    for (i = 0; i < IdObj.length; i++) {
+        IdObj[i] = IdObj[i].id;
+    }
+}
