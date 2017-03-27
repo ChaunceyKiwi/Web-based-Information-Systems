@@ -1,8 +1,14 @@
 ////////////////////////////////////////////
-// Global variable
+// Global variable and initialization
 
 var socket = io();
 var roomId = 0;
+$.get('/api/getRoomInfo', function(data) {
+    var res = JSON.parse(data);
+    updateRoomId(res.roomId);
+    updateRoomMembers(res.usersInRoom);
+});
+
 
 ////////////////////////////////////////////
 // Function

@@ -27,6 +27,45 @@ app.get('/index.js', function(req, res) {
     res.sendFile(__dirname + '/index.js');
 });
 
+// Get the information of current user
+app.get('/api/getRoomInfo', function(req, res) {
+    var key = req.cookies.sessionKey;
+    var obj = {};
+
+    if (key == undefined) {
+        res.statusCode = 401;
+        //console.log("No session key found!");
+        res.end("No session key found!");
+    } else {
+        models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
+            if (searchResult == undefined) {
+                res.statusCode = 401;
+                //console.log("Fake or outdated session key!");
+                res.end("Fake or outdated session key!");
+            } else {
+                searchResult.getUser().then(function(user) {
+                    user.getRooms().then(function(rooms) {
+                        obj.roomId = rooms[0].id;
+                        // should only return rooms of length1
+                        rooms[0].getUsers({
+                            attributes: ['id'],
+                            order:[['updatedAt','ASC']]
+                        }).then(function(usersInRoom) {
+                            obj.usersInRoom = usersInRoom.map(function(userInRoom) {
+                                var dataReturn = userInRoom.get({plain: true});
+                                delete dataReturn["Users_Rooms"];
+                                return dataReturn;
+                            });
+                            getIdArray(obj.usersInRoom);
+                            res.end(JSON.stringify(obj));
+                        });
+                    });
+                });
+            }
+        });
+    }
+});
+
 // Create a new room
 app.post('/api/room', function(req, res) {
     var key = req.cookies.sessionKey;
