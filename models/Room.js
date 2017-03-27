@@ -11,9 +11,6 @@ module.exports = function(sequelize, DataType) {
                     Room.belongsToMany(models.User, {
                         through: 'Users_Rooms'
                     });
-                    Room.belongsTo(models.User, {
-                        through: 'Host_Rooms'
-                    });
                 }
             }
         }

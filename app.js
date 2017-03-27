@@ -47,9 +47,9 @@ app.post('/api/room', function(req, res) {
                     }).then(function(RoomInstance) {
                         var roomInfo = {};
                         roomInfo.location = "/room/" + RoomInstance.id;
+                        roomInfo.roomId = RoomInstance.id;
                         user.setRooms([]);
                         user.addRoom(RoomInstance);
-                        RoomInstance.setUser(user);
                         res.statusCode = 200;
                         res.end(JSON.stringify(roomInfo));
                     });
@@ -69,7 +69,7 @@ app.post('/createUser', function(req, res) {
             models.User.create({username: userObj.username}).then(function(UserInstance) {
                 userObjReturned.id = UserInstance.id;
                 userObjReturned.username = UserInstance.username;
-                userObjReturned.roomId = UserInstance.roomId;
+                userObjReturned.roomId = gameCenterId;
 
                 models.Room.findById(gameCenterId).then(function(room) {
                     room.addUser(UserInstance);
@@ -102,8 +102,8 @@ app.get('/room/:id', function(req, res) {
         //console.log("No session key found!");
         res.end("No session key found!");
     } else {
-        models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
-            if (searchResult == undefined) {
+        models.Session.findOne({where: {sessionKey: key}}).then(function(targetSession) {
+            if (targetSession == undefined) {
                 res.statusCode = 401;
                 //console.log("Fake or outdated session key!");
                 res.end("Fake or outdated session key!");
@@ -114,16 +114,22 @@ app.get('/room/:id', function(req, res) {
                         //console.log("The room does not exist!");
                         res.end("The room does not exist!");
                     } else {
-                        RoomInstance.getUser({attributes: ['id']}).then(function(userInstance) {
-                            var roomInfo = {};
-                            roomInfo.id = RoomInstance.id;
-                            roomInfo.host = userInstance.get({plain: true}).id;
-                            RoomInstance.getUsers({attributes: ['id']}).then(function(members) {
-                                roomInfo.members = members.map(function(member){
-                                    return member.get({plain: true}).id;
+                        targetSession.getUser().then(function(userToBeAdded) {
+                            userToBeAdded.setRooms([]).then(function() {
+                                RoomInstance.addUser(userToBeAdded).then(function() {
+                                    var roomInfo = {};
+                                    roomInfo.roomId = RoomInstance.id;
+                                    RoomInstance.getUsers({
+                                        attributes: ['id'],
+                                        order:[['updatedAt','ASC']]
+                                    }).then(function(members) {
+                                        roomInfo.members = members.map(function (member) {
+                                            return member.get({plain: true}).id;
+                                        });
+                                        res.statusCode = 200;
+                                        res.end(JSON.stringify(roomInfo));
+                                    });
                                 });
-                                res.statusCode = 200;
-                                res.end(JSON.stringify(roomInfo));
                             });
                         });
                     }
@@ -133,35 +139,89 @@ app.get('/room/:id', function(req, res) {
     }
 });
 
-// app.delete('/room/exit', function(req, res) {
-//     var key = req.cookies.sessionKey;
-//
-//     if (key == undefined) {
-//         res.statusCode = 401;
-//         //console.log("No session key found!");
-//         res.end("No session key found!");
-//     } else {
-//         models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
-//             if (searchResult == undefined) {
-//                 res.statusCode = 401;
-//                 //console.log("Fake or outdated session key!");
-//                 res.end("Fake or outdated session key!");
-//             } else {
-//                 searchResult.getUser().then(function(user) {
-//                     user.getRooms().then(function(rooms) {
-//                     });
-//                 });
-//             }
-//         });
-//     }
-// });
+app.delete('/room/exit', function(req, res) {
+    var key = req.cookies.sessionKey;
+
+    if (key == undefined) {
+        res.statusCode = 401;
+        //console.log("No session key found!");
+        res.end("No session key found!");
+    } else {
+        models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
+            if (searchResult == undefined) {
+                res.statusCode = 401;
+                //console.log("Fake or outdated session key!");
+                res.end("Fake or outdated session key!");
+            } else {
+                searchResult.getUser().then(function(user) {
+                    models.Room.findById(0).then(function(gameCenter) {
+                        gameCenter.addUser(user).then(function() {
+                            user.getRooms().then(function(rooms) {
+                                // should only return rooms of length1
+                                rooms[0].getUsers({
+                                        where: {id: {$ne: user.id}},
+                                        attributes: ['id'],
+                                        order:[['updatedAt','ASC']]
+                                    }).then(function(usersRemainInRoom) {
+                                    var obj = {};
+                                    obj.users = usersRemainInRoom.map(function(userRemainInRoom) {
+                                        var dataReturn = userRemainInRoom.get({plain: true});
+                                        delete dataReturn["Users_Rooms"];
+                                        return dataReturn;
+                                    });
+                                    rooms[0].setUsers(usersRemainInRoom).then(function() {
+                                        res.end(JSON.stringify(obj));
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            }
+        });
+    }
+});
+
+app.post('/api/chat' , function(req, res) {
+    var key = req.cookies.sessionKey;
+    var msg = Object.keys(req.body)[0];
+
+    if (key == undefined) {
+        res.statusCode = 401;
+        res.end("No session key found!");
+    } else {
+        models.Session.findOne({where: {sessionKey: key}}).then(function(searchResult) {
+            if (searchResult == undefined) {
+                console.log(searchResult);
+                res.statusCode = 401;
+                res.end("Fake or outdated session key!");
+            } else {
+                searchResult.getUser().then(function(user) {
+                    user.getRooms().then(function(rooms) {
+                        // should only return rooms of length1
+                        var room = rooms[0];
+                        var info = {};
+                        info.username = user.username;
+                        info.roomId = room.id;
+                        info.message = msg;
+                        res.statusCode = 200;
+                        io.emit('addMessageToRoom', JSON.stringify(info));
+                        res.end("Success");
+                    });
+                });
+            }
+        });
+    }
+});
 
 io.on('connection', function(socket){
-    socket.on('chat message', function(msg){
-        io.emit('chat message', msg);
+    socket.on('addMessageToRoom', function(msg) {
+
     });
 });
 
-http.listen(port, function(){
+
+
+http.listen(port, function() {
     console.log('Listening on port ' + port);
 });
