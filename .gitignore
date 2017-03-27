@@ -4,3 +4,5 @@ node_modules
 music.db
 playlist.css.map
 .sass-cache
+
+drawSomething.db

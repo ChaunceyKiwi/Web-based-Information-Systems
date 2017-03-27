@@ -89,7 +89,7 @@ $("#btn-create-game").click(function() {
         exitInfo.roomId = roomId;
         joinInfo.userId = userId;
         joinInfo.roomId = res.roomId;
-        updateRoomMembers(res.members);
+        updateRoomMembers(userId);
         updateRoomId(res.roomId);
 
         socket.emit("deleteUserFromRoom", JSON.stringify(exitInfo));

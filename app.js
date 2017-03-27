@@ -70,7 +70,7 @@ app.get('/api/getInfo', function(req, res) {
 });
 
 // Create a new room
-// Return {location, roomId, members}
+// Return {location, roomId}
 app.post('/api/room', function(req, res) {
     var key = req.cookies.sessionKey;
 
@@ -91,7 +91,6 @@ app.post('/api/room', function(req, res) {
                         var roomInfo = {};
                         roomInfo.location = "/room/" + RoomInstance.id;
                         roomInfo.roomId = RoomInstance.id;
-                        roomInfo.members = user.id;
                         user.setRooms([]);
                         user.addRoom(RoomInstance);
                         res.statusCode = 200;
