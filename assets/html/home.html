@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../stylesheet/header.css">
     <link rel="stylesheet" href="../stylesheet/home.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="../script/home.js"></script>
 </head>
 <body>
   <div id="header_bar">
@@ -26,12 +24,15 @@
           <input type="text" id="room-id" placeholder="Search by Room ID...">
         </td>
         <td class="btn-td">
-          <button id="btn-join-room" class="btn" onclick="joinRoom()">
+          <button id="btn-join-room" class="btn">
             Join
           </button>
         </td>
       </tr>
     </table>
   </div>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="../script/home.js"></script>
 </body>
 </html>

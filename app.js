@@ -1,4 +1,5 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var models = require('./models');
@@ -7,6 +8,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var crypto = require('crypto');
 
+app.use(express.static(__dirname + '/assets'));
 app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({extended: true}));   // to support URL-encoded bodies
 app.use(cookieParser());
@@ -27,8 +29,16 @@ app.get('/index.js', function(req, res) {
     res.sendFile(__dirname + '/index.js');
 });
 
+app.get('/home', function(req, res) {
+    res.sendFile(__dirname + '/assets/html/home.html');
+});
+
+app.get('/pregame', function(req, res) {
+    res.sendFile(__dirname + '/assets/html/pre_game.html');
+});
+
 // Get the information of current user
-// return {userId, roomId, usersInRoom}
+// return {userId, roomId, members}
 app.get('/api/getInfo', function(req, res) {
     var key = req.cookies.sessionKey;
     var obj = {};
@@ -50,17 +60,15 @@ app.get('/api/getInfo', function(req, res) {
                         obj.roomId = rooms[0].id;
                         // should only return rooms of length1
                         rooms[0].getUsers({
-                            attributes: ['id'],
+                            attributes: ['id', 'username'],
                             order:[['createdAt','ASC']]
                         }).then(function(usersInRoom) {
-                            obj.usersInRoom = usersInRoom.map(function(userInRoom) {
+                            obj.members = usersInRoom.map(function(userInRoom) {
                                 var dataReturn = userInRoom.get({plain: true});
                                 delete dataReturn["Users_Rooms"];
                                 return dataReturn;
                             });
-                            getIdArray(obj.usersInRoom);
                             res.end(JSON.stringify(obj));
-                            console.log(obj);
                         });
                     });
                 });
@@ -94,7 +102,6 @@ app.post('/api/room', function(req, res) {
                         user.setRooms([]);
                         user.addRoom(RoomInstance);
                         res.statusCode = 200;
-                        console.log(roomInfo);
                         res.end(JSON.stringify(roomInfo));
                     });
                 });
@@ -117,7 +124,7 @@ app.post('/createUser', function(req, res) {
                 models.Room.findById(gameCenterId).then(function(gameCenter) {
                     gameCenter.addUser(UserInstance).then(function() {
                         gameCenter.getUsers({
-                            attributes: ['id'],
+                            attributes: ['id', 'username'],
                             order:[['createdAt','ASC']]
                         }).then(function(usersInGameCenter) {
                             userObjReturned.members = usersInGameCenter.map(function(userInGameCenter) {
@@ -134,8 +141,6 @@ app.post('/createUser', function(req, res) {
                                 SessionInstance.setUser(UserInstance);
                                 res.statusCode = 200;
                                 res.setHeader('Set-Cookie', "sessionKey=" + key_generated);
-                                getIdArray(userObjReturned.members);
-                                console.log(userObjReturned);
                                 res.end(JSON.stringify(userObjReturned));
                             });
                         });
@@ -178,11 +183,13 @@ app.get('/room/:id', function(req, res) {
                                     var roomInfo = {};
                                     roomInfo.roomId = RoomInstance.id;
                                     RoomInstance.getUsers({
-                                        attributes: ['id'],
+                                        attributes: ['id', 'username'],
                                         order:[['createdAt','ASC']]
                                     }).then(function(members) {
                                         roomInfo.members = members.map(function (member) {
-                                            return member.get({plain: true}).id;
+                                            var dataReturn = member.get({plain: true});
+                                            delete dataReturn["Users_Rooms"];
+                                            return dataReturn;
                                         });
                                         res.statusCode = 200;
                                         res.end(JSON.stringify(roomInfo));
@@ -198,7 +205,7 @@ app.get('/room/:id', function(req, res) {
 });
 
 // Exit a room
-// Return {users}
+// Return {members}
 app.delete('/room/exit', function(req, res) {
     var key = req.cookies.sessionKey;
     var obj = {};
@@ -218,24 +225,20 @@ app.delete('/room/exit', function(req, res) {
                     models.Room.findById(gameCenterId).then(function(gameCenter) {
                         gameCenter.addUser(user).then(function() {
                             gameCenter.getUsers({
-                                attributes: ['id'],
+                                attributes: ['id', 'username'],
                                 order:[['createdAt','ASC']]
                             }).then(function(usersInGameCenter) {
-                                obj.users = usersInGameCenter.map(function(userInGameCenter) {
+                                obj.members = usersInGameCenter.map(function(userInGameCenter) {
                                     var dataReturn = userInGameCenter.get({plain: true});
                                     delete dataReturn["Users_Rooms"];
                                     return dataReturn;
                                 });
                             }).then(function() {
+                                // perform the deletion
                                 user.getRooms().then(function(rooms) {
                                     // should only return rooms of length1
-                                    rooms[0].getUsers({
-                                        where: {id: {$ne: user.id}},
-                                        attributes: ['id'],
-                                        order:[['createdAt','ASC']]
-                                    }).then(function(usersRemainInRoom) {
+                                    rooms[0].getUsers({where: {id: {$ne: user.id}}}).then(function(usersRemainInRoom) {
                                         rooms[0].setUsers(usersRemainInRoom).then(function() {
-                                            getIdArray(obj.users);
                                             res.statusCode = 200;
                                             res.end(JSON.stringify(obj));
                                         });
@@ -271,6 +274,7 @@ app.post('/api/chat' , function(req, res) {
                         // should only return rooms of length1
                         var room = rooms[0];
                         var info = {};
+                        info.userId = user.id;
                         info.username = user.username;
                         info.roomId = room.id;
                         info.message = msg;
@@ -286,10 +290,12 @@ app.post('/api/chat' , function(req, res) {
 
 io.on('connection', function(socket){
     socket.on('addUserToRoom', function(msg) {
+        console.log("Add: " + msg);
         io.emit('addUserToRoom', msg);
     });
 
     socket.on('deleteUserFromRoom', function(msg) {
+        console.log("Delete: " + msg);
         io.emit('deleteUserFromRoom', msg);
     });
 });
@@ -297,11 +303,3 @@ io.on('connection', function(socket){
 http.listen(port, function() {
     console.log('Listening on port ' + port);
 });
-
-// simplify id array
-function getIdArray(IdObj) {
-    var i;
-    for (i = 0; i < IdObj.length; i++) {
-        IdObj[i] = IdObj[i].id;
-    }
-}
