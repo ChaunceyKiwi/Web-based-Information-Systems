@@ -1,17 +1,17 @@
 ////////////////////////////////////////////
 // Global variable and initialization
-
 var socket = io();
 var roomId = 0;
 var userId = -1;
 var roomMembersInRoom;
 var gameCenterId = 0;
+var usersDirectory = {};
 
 $.get('/api/getInfo', function(data) {
     var res = JSON.parse(data);
     updateUserId(res.userId);
     updateRoomId(res.roomId);
-    updateRoomMembers(res.usersInRoom);
+    updateRoomMembers(res.members);
 });
 
 ////////////////////////////////////////////
@@ -24,11 +24,30 @@ function updateUserId(newId) {
 function updateRoomId(newId) {
     roomId = newId;
     if (roomId === 0) {
-        $("#roomId").text("Room info: Game center (Room0)");
+        $("#room-info-id").text("Room ID: Game center (Room0)");
     } else {
         location.pathname = '/pregame';
-        $("#roomId").text("Room info: Room" + roomId);
+        $("#room-info-id").text("Room ID: " + roomId);
     }
+}
+
+function generateChattingBox(userId, message, isOwner) {
+    var chat_box = document.createElement("div");
+    if (isOwner == 0) {
+        chat_box.className = "chat-box";
+    } else {
+        chat_box.className = "chat-box my-box";
+    }
+    var box_owner = document.createElement("div");
+    box_owner.className = "box-owner";
+    box_owner.appendChild(document.createTextNode(usersDirectory[userId]));
+    var box_content = document.createElement("div");
+    box_content.className = "box-content";
+    box_content.appendChild(document.createTextNode(message));
+    chat_box.appendChild(box_owner);
+    chat_box.appendChild(box_content);
+
+    return chat_box;
 }
 
 function updateRoomMembers(roomMembers) {
@@ -37,7 +56,18 @@ function updateRoomMembers(roomMembers) {
     } else {
         roomMembersInRoom = [roomMembers];
     }
-    $("#roomMembers").text("Room members: [" + roomMembersInRoom +"]");
+
+    var i;
+    for (i = 0; i < 6; i++) {
+        usersDirectory = {};
+        $("#user-" + i).hide();
+    }
+
+    for (i = 0; i < roomMembers.length; i++) {
+        usersDirectory[roomMembers[i].id] = roomMembers[i].username;
+        $("#user-" + i).show();
+        $("#user-" + i).html('<img class="user-icon" src="../graphics/user.png">' + roomMembers[i].username);
+    }
 }
 
 ////////////////////////////////////////////
@@ -49,9 +79,18 @@ socket.on('addMessageToRoom', function(msg){
     var roomIdOfMsg = msg.roomId;
 
     if (roomId === roomIdOfMsg) {
-        var output = msg.username + ": " + msg.message;
-        $('#messages').append($('<li>').text(output));
-        window.scrollTo(0, document.body.scrollHeight);
+        var newBox;
+        if (userId === msg.userId) {
+            newBox = generateChattingBox(msg.userId, msg.message, 1);
+        } else {
+            newBox = generateChattingBox(msg.userId, msg.message, 0);
+        }
+
+        $("#chat-content").append(newBox);
+
+        // var output = msg.username + ": " + msg.message;
+        // $('#messages').append($('<li>').text(output));
+        // window.scrollTo(0, document.body.scrollHeight);
     }
 });
 
@@ -60,9 +99,14 @@ socket.on('addUserToRoom', function(msg){
     msg = JSON.parse(msg);
     var targetRoomId = msg.roomId;
     var targetUserId = msg.userId;
+    var targetUserName = msg.username;
     if (roomId === targetRoomId && userId != targetUserId) {
-        roomMembersInRoom.push(targetUserId);
+        var info = {};
+        info.id = msg.userId;
+        info.username = targetUserName;
+        roomMembersInRoom.push(info);
     }
+    usersDirectory[targetUserId] = targetUserName;
     updateRoomMembers(roomMembersInRoom);
 });
 
@@ -71,8 +115,12 @@ socket.on('deleteUserFromRoom', function(msg){
     msg = JSON.parse(msg);
     var targetRoomId = msg.roomId;
     var targetUserId = msg.userId;
+    var targetUserName = msg.username;
     if (roomId === targetRoomId && userId != targetUserId) {
-        roomMembersInRoom.splice(roomMembersInRoom.indexOf(targetUserId), 1);
+        var info = {};
+        info.id = msg.userId;
+        info.username = targetUserName;
+        roomMembersInRoom.splice(roomMembersInRoom.indexOf(info), 1);
     }
     updateRoomMembers(roomMembersInRoom);
 });
@@ -87,11 +135,17 @@ $("#btn-create-game").click(function() {
 
         exitInfo.userId = userId;
         exitInfo.roomId = roomId;
+        exitInfo.username = usersDirectory[userId];
         joinInfo.userId = userId;
         joinInfo.roomId = res.roomId;
-        updateRoomMembers(userId);
-        updateRoomId(res.roomId);
+        joinInfo.username = usersDirectory[userId];
 
+        var info = {};
+        info.id = userId;
+        info.username = usersDirectory[userId];
+        updateRoomMembers(info);
+
+        updateRoomId(res.roomId);
         socket.emit("deleteUserFromRoom", JSON.stringify(exitInfo));
         socket.emit("addUserToRoom", JSON.stringify(joinInfo));
 
@@ -109,9 +163,11 @@ $("#btn-join-room").click(function() {
     $.get('/room/' + roomSearchedId, function(data) {
         var res = JSON.parse(data);
         exitInfo.userId = userId;
+        exitInfo.username = usersDirectory[userId];
         exitInfo.roomId = roomId;
         joinInfo.userId = userId;
         joinInfo.roomId = res.roomId;
+        joinInfo.username = usersDirectory[userId];
 
         socket.emit("deleteUserFromRoom", JSON.stringify(exitInfo));
         socket.emit("addUserToRoom", JSON.stringify(joinInfo));
@@ -133,13 +189,15 @@ $("#btn-create-user").click(function() {
     $.post('/createUser', JSON.stringify(userObj), function(data) {
         var res = JSON.parse(data);
 
-        joinInfo.userId = res.id;
-        joinInfo.roomId = gameCenterId;
-        socket.emit("addUserToRoom", JSON.stringify(joinInfo));
-
         updateRoomId(gameCenterId);
         updateUserId(res.id);
         updateRoomMembers(res.members);
+
+        joinInfo.userId = res.id;
+        joinInfo.roomId = gameCenterId;
+        joinInfo.username = usersDirectory[res.id];
+        socket.emit("addUserToRoom", JSON.stringify(joinInfo));
+
         console.log(data);
     });
 });
@@ -162,10 +220,13 @@ $("#btn-exit").click(function() {
                 console.log(result);
                 exitInfo.userId = userId;
                 exitInfo.roomId = roomId;
+                exitInfo.username = usersDirectory[userId];
                 joinInfo.userId = userId;
                 joinInfo.roomId = gameCenterId;
+                joinInfo.username = usersDirectory[userId];
+
                 updateRoomId(0);
-                updateRoomMembers(JSON.parse(result).users);
+                updateRoomMembers(JSON.parse(result).members);
                 socket.emit("deleteUserFromRoom", JSON.stringify(exitInfo));
                 socket.emit("addUserToRoom", JSON.stringify(joinInfo));
             },
@@ -178,10 +239,11 @@ $("#btn-exit").click(function() {
 
 // Send a message to all members in current room
 $("#btn-send-message").click(function() {
-    var messageInputWindow = $('#messageInput');
+    var messageInputWindow = $('#new-message');
     var message = messageInputWindow.val();
     messageInputWindow.val('');
     $.post('/api/chat', message, function(data) {
         console.log(data);
     })
 });
+
