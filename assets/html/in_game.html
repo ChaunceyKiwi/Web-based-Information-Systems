@@ -1,0 +1,110 @@
+<!-- Pls follow this code style:https://google.github.io/styleguide/htmlcssguide.html -->
+<!--TODO:
+1. change the paths
+2. migrate the JSONs to db
+-->
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+
+<head>
+    <title>Draw Something</title>
+    <link rel="stylesheet" href="../stylesheet/bootstrap.min.css">
+    <link rel="stylesheet" href="../stylesheet/rangeslider.css">
+    <link rel="stylesheet" href="../stylesheet/header.css">
+    <link rel="stylesheet" href="../stylesheet/in_game.css">
+    <script src="../script/jquery-3.1.1.min.js"></script>
+    <script src="../script/bootstrap.min.js"></script>
+    <script src="../script/rangeslider.min.js"></script>
+    <script src="../script/external/jsrender.js"></script>
+    <script src="../script/in-game-data.js"></script>
+    <script src="../script/in_game.js"></script>
+    <!--Templates for user icons-->
+    <script id="user_tmpl" type="text/x-jsrender">
+        <li>
+            <ul>
+                <li>{{:name}}</li>
+                <li>
+                    <img class="user_icon" src="../graphics/user.png">
+                </li>
+                <li>{{:score}}</li>
+            </ul>
+        </li>
+    </script>
+    <script id="user2_tmpl" type="text/x-jsrender">
+        <li>
+            <ul class="user2_block">
+                <li>{{:name}}</li>
+                <li>
+                    <img class="user2_icon" src="../graphics/user2.png">
+                </li>
+                <li>{{:score}}</li>
+            </ul>
+        </li>
+    </script>
+</head>
+
+<body onload="initialize()">
+    <div id="ingame_scene">
+        <div id="header_bar">
+            <img id="header_logo" src="../graphics/logo.png">
+            <img id="dropList_img" src="../graphics/dropList-button.png">
+        </div>
+        <div id="info_bar"><span id="info_content">Hint: One word</span><span id="timer">20s</span></div>
+        <div id="scroll_bar">player999: Flower</div>
+        <div id="canvas_area">canvas</div>
+
+        <div id="color_container">
+            <div class="row">
+                <div class="colors tool col-xs-1" style="background-color: rgb(254, 163, 9);"></div>
+                <div class="colors tool col-xs-1" style="background-color: rgb(132, 181, 249);"></div>
+                <div class="colors tool col-xs-1" style="background-color: rgb(70, 62, 0);"></div>
+                <div class="colors tool col-xs-1" style="background-color: rgb(39, 14, 156);"></div>
+                <div class="colors tool col-xs-1" style="background-color: rgb(77, 113, 217);"></div>
+                <div class="colors tool col-xs-1" style="background-color: rgb(216, 179, 223);"></div>
+                <div class="colors tool col-xs-1" style="background-color: rgb(244, 164, 205);"></div>
+                <div class="colors tool col-xs-1" style="background-color: rgb(0, 0, 0);"></div>
+                <div class="colors tool col-xs-1" style="background-color: rgb(255, 255, 255);"></div>
+                <div class="colors tool col-xs-1" style="background-color: rgb(64, 160, 43);"></div>
+                <div class="colors tool col-xs-1" style="background-color: rgb(158, 18, 76);"></div>
+                <div class="colors tool col-xs-1" style="background-color: rgb(4, 16, 175);"></div>
+                <div class="colors tool col-xs-1" style="background-color: rgb(93, 224, 45);"></div>
+                <div class="colors tool col-xs-1" style="background-color: rgb(255, 0, 0);"></div>
+            </div>
+        </div>
+
+        <input type="range" min="10" max="1000" step="10">
+
+        <div id="tool_bar">
+            <ul>
+                <li>
+                    <p id="color_btn" class="tool"></p>
+                </li>
+                <li>
+                    <p id="brush_btn"></p>
+                </li>
+                <li>
+                    <img id="undo_btn" class="tool" src="../graphics/undo.png">
+                </li>
+                <li>
+                    <img id="redo_btn" class="tool" src="../graphics/redo.png">
+                </li>
+                <li>
+                    <img id="clear_btn" class="tool" src="../graphics/bin.png">
+                </li>
+            </ul>
+        </div>
+        <div id="chat_box">
+            <input id="chat_input" type="text" placeholder="chat here">
+            <button id="chat_btn">SEND</button>
+        </div>
+        <div id="player_area">
+            <ul id="player_row"></ul>
+            <ul id="player_row2"></ul>
+        </div>
+    </div>
+    <script src="../script/in_game2.js"></script>
+</body>
+
+</html>

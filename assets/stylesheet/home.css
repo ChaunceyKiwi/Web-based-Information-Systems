@@ -1,0 +1,50 @@
+.container {
+  margin: 0;
+  margin-top: 25px;
+  width: 100%;
+}
+
+.btn {
+  background-color: #5FA7EA;
+  color: white !important;
+  font-size: 50px !important;
+  padding: 25px !important;
+  border-radius: 15px !important;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);
+}
+
+.btn:active, .btn:hover {
+  background-color: #3D7EBA;
+}
+
+#btn-create-room {
+  width: 100%;
+}
+
+.search-table {
+  margin-top: 25px;
+  width: 100%;
+}
+
+.input-td {
+  width: 80%;
+}
+
+.btn-td {
+  width: 20%;
+  padding-left: 10px;
+}
+
+input#room-id {
+  text-align: center;
+  width: 100%;
+  font-size: 50px;
+  padding: 25px;
+  border-radius: 15px;
+  border: #AAAAAA 3px solid;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);
+}
+
+#btn-join-room {
+  width: 100%;
+}

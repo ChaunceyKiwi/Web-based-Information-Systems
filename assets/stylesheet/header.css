@@ -1,0 +1,22 @@
+:root {
+    --hh: 160px;
+}
+body{
+    background: #F4F4F4;
+}
+#header_bar{
+    background: #FFFFFF;
+    height: var(--hh);
+    width: 100%;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);
+}
+#header_logo{
+    margin-top: calc(0.18*var(--hh));
+    margin-left: 25%;
+    height: calc(0.65*var(--hh));
+}
+#dropList_img{
+    margin-left: 10%;
+    margin-top: calc(0.15*var(--hh));
+    height: calc(0.36*var(--hh));
+}
