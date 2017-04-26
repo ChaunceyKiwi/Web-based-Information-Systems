@@ -1,0 +1,334 @@
+$menu-color: #f8f8f8;
+$background-color: #E8E0F4;
+$icon-color: #808080;
+$icon-active-color: #820082;
+$theme-color: #936AC7;
+$theme-color-darker: #664a8b;
+$theme-color-darkest: #5b427d;
+$button-font-color: white;
+$border-color: #aaaaaa;
+$modal-background: rgba(0, 0, 0, 0.4);
+$button-shadow: $modal-background;
+$square-inner-color: #D8D8D8;
+$search-bar-background-color: $square-inner-color;
+
+//////////////////////////////////////
+//Style for body
+
+body {
+  background-color: $background-color;
+}
+
+//////////////////////////////////////
+//Style for Menu
+
+.menu {
+  border-bottom: thin solid $border-color;
+  margin-bottom: 0;
+  height: 17vmin;
+  min-height: 0;
+
+  li {
+    display: table-cell;
+    width: 1%;
+
+    div {
+      height: 12vmin;
+      color: black;
+      text-align: center;
+      margin-top: 2vmin;
+      padding: 0;
+      display :block;
+      &:hover {
+        background-color: $menu-color;
+      }
+      span {
+        display :block;
+      }
+    }
+
+    &.active > div > span.glyphicon,
+    &.active > div > span.menu-name{
+      color: $icon-active-color;
+      background-color: transparent;
+    }
+  }
+}
+
+.menu-name {
+  margin-top:1.5vmin;
+  font-size: 3.5vmin;
+  color: darkgray;
+  width: 33.33vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.glyphicon-music, .glyphicon-th-list, .glyphicon-search{
+  font-size: 5vmin;
+}
+
+//////////////////////////////////////
+//Style for all tab contents
+
+.songs-item {
+  position: relative;
+  height: 16vmin;
+  background: $background-color;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  color: $theme-color;
+  border-bottom: thin solid $border-color;
+}
+
+.playlists-item {
+  position: relative;
+  height: 16vmin;
+  text-align: center;
+  background: $background-color;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  color: $theme-color;
+  border-bottom: thin solid $border-color;
+
+  &:hover {
+    background-color: #ccbae7;
+  }
+
+  &:focus {
+    background-color: #ccbae7;
+  }
+
+  &:active {
+    background-color: #a281d3;
+  }
+}
+
+//////////////////////////////////////
+//Style for content of playlists and songs
+
+.btn-addlist {
+  color: $button-font-color;
+  background-color: $theme-color;
+  width: 100%;
+  height: 10vmin;
+  font-size: 5vmin;
+  font-weight: normal;
+  padding: 1vmin;
+  margin-bottom: 1vmin;
+  outline: 0;
+  &:hover, &:focus {
+    background-color: $theme-color-darker;
+    color: $button-font-color;
+    outline: 0;
+  }
+}
+
+.input-newListName {
+  width: 50%;
+}
+
+.btn-addListConfirm {
+  color: $button-font-color;
+  background-color: $theme-color;
+  font-size: 3vmin;
+  width: 30%;
+  font-weight: normal;
+  margin-top: 2vmin;
+  &:hover, &:focus {
+    background-color: $theme-color-darker;
+    color: $button-font-color;
+    outline: 0;
+  }
+}
+
+.glyphicon-play {
+  position: relative;
+  top: 5vmin;
+  right:6vmin;
+  float: right;
+  color: $icon-color;
+  font-size: 6vmin;
+}
+
+.glyphicon-plus-sign {
+  position: relative;
+  top: 5vmin;
+  right: 3vmin;
+  float: right;
+  color: $icon-color;
+  font-size: 6vmin;
+}
+
+.glyphicon-chevron-right {
+  position: relative;
+  right:6vmin;
+  float: right;
+  color: $icon-color;
+  font-size: 6vmin;
+  pointer-events: none;
+}
+
+.square {
+  position: relative;
+  top: 3vmin;
+  left: 3vmin;
+  float: left;
+  background: $square-inner-color;
+  width: 10vmin;
+  height: 10vmin;
+  outline: darkgray solid thin;
+  pointer-events: none;
+}
+
+div.list-name {
+  position: relative;
+  font-size: 4vmin;
+  right: 10vmin;
+  color: $theme-color;
+  pointer-events: none;
+  top: 5.33vmin;
+}
+
+div.song-title {
+  position: absolute;
+  font-size: 4vmin;
+  left: 18vmin;
+  top: 4vmin;
+  color: $theme-color;
+  float: left;
+  width: 40vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+div.song-artist {
+  position: absolute;
+  font-size: 3vmin;
+  left: 18vmin;
+  top: 10vmin;
+  float: left;
+  color: darkgray;
+  width: 40vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.playlist-content-heading {
+  font-size: 6vmin;
+  line-height: 100%;
+  color: $theme-color;
+  height: 8vmin;
+}
+
+//////////////////////////////////////
+// Style for content of tab "Library"
+
+.tab-content {
+  margin-top: 20vmin;
+  display: none;
+}
+
+.button-sort-row {
+  text-align: center;
+}
+
+.button-sort {
+  color: $button-font-color;
+  background-color: $theme-color;
+  width: 80%;
+  height: 10vmin;
+  font-size: 4vmin;
+  font-weight: normal;
+  padding: 1vmin;
+  margin-bottom: 1vmin;
+  &:hover, &:active {
+    @extend .button-sort;
+    outline: 0;
+  }
+  &:focus{
+    @extend .button-sort;
+    box-shadow:inset 0.4vmin 0.4vmin 0.4vmin 0.1vmin $button-shadow;
+    outline: 0;
+  }
+}
+
+.button-sort-selected {
+  @extend .button-sort;
+  box-shadow:inset 0.4vmin 0.4vmin 0.4vmin 0.1vmin $button-shadow;
+  outline: 0;
+}
+
+//////////////////////////////////////
+// Style for the Search Tab
+
+.search-bar {
+  height: 8vmin;
+  font-size: 4vmin;
+  background-color: $search-bar-background-color;
+  outline: 0;
+  color: dimgray;
+  padding-left: 4vmin;
+}
+
+//////////////////////////////////////
+// Style for the modal
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index : 1;
+  padding-top:  40vmin;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $modal-background;
+  overflow: auto;
+}
+
+.modal-content-ch {
+  background-color: $background-color;
+  color: dimgray;
+  margin: auto;
+  padding: 5vmin;
+  width: 60%;
+  height: 40vmin;
+}
+
+.modal-header{
+  padding: 0;
+}
+
+.tipText {
+  position: relative;
+  font-size: 4vmin;
+  margin: auto;
+  pointer-events: none;
+}
+
+.close {
+  position: relative;
+  color: black;
+  float: right;
+  font-size: 7vmin;
+  top: -1vmin;
+}
+
+.playlist-items-for-modal {
+  position: relative;
+  width: 50vmin;
+}
+
+.playlist-in-model {
+  width: 100%;
+  position: relative;
+  float: left;
+  font-size: 4vmin;
+  color: $theme-color;
+}
